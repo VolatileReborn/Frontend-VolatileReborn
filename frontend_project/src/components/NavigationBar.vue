@@ -12,7 +12,7 @@
         </v-btn>
       </div>
       <div class="check_in_item">
-          <v-btn icon @click="direct_router('/login')" >
+          <v-btn icon @click="direct_router('/taskSquare')" >
             任务广场
           </v-btn>
         </div>

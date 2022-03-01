@@ -18,7 +18,7 @@
 
 --------layouts: 布局组件
 
---------plugins: 插件，使用vuetify UI组件库
+--------plugins: 使用支持vue3的element plus组件库
 
 --------router: index.js页面路由
 
