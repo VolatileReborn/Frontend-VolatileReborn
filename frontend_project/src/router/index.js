@@ -3,6 +3,7 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/Login";
 import Register from "@/views/Register";
 import TaskSquare from "@/views/task/TaskSquare";
+import TaskInfoFromSquare from "@/views/task/TaskInfoFromSquare";
 const routerHistory = createWebHistory();
 
 
@@ -26,7 +27,12 @@ const routes = [
     {
         path:"/taskSquare",
         name: "TaskSquare",
-        component: TaskSquare
+        component: TaskSquare,
+    },
+    {
+        path: "/taskInfoFromSquare/:taskId",
+        name: "TaskInfoFromSquare",
+        component: TaskInfoFromSquare
     }
 ];
 const router = createRouter({

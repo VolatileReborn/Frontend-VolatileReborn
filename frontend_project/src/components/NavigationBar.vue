@@ -7,26 +7,26 @@
     </div>
     <div class="route_page_container">
       <div class="check_in_item">
-        <v-btn icon @click="direct_router('/')" >
+        <el-button type="text" style="font-family: 幼圆;font-weight: bolder;font-size: large" @click="direct_router('/')" >
           首页
-        </v-btn>
+        </el-button>
       </div>
       <div class="check_in_item">
-          <v-btn icon @click="direct_router('/taskSquare')" >
+          <el-button type="text" style="font-family: 幼圆;font-weight: bolder;font-size: large" @click="direct_router('/taskSquare')" >
             任务广场
-          </v-btn>
+          </el-button>
         </div>
     </div>
     <div class="check_in_container">
       <div class="check_in_item">
-        <v-btn icon @click="direct_router('/login')" >
+        <el-button type="primary" @click="direct_router('/login')" >
         登录
-        </v-btn>
+        </el-button>
       </div>
       <div class="check_in_item">
-        <v-btn color="info" @click="direct_router('/register')" >
+        <el-button type="primary" plain @click="direct_router('/register')" >
           注册
-        </v-btn>
+        </el-button>
       </div>
     </div>
   </nav>
@@ -98,9 +98,5 @@ img{
   vertical-align: middle;
   margin-right: 15px;
 
-  font-family: 幼圆;
-  font-weight: bolder;
-  color: cadetblue;
-  font-size: large;
 }
 </style>
