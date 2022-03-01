@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div class="hello">
-      {{msg}}
-    </div>
+  <div class="home_pic">
+    <img src="../assets/home_pic.png">
   </div>
 </template>
 
@@ -22,5 +20,8 @@ export default {
 </script>
 
 <style scoped>
-
+img{
+  width: 100%;
+  height: 555px;
+}
 </style>

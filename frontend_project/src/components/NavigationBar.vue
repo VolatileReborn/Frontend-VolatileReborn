@@ -1,7 +1,7 @@
 <template>
   <nav>
 
-    <div class="logo_container" >
+    <div class="logo_container" @click="direct_router('/')" >
       <img src="../assets/logo.png">
       <div class="logo_text">在线众包平台</div>
     </div>
@@ -81,7 +81,7 @@ img{
   vertical-align: middle;
 }
 .route_page_container{
-  margin-left: 20px;
+  margin-left: 40px;
   display: flex;
   flex-direction: row;
 }
@@ -96,7 +96,7 @@ img{
 .check_in_item{
   position: relative;
   vertical-align: middle;
-  margin-right: 10px;
+  margin-right: 15px;
 
   font-family: 幼圆;
   font-weight: bolder;
