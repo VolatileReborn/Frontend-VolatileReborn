@@ -17,8 +17,8 @@
           </el-row>
           <div>
             <el-row class="task_info" justify="end" >
-            <el-col :span="6"  class="task_info_item">招聘 {{task.workerNumTotal}} 人</el-col>
-            <el-col :span="8"  class="task_info_item">剩余 {{task.workerNumLeft}} 名额</el-col>
+              <el-col :span="6"  class="task_info_item">招聘 <span style="font-weight: bold;color:#409efc ">{{task.workerNumTotal}}</span> 人</el-col>
+              <el-col :span="8"  class="task_info_item">剩余 <span style="font-weight: bold;color:#409efc ">{{task.workerNumLeft}}</span> 名额</el-col>
             <el-col :span="10"  class="task_info_item">发布于 {{task.taskStartTime}}</el-col>
           </el-row>
           </div>

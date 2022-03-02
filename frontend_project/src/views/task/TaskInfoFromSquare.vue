@@ -30,8 +30,8 @@
       </div>
       <div style="margin-top: 10px">任务简介 ： {{task.taskIntroduction}}</div>
     </div>
-    <el-button v-if="isAble" type="danger" round class="check_btn" size="large" @click="enroll()" >我要报名</el-button>
-    <el-button v-else type="danger" round class="check_btn" size="large" @click="showEnrollError()" plain>我要报名</el-button>
+    <el-button v-if="!isAble" type="danger" round class="check_btn" size="large" @click="enroll()" >我要报名</el-button>
+    <el-button v-else type="info" round class="check_btn" size="large" @click="showEnrollError()" plain>我要报名</el-button>
   </el-card>
   </div>
 </template>
@@ -56,7 +56,7 @@ export default {
         taskIntroduction: '这是一个测试任务',
         is_selected: false
       },
-      isAble: !this.taskState
+      isAble: this.taskState
     }
   },
   components: {
