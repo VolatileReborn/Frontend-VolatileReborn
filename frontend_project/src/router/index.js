@@ -6,9 +6,9 @@ import TaskSquare from "@/views/task/TaskSquare";
 import TaskInfoFromSquare from "@/views/task/TaskInfoFromSquare";
 import TaskEnrollSucceed from "@/views/task/TaskEnrollSucceed";
 import RegisterSucceed from "@/views/user/RegisterSucceed";
+import TaskRelease from "@/views/task/TaskRelease";
+
 const routerHistory = createWebHistory();
-
-
 const routes = [
     {
         path: "/",
@@ -45,6 +45,11 @@ const routes = [
         path: "/registerSucceed",
         name: "RegisterSucceed",
         component: RegisterSucceed
+    },
+    {
+        path : "/taskRelease",
+        name: "TaskRelease",
+        component: TaskRelease
     }
 ];
 const router = createRouter({

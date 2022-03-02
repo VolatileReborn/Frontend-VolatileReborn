@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     enroll(){
-      this.$router.push("/registerSucceed")
+      this.$router.push("/taskEnrollSucceed")
     },
     showEnrollError(){
       ElMessage.error('非常抱歉，报名已经结束，看看其他项目吧');
