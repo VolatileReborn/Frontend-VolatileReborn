@@ -52,6 +52,7 @@ node("slave1") {
 
     stage("build docker image"){
         sh "docker build -t ${IMAGE_NAME} --no-cache ."
+        sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
     stage("login to dockerhub"){
