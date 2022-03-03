@@ -43,11 +43,11 @@ node("slave1") {
         echo "build finish on ${vm_ip}"
     }
 
-    stage('npm run serve'){
-
-        echo 'not using docker yet!!'
-        sh 'npm run serve'
-    }
+//     stage('npm run serve'){
+//
+//         echo 'not using docker yet!!'
+//         sh 'npm run serve'
+//     }
 
 
     stage("build docker image"){
