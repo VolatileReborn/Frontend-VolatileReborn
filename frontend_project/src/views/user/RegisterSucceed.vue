@@ -20,7 +20,7 @@ export default {
   name: "RegisterSucceed",
   data(){
     return{
-      username: 'test_user'
+      username: this.$route.params.nickname
     }
   },
   methods: {

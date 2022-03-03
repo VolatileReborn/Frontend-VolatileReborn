@@ -56,7 +56,7 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item label="附件" required >
+        <el-form-item label="附件"  >
           <div style="display: flex;flex-direction: column">
             <el-upload
               action=""
@@ -99,12 +99,8 @@
 </template>
 
 <script >
-
+import {publishTask} from "@/api/task";
 import {reactive} from "vue";
-// interface RawFile {
-//   name: string
-//   url: string
-// }
 const task_form = reactive({
   taskName: '',
   taskIntroduction: '',
@@ -170,13 +166,13 @@ const rules = reactive({
 const handleUploadSuccess1 = (response,file) => {
   let fileUrl = response.data.url;
   let fileName = file.name
-  task_form.executableFileList.push({name:fileName,url:fileUrl})
+  task_form.executableFileList.push({fileName:fileName,fileURL:fileUrl})
 }
 
 const handleUploadSuccess2 = (response,file) => {
   let fileUrl = response.data.url;
   let fileName = file.name
-  task_form.requirementDescriptionFileList.push({name:fileName,url:fileUrl})
+  task_form.requirementDescriptionFileList.push({fileName:fileName,fileURL:fileUrl})
 }
 
 export default {
@@ -187,14 +183,15 @@ export default {
       rules,
       taskTypes:[
         {
-          value:'功能测试',
+          value:'0',
           label: '功能测试'
         },
         {
-          value: '性能测试',
+          value: '1',
           label: '性能测试',
         }
-      ]
+      ],
+      userToken:  window.localStorage.getItem("userToken"),
     }
   },
   components:{
@@ -203,8 +200,26 @@ export default {
   methods: {
     handleUploadSuccess1,
     handleUploadSuccess2,
-    handleSubmit(){
-
+    handleSubmit()
+    {
+      window.localStorage.setItem("userToken","testToken")
+      const task = {
+          "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
+          "executableFileList": this.task_form.executableFileList,
+          "taskIntroduction":this.task_form.taskIntroduction,
+          "taskStartTime":this.task_form.taskStartTime,
+          "taskEndTime":this.task_form.taskEndTime,
+          "taskType":this.task_form.taskType,
+          "taskName":this.task_form.taskName,
+        }
+      publishTask({token:this.userToken,task:task})
+      .then(res =>{
+        if(res.code === 1) {
+          console.log(res.msg)
+          console.log(res.data)
+        }
+        else {console.log(res.msg)}
+      })
     },
     goBack(){
       this.$router.back(-1)

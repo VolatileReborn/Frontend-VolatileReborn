@@ -48,7 +48,7 @@ const routes = [
         component: TaskEnrollSucceed
     },
     {
-        path: "/registerSucceed",
+        path: "/registerSucceed/:nickname",
         name: "RegisterSucceed",
         component: RegisterSucceed
     },
