@@ -217,6 +217,7 @@ export default {
         if(res.code === 1) {
           console.log(res.msg)
           console.log(res.data)
+          this.$router.push("/taskEnrollSucceed")
         }
         else {console.log(res.msg)}
       })
