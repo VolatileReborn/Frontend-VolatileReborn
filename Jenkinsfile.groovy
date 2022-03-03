@@ -44,44 +44,44 @@ node("slave1") {
         echo "build finish on ${vm_ip}"
     }
 
-    stage('npm run serve'){
+//     stage('npm run serve'){
+//
+//         echo 'not using docker yet!!'
+//         sh 'npm run serve'
+//     }
 
-        echo 'not using docker yet!!'
-        sh 'npm run serve'
+
+    stage("build docker image"){
+        sh "docker build -t ${IMAGE_NAME} --no-cache ."
+//         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
+    stage("login to dockerhub"){
+        withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_KEY', passwordVariable: 'password', usernameVariable: 'username')]) {
+            sh 'docker login -u $username -p $password'
+        }
+    }
 
-//     stage("build docker image"){
-//         sh "docker build -t ${IMAGE_NAME} --no-cache ."
-// //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
-//     }
-//
-//     stage("login to dockerhub"){
-//         withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_KEY', passwordVariable: 'password', usernameVariable: 'username')]) {
-//             sh 'docker login -u $username -p $password'
-//         }
-//     }
-//
-//     stage("push to dockerhub"){
-//         echo "begin push to dockerhub"
-//         sh "docker image tag ${IMAGE_NAME_WITH_TAG} lyklove/${IMAGE_NAME_WITH_TAG}"
-//         sh "docker image push lyklove/${IMAGE_NAME_WITH_TAG}"
-//     }
-//     stage("clean previous image and container"){
-//         sh "docker container rm -f ${CONTAINER_NAME}"
-//         sh "docker image rm ${IMAGE_NAME_WITH_TAG}"
-//         sh "docker image rm ${IMAGE_TO_RUN}"
-//     }
-//     stage( "pull image" ){
-//         sh "docker pull  lyklove/${IMAGE_NAME_WITH_TAG}"
-//     }
-//     stage("run container") {
-//         sh "docker image ls"
-//         sh "docker container run --name ${CONTAINER_NAME} --net=host  -d ${IMAGE_TO_RUN}"
-//     }
-//     stage("signal gitlab: deployed"){
-//         updateGitlabCommitStatus name: 'deployed', state: 'success'
-//     }
+    stage("push to dockerhub"){
+        echo "begin push to dockerhub"
+        sh "docker image tag ${IMAGE_NAME_WITH_TAG} lyklove/${IMAGE_NAME_WITH_TAG}"
+        sh "docker image push lyklove/${IMAGE_NAME_WITH_TAG}"
+    }
+    stage("clean previous image and container"){
+        sh "docker container rm -f ${CONTAINER_NAME}"
+        sh "docker image rm ${IMAGE_NAME_WITH_TAG}"
+        sh "docker image rm ${IMAGE_TO_RUN}"
+    }
+    stage( "pull image" ){
+        sh "docker pull  lyklove/${IMAGE_NAME_WITH_TAG}"
+    }
+    stage("run container") {
+        sh "docker image ls"
+        sh "docker container run --name ${CONTAINER_NAME} --net=host  -d ${IMAGE_TO_RUN}"
+    }
+    stage("signal gitlab: deployed"){
+        updateGitlabCommitStatus name: 'deployed', state: 'success'
+    }
 
 
 }
