@@ -195,7 +195,7 @@ export default {
   components: {},
   methods: {
     handleSubmit() {
-      window.localStorage.setItem("userToken", "testToken")
+      // window.localStorage.setItem("userToken", "testToken")
       const task = {
         "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
         "executableFileList": this.task_form.executableFileList,

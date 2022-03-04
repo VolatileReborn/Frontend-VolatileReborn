@@ -18,6 +18,7 @@
 						<input type="text" placeholder="用户名" v-model="form.username">
 						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
 						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber">
+						
 						<input type="password" placeholder="密码" v-model="form.userpwd">
 					</div>
 					<button class="bbutton" @click="handleRegister">注册</button>

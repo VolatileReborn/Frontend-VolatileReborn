@@ -85,5 +85,20 @@ export default {
                     )
             })
         })
+    },
+
+    ossGetDownloadUrl(fileName){
+        // console.log(fileName)
+        const self = this
+        const response = {
+            'content-disposition': `attachment; filename=${encodeURIComponent(fileName)}`
+        }
+        return new Promise(resolve => {
+            self.createOssClient().then(client => {
+                const url = client.signatureUrl(fileName,{response})
+                resolve( {downloadURL:url})
+            })
+        })
+
     }
 }

@@ -38,16 +38,21 @@
           <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">附件下载</div>
         </div>
           <div>
-          <el-button type="text" @click="downloadExe">一、点击下载待测应用可执行文件</el-button>
+          <a :href="exeUrl" :download="exeName">
+            <el-button type="text" @click="downloadExe">一、点击下载待测应用可执行文件</el-button>
+          </a>
+            <a :href="docUrl" :download="docName">
           <el-button type="text" @click="downloadDoc">二、点击下载测试需求描述文件</el-button>
+            </a>
           </div>
       </div>
+      <div ><el-button v-if="role === '1'" type="danger" style="margin-right:500px">提交报告</el-button></div>
       <el-divider ><el-icon><star-filled /></el-icon></el-divider>
-      <div class="report_container">
+      <div class="report_container" v-if="role === '0'">
         <el-row>
           <el-col :span="15"><span style="font-weight: bolder">报告展示</span></el-col>
           <el-col :span="5">
-            <el-button type="danger" style="margin-right:500px">提交报告</el-button>
+
           </el-col>
         </el-row>
         <el-table :data="task.reportList" height="250" style="width:1500px;margin-top: 10px" stripe border highlight-current-row @current-change="goReport">
@@ -65,7 +70,8 @@ import {FolderChecked} from "@element-plus/icons-vue"
 import {ElMessage} from "element-plus";
 import {Edit} from "@element-plus/icons-vue"
 import {StarFilled} from "@element-plus/icons-vue"
-// import ReportItem from "@/components/ReportItem"
+import {employerBrowserTaskDetail} from "@/api/task";
+import oss from "@/utils/oss"
 
 const goReport = (val) =>{
   console.log("reportId="+val.reportId)
@@ -78,16 +84,19 @@ export default {
     return {
       taskId: this.$route.params.taskId,
       task: {
-        taskId: 0,
-        taskName: 'test_task',
+        taskId: this.taskId,
+        taskName: '',
         taskType: 0,
-        workerNumTotal: 10,
-        workerNumLeft: 5,
-        taskStartTime: '2022-3-1',
-        taskEndTime: '2022-5-3',
-        taskState: false,
-        taskIntroduction: '这是一个测试任务',
+        workerNumTotal: 0,
+        workerNumLeft: 0,
+        taskStartTime: '',
+        taskEndTime: '',
+        taskState: true,
+        taskIntroduction: '',
+        requirementDescriptionFileList:[],
+        executableFileList:[],
         is_selected: false,
+        //todo:reportList数据获取
         reportList:[
           {
             reportId:0,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
@@ -110,7 +119,11 @@ export default {
         ]
       },
       isAble: !this.taskState,
-
+      role:window.localStorage.getItem("role"),
+      exeUrl:'',
+      exeName:'',
+      docUrl:'',
+      docName:''
     }
   },
   components: {
@@ -127,12 +140,45 @@ export default {
       ElMessage.error('非常抱歉，报名已经结束，看看其他项目吧');
     },
     downloadExe(){
-
+      oss.ossGetDownloadUrl(this.task.executableFileList[0].fileURL.substr(49))
+      .then(res => {
+        this.exeUrl = res.downloadURL
+        this.exeName = this.task.executableFileList[0].fileName
+        console.log(this.exeUrl)
+        console.log(this.exeName)
+      })
     },
     downloadDoc(){
-
+      oss.ossGetDownloadUrl(this.task.requirementDescriptionFileList[0].fileURL.substr(49))
+          .then(res => {
+            this.docUrl = res.downloadURL
+            this.docName = this.task.requirementDescriptionFileList[0].fileName
+            console.log(this.docUrl)
+            console.log(this.docName)
+          })
     },
     goReport
+  },
+  mounted() {
+    if(this.role === '0')
+    {
+      employerBrowserTaskDetail({token:window.localStorage.getItem("token"),taskId:this.taskId})
+      .then(res => {
+        if(res.code === 1)
+        {
+          console.log(res.msg)
+          this.task.workerNumTotal = res.data.workerNumTotal
+          this.task.taskState = res.data.taskState
+          this.task.workerNumLeft = res.data.workerNumLeft
+          this.task.requirementDescriptionFileList = res.data.requirementDescriptionFileList
+          this.task.executableFileList = res.data.executableFileList
+          this.task.taskName = res.data.taskName
+          this.task.taskIntroduction = res.data.taskIntroduction
+          this.task.taskStartTime = res.data.beginTime
+          this.task.taskEndTime = res.data.endTime
+        }
+      })
+    }
   }
 }
 </script>
