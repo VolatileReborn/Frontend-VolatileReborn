@@ -30,8 +30,10 @@
       </div>
       <div style="margin-top: 10px">任务简介 ： {{task.taskIntroduction}}</div>
     </div>
-    <el-button v-if="!isAble" type="danger" round class="check_btn" size="large" @click="enroll()" >我要报名</el-button>
+    <div v-if="this.role === '1'">
+    <el-button v-if="isAble" type="danger" round class="check_btn" size="large" @click="enroll()" >我要报名</el-button>
     <el-button v-else type="info" round class="check_btn" size="large" @click="showEnrollError()" plain>我要报名</el-button>
+    </div>
   </el-card>
   </div>
 </template>
@@ -39,24 +41,55 @@
 <script>
 import {Edit} from "@element-plus/icons-vue"
 import {ElMessage} from "element-plus";
+import {acceptTask} from "@/api/task";
+import {employeeTaskDetail} from "@/api/square";
+import {employerTaskDetail} from "@/api/square";
 export default {
   name: "TaskInfoFromSquare",
   data() {
     return {
       taskId: this.$route.params.taskId,
       task: {
-        taskId: 0,
-        taskName: 'test_task',
-        taskType: 0,
-        workerNumTotal: 10,
-        workerNumLeft: 5,
-        taskStartTime: '2022-3-1',
-        taskEndTime: '2022-5-3',
-        taskState: false,
-        taskIntroduction: '这是一个测试任务',
-        is_selected: false
+        // taskId: 0,
+        // taskName: 'test_task',
+        // taskType: 0,
+        // workerNumTotal: 10,
+        // workerNumLeft: 5,
+        // taskStartTime: '2022-3-1',
+        // taskEndTime: '2022-5-3',
+        // taskState: true,
+        // taskIntroduction: '这是一个测试任务',
       },
-      isAble: this.taskState
+      role:window.localStorage.getItem("role"),
+      isSelected: false,
+      isAble: this.taskState || this.role === '1' || this.isSelected
+    }
+  },
+  mounted() {
+    if(this.role==='1')
+    {
+      employeeTaskDetail({token:window.localStorage.getItem("token"),taskId:this.taskId})
+      .then(res => {
+        if(res.code === 1)
+        {
+          this.task = res.data.task
+          this.isSelected = res.data.isSelected
+        }
+      })
+    }
+    else if(this.role === '0')
+    {
+      employerTaskDetail({token:window.localStorage.getItem("userToken"),taskId:this.taskId})
+      .then(res => {
+        if(res.code === 1)
+        {
+          console.log(res.msg)
+          this.task = res.data.task
+        }
+        else {
+          console.log(res.msg)
+        }
+      })
     }
   },
   components: {
@@ -64,7 +97,18 @@ export default {
   },
   methods: {
     enroll(){
-      this.$router.push("/taskEnrollSucceed")
+      const token = window.localStorage.getItem("token")
+      acceptTask({token:token,taskId:this.taskId})
+      .then(res => {
+        if(res.code === 1){
+          this.$router.push("/taskEnrollSucceed")
+          console.log(res.msg)
+          console.log(res.data)
+        }
+        else {
+          console.log(res.msg)
+        }
+      })
     },
     showEnrollError(){
       ElMessage.error('非常抱歉，报名已经结束，看看其他项目吧');

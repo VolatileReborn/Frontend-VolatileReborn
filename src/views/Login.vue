@@ -153,16 +153,21 @@ export default{
             password: this.form.userpwd
           }).then(res =>{
             if(res.code === 1){
-              console.log(res.msg)
-              console.log(res.data)
+              // console.log(res.msg)
+              // console.log(res.data)
               window.localStorage.setItem("userToken",res.data.token)
               window.localStorage.setItem("nickname",res.data.nickname)
               window.localStorage.setItem("role",res.data.role)
+              console.log(window.localStorage.getItem("nickname"))
+              console.log(window.localStorage.getItem("role"))
               ElMessage({
                 message: "登录成功",
                 type: 'success',
-                onClose: () =>{this.$router.push("/taskSquare")}
+                onClose: () =>{ this.$router.push("/taskSquare")}
               })
+              setTimeout(()=>{
+                this.$router.go(0)
+              },4000)
             }
             else {
               console.log(res.msg)

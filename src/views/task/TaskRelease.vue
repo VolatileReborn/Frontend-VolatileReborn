@@ -63,6 +63,8 @@
               show-file-list
               accept=".exe,.apk,.jar"
               :limit="1"
+              :auto-upload="true"
+              :http-request="fnUploadRequest"
               :on-success="handleUploadSuccess1"
               >
               <el-button type="primary" plain>点击上传待测应用可执行文件</el-button>
@@ -163,11 +165,12 @@ const rules = reactive({
   ]
 })
 
-const handleUploadSuccess1 = (response,file) => {
-  let fileUrl = response.data.url;
-  let fileName = file.name
-  task_form.executableFileList.push({fileName:fileName,fileURL:fileUrl})
-}
+// const handleUploadSuccess1 = (response,file) => {
+//
+//   let fileUrl = response.data.url;
+//   let fileName = file.name
+//   task_form.executableFileList.push({fileName:fileName,fileURL:fileUrl})
+// }
 
 const handleUploadSuccess2 = (response,file) => {
   let fileUrl = response.data.url;
@@ -198,7 +201,6 @@ export default {
 
   },
   methods: {
-    handleUploadSuccess1,
     handleUploadSuccess2,
     handleSubmit()
     {
@@ -224,6 +226,23 @@ export default {
     },
     goBack(){
       this.$router.back(-1)
+    },
+    async fnUploadRequest() {
+      // await oss.ossUploadFile(option)
+    },
+    getFileUrl(fileList) {
+      var urls = window.url.res.requestUrls;
+      console.log('文件数量',urls.length);
+      var fileUrl = this.url[0].split('?')[0]
+      console.log('url: ',fileUrl)
+      fileList[fileUrl] = fileUrl
+      this.$message({
+        type:'success',
+        message:'上传成功'
+      })
+    },
+    handleUploadSuccess1(){
+      this.getFileUrl(task_form.executableFileList);
     }
   }
 }

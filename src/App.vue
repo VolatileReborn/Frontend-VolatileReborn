@@ -2,7 +2,7 @@
   <v-app>
     <div id="app">
       <NavigationBar />
-      <router-view />
+      <router-view v-if="isRouterAlive"/>
     </div>
   </v-app>
 </template>
@@ -12,10 +12,27 @@ import NavigationBar from "@/components/NavigationBar";
 
 export default {
   name: "App",
-
+  provide(){
+    return {
+      reloadAll: this.reloadAll
+    }
+  },
+  data(){
+    return {
+      isRouterAlive : true
+    }
+  },
   components: {
     NavigationBar
   },
+  methods:{
+      reloadAll(){
+        this.isRouterAlive = false
+        this.$nextTick(() => {
+          this.isRouterAlive =true
+        })
+      }
+  }
 
 
 }

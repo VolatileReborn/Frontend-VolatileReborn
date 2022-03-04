@@ -17,7 +17,7 @@
           </el-button>
         </div>
     </div>
-    <div class="check_in_container">
+    <div v-if="nickname === null" class="check_in_container">
       <div class="check_in_item">
         <el-button type="primary" @click="direct_router('/login')" >
         登录
@@ -29,6 +29,9 @@
         </el-button>
       </div>
     </div>
+    <div v-if="nickname !== null" class="check_in_container">
+      <el-button @click="direct_router('/userInfo')">个人中心</el-button>
+    </div>
   </nav>
 </template>
 
@@ -36,7 +39,9 @@
 export default {
   name: "NavigationBar",
   data() {
-    return {}
+    return {
+      nickname: window.localStorage.getItem("nickname")
+    }
   },
   methods: {
     direct_router(link){

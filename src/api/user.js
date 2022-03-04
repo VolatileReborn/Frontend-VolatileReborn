@@ -38,7 +38,7 @@ export const register = payload => {
  */
 export const login = payload => {
     const {phoneNumber,password} = payload;
-    return axios.get(`${USER_MODULE}/login`,{phoneNumber,password})
+    return axios.get(`${USER_MODULE}/login?phoneNumber=${phoneNumber}&password=${password}`)
         .then(res => {
             return res.data;
         })
@@ -47,7 +47,9 @@ export const login = payload => {
     //     "msg": "登录成功",
     //     "data":{
     //         "phoneNumber": phoneNumber,
-    //         "password":password
+    //         "password":password,
+    //         "nickname":"test",
+    //         "role":0
     //     }
     //
     // })

@@ -162,6 +162,9 @@ import {ElMessage} from "element-plus"
                 type: 'success',
                 onClose: () =>{this.$router.push("/taskSquare")}
               })
+              setTimeout(()=>{
+                this.$router.go(0)
+              },4000)
             }
             else {
               console.log(res.msg)

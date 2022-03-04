@@ -21,3 +21,24 @@ export const publishTask = payload => {
     //     }
     // })
 }
+
+/**
+ * 接受任务 POST /task/acceptTask
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const acceptTask = payload => {
+    const {token,taskId} = payload;
+    return axios.post(`${TASK_MODULE}/acceptTask`,{token,taskId})
+        .then(res => {
+            return res.data
+        })
+    // return Promise.resolve({
+    //     "code":1,
+    //     "msg":"报名成功",
+    //     "data":{
+    //         "token":token,
+    //         "taskId":taskId
+    //     }
+    // })
+}
