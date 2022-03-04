@@ -1,11 +1,10 @@
 'use strict'
-// import {dateFormat} from './utils.js'
-import './aliyun-oss-sdk.min'
-var OSS = require('ali-oss')
-// const url = ''
+import {dateFormat} from './utils.js'
+const OSS = require('ali-oss');
+
+
 
 export default {
-
     /**
      * 创建随机字符串
      * @param num
@@ -31,60 +30,60 @@ export default {
      */
     createOssClient() {
         return new Promise((resolve) => {
-            const client = new OSS ({
+            const client = new OSS({
                 region: 'oss-cn-beijing', // 路径地址
                 accessKeyId: 'LTAI5tBTfT8Jtb4V7yyzi98n',
                 accessKeySecret: 'RG3zfjaLWtzjNI7kBnsYJEICuX3wAG',
                 bucket: 'se3-volatile',
                 secure: true // 上传连接返回支持https
             })
+
             resolve(client)
         })
     },
 
-    // ossUploadFile(option) {
-    //     const file = option.file
-    //     const self = this
-    //     return new Promise((resolve,reject) => {
-    //         const date = dateFormat(new Date(),'yyyyMMdd')
-    //         const dateTime = dateFormat(new Date(),'yyyyMMddhhmmss')
-    //         const randomStr = self.randomString(4)
-    //         const extensionName = file.name.substr(file.name.indexOf('.')) // 文件扩展名
-    //         const fileName = 'video/' + date + '/' + dateTime + '_' + randomStr + extensionName
-    //         // 执行上传
-    //         self.createOssClient().then(client => {
-    //             // 异步上传，返回数据
-    //             resolve({
-    //                 fileName:file.name,
-    //                 fileUrl:fileName
-    //             });
-    //             // 上传处理
-    //             // 分片上传文件
-    //             client
-    //                 .multipartUpload(fileName,file,{
-    //                     progress:function (p) {
-    //                         const e = {}
-    //                         e.percent = Math.floor(p*100)
-    //                         option.onProgress(e)
-    //                     }
-    //                 })
-    //                 .then(val => {
-    //                     window.url = val
-    //                     console.info('woc',url)
-    //                     if(val.res.statusCode === 200){
-    //                         option.onSuccess(val)
-    //                         return val
-    //                     }
-    //                     else {
-    //                         option.onError('上传失败')
-    //                     }
-    //                 },
-    //                     err =>{
-    //                     option.onError('上传失败')
-    //                     reject(err)
-    //                     }
-    //                 )
-    //         })
-    //     })
-    // }
+    ossUploadFile(option) {
+        const file = option.file
+        const self = this
+        return new Promise((resolve,reject) => {
+            const date = dateFormat(new Date(),'yyyyMMdd')
+            const dateTime = dateFormat(new Date(),'yyyyMMddhhmmss')
+            const randomStr = self.randomString(4)
+            const extensionName = file.name.substr(file.name.indexOf('.')) // 文件扩展名
+            const fileName = 'files/' + date + '/' + dateTime + '_' + randomStr + extensionName
+            // 执行上传
+            self.createOssClient().then(client => {
+                // 异步上传，返回数据
+                resolve({
+                    fileName:file.name,
+                    fileUrl:"https://se3-volatile.oss-cn-beijing.aliyuncs.com/"+fileName
+                });
+                // 上传处理
+                // 分片上传文件
+                client
+                    .put(fileName,file
+                    //     ,{
+                    //     progress:function (p) {
+                    //         const e = {}
+                    //         e.percent = Math.floor(p*100)
+                    //         option.onProgress(e)
+                    //     }
+                    // }
+                    )
+                    .then(val => {
+                        if(val.res.statusCode === 200){
+                            option.onSuccess('上传成功')
+                        }
+                        else {
+                            option.onError('上传失败')
+                        }
+                    },
+                        err =>{
+                        option.onError('上传失败')
+                        reject(err)
+                        }
+                    )
+            })
+        })
+    }
 }

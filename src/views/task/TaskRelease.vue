@@ -78,6 +78,8 @@
                 action=""
                 :limit="1"
                 show-file-list
+                :auto-upload="true"
+                :http-request="fnUploadRequest"
                 accept=".md,.doc,.pdf,.docx"
                 :on-success="handleUploadSuccess2"
                 >
@@ -103,6 +105,8 @@
 <script >
 import {publishTask} from "@/api/task";
 import {reactive} from "vue";
+import oss from "@/utils/oss"
+
 const task_form = reactive({
   taskName: '',
   taskIntroduction: '',
@@ -165,28 +169,15 @@ const rules = reactive({
   ]
 })
 
-// const handleUploadSuccess1 = (response,file) => {
-//
-//   let fileUrl = response.data.url;
-//   let fileName = file.name
-//   task_form.executableFileList.push({fileName:fileName,fileURL:fileUrl})
-// }
-
-const handleUploadSuccess2 = (response,file) => {
-  let fileUrl = response.data.url;
-  let fileName = file.name
-  task_form.requirementDescriptionFileList.push({fileName:fileName,fileURL:fileUrl})
-}
-
 export default {
   name: "TaskRelease",
   data() {
     return {
       task_form,
       rules,
-      taskTypes:[
+      taskTypes: [
         {
-          value:'0',
+          value: '0',
           label: '功能测试'
         },
         {
@@ -194,55 +185,55 @@ export default {
           label: '性能测试',
         }
       ],
-      userToken:  window.localStorage.getItem("userToken"),
+      userToken: window.localStorage.getItem("userToken"),
+      file: {
+        fileName: '',
+        fileURL: ''
+      }
     }
   },
-  components:{
-
-  },
+  components: {},
   methods: {
-    handleUploadSuccess2,
-    handleSubmit()
-    {
-      window.localStorage.setItem("userToken","testToken")
+    handleSubmit() {
+      window.localStorage.setItem("userToken", "testToken")
       const task = {
-          "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
-          "executableFileList": this.task_form.executableFileList,
-          "taskIntroduction":this.task_form.taskIntroduction,
-          "taskStartTime":this.task_form.taskStartTime,
-          "taskEndTime":this.task_form.taskEndTime,
-          "taskType":this.task_form.taskType,
-          "taskName":this.task_form.taskName,
-        }
-      publishTask({token:this.userToken,task:task})
-      .then(res =>{
-        if(res.code === 1) {
-          console.log(res.msg)
-          console.log(res.data)
-          this.$router.push("/taskEnrollSucceed")
-        }
-        else {console.log(res.msg)}
-      })
+        "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
+        "executableFileList": this.task_form.executableFileList,
+        "taskIntroduction": this.task_form.taskIntroduction,
+        "taskStartTime": this.task_form.taskStartTime,
+        "taskEndTime": this.task_form.taskEndTime,
+        "taskType": this.task_form.taskType,
+        "taskName": this.task_form.taskName,
+      }
+      publishTask({token: this.userToken, task: task})
+          .then(res => {
+            if (res.code === 1) {
+              console.log(res.msg)
+              console.log(res.data)
+              this.$router.push("/taskEnrollSucceed")
+            } else {
+              console.log(res.msg)
+            }
+          })
     },
-    goBack(){
+    goBack() {
       this.$router.back(-1)
     },
-    async fnUploadRequest() {
-      // await oss.ossUploadFile(option)
-    },
-    getFileUrl(fileList) {
-      var urls = window.url.res.requestUrls;
-      console.log('文件数量',urls.length);
-      var fileUrl = this.url[0].split('?')[0]
-      console.log('url: ',fileUrl)
-      fileList[fileUrl] = fileUrl
-      this.$message({
-        type:'success',
-        message:'上传成功'
+    async fnUploadRequest(option) {
+      await oss.ossUploadFile(option).then(res => {
+        this.file.fileName = res.fileName;
+        this.file.fileURL = res.fileUrl;
       })
     },
-    handleUploadSuccess1(){
-      this.getFileUrl(task_form.executableFileList);
+    handleUploadSuccess1() {
+      task_form.executableFileList.push(this.file)
+      console.log("executableFileList:")
+      console.log(this.file)
+    },
+    handleUploadSuccess2() {
+      task_form.requirementDescriptionFileList.push(this.file)
+      console.log("requirementDescriptionFileList")
+      console.log(this.file)
     }
   }
 }
