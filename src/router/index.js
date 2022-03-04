@@ -9,6 +9,13 @@ import RegisterSucceed from "@/views/user/RegisterSucceed";
 import TaskRelease from "@/views/task/TaskRelease";
 import TaskInfoFromUser from "@/views/task/TaskInfoFromUser";
 import ReportRelease from "@/views/report/ReportRelease";
+import UserCenterofEmployee from "@/views/user/UserCenterofEmployee"
+import UserCenterofEmployer from "@/views/user/UserCenterofEmployer"
+import UndertakingTasksForEmployee from "@/views/undertakingTasksForEmployee"
+import UndertakingTasksForEmployer from "@/views/undertakingTasksForEmployer"
+import FinishedTasksForEmployee from "@/views/finishedTasksForEmployee"
+import FinishedTasksForEmployer from "@/views/finishedTasksForEmployer"
+import ReportReleaseSucceed form "@/views/report/ReportReleaseSucceed"
 
 const routerHistory = createWebHistory();
 const routes = [
@@ -62,6 +69,41 @@ const routes = [
         path: "/reportRelease/:taskId",
         name: "ReportRelease",
         component: ReportRelease
+    },
+    {
+        path:"/userCenterofEmployee",
+        name: "UserCenterofEmployee",
+        component: UserCenterofEmployee
+    },
+    {
+        path:"/userCenterofEmployer",
+        name: "UserCenterofEmployer",
+        component: UserCenterofEmployer
+    },
+    {
+        path : "/1",
+        name: "UndertakingTasksForEmployee",
+        component: UndertakingTasksForEmployee
+    },
+    {
+        path : "/2",
+        name: "FinishedTasksForEmployee",
+        component: FinishedTasksForEmployee
+    },
+    {
+        path : "/3",
+        name: "UndertakingTasksForEmployer",
+        component: UndertakingTasksForEmployer
+    },
+    {
+        path : "/4",
+        name: "FinishedTasksForEmployer",
+        component: FinishedTasksForEmployer
+    },
+    {
+        path: "/reportReleaseSucceed",
+        name: "ReportReleaseSucceed",
+        component: ReportReleaseSucceed
     }
 ];
 const router = createRouter({

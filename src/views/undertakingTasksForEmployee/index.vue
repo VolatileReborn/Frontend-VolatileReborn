@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     check_route(taskId){
-      this.$router.push("/taskInfoFromEmployee/"+taskId);
+      this.$router.push("/taskInfoFromUser/"+taskId);
     }
   }
 }

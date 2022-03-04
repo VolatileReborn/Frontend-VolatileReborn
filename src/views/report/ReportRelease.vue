@@ -171,6 +171,7 @@ export default {
     handleUploadSuccess(){
       console.log(report_form.defectPictureList)
       //todo:添加路由：报告提交成功
+      this.$router.push("/reportReleaseSucceed")
     }
   }
 }

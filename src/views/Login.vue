@@ -56,7 +56,9 @@ export default{
 					phonenumber:'',
 					userpwd:''
 				}
+				
 			}
+				
 		},
 		methods:{
 			changeType() {
@@ -151,10 +153,12 @@ export default{
           login({
             phoneNumber: this.form.phonenumber,
             password: this.form.userpwd
+			
           }).then(res =>{
             if(res.code === 1){
               // console.log(res.msg)
               // console.log(res.data)
+		
               window.localStorage.setItem("userToken",res.data.token)
               window.localStorage.setItem("nickname",res.data.nickname)
               window.localStorage.setItem("role",res.data.role)

@@ -12,12 +12,12 @@
         @close="handleClose"
         :router=true
       >       
-        <el-menu-item index="1">
+        <el-menu-item index="3">
           <el-icon><location /></el-icon>
           <span>正在进行</span>
         </el-menu-item>
         
-        <el-menu-item index="2">
+        <el-menu-item index="4">
           <el-icon><icon-menu /></el-icon>
           <span>历史任务</span>
         </el-menu-item>
@@ -93,12 +93,12 @@ export default {
     },
     handleSelect(key, keyPath){
         switch(key){
-          case '1':
-            this.$router.push('/Page1');
+          case '3':
+            this.$router.push('/Page3');
             this.breadcrumbItems  = ['正在进行']
             break;
-          case '2':
-            this.$router.push('/Page2')
+          case '4':
+            this.$router.push('/Page4')
             this.breadcrumbItems  = ['历史任务']
             break;
           
