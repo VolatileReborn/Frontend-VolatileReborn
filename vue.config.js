@@ -9,7 +9,7 @@ module.exports = defineConfig({
           ws:true, // websocket
           changeOrigin: true, // 开启跨域
           pathRewrite: {
-            '^/api': '/api' // 重写后url为  http://124.222.135.47/xxxx
+            '^/api': '/api' // 重写后url为  http://124.222.135.47/api/xxxx
           }
       }
     }
