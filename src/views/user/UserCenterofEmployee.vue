@@ -125,8 +125,6 @@ export default {
     check_route(taskId){
       this.$router.push("/taskInfoFromUser/"+taskId)
     }
-
-    
   },
   components:{
     Location,
@@ -138,7 +136,7 @@ export default {
     .then(res => {
       if(res.response.code === 0)
       {
-        this.taskList = res.taskList
+        this.taskList = res.undertakingTaskList
       }
     })
   }

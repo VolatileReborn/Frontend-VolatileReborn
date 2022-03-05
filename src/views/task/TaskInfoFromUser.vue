@@ -46,7 +46,7 @@
             </a>
           </div>
       </div>
-      <div ><el-button v-if="role === '1'" type="danger" style="margin-right:500px">提交报告</el-button></div>
+      <div ><el-button v-if="role === '1'" type="danger" style="margin-right:500px" @click="goRelease">提交报告</el-button></div>
       <el-divider ><el-icon><star-filled /></el-icon></el-divider>
       <div class="report_container" v-if="role === '0' || role === '2'">
         <el-row>
@@ -67,7 +67,6 @@
 
 <script>
 import {FolderChecked} from "@element-plus/icons-vue"
-import {ElMessage} from "element-plus";
 import {Edit} from "@element-plus/icons-vue"
 import {StarFilled} from "@element-plus/icons-vue"
 import {employerBrowserTaskDetail} from "@/api/task";
@@ -136,12 +135,6 @@ export default {
         this.$router.push("userCenterOfManager")
       }
     },
-    enroll(){
-      this.$router.push("/taskEnrollSucceed")
-    },
-    showEnrollError(){
-      ElMessage.error('非常抱歉，报名已经结束，看看其他项目吧');
-    },
     downloadExe(){
       oss.ossGetDownloadUrl(this.task.executableFileList[0].fileURL.substr(49))
       .then(res => {
@@ -160,7 +153,10 @@ export default {
             console.log(this.docName)
           })
     },
-    goReport
+    goReport,
+    goRelease(){
+      this.$router.push("/reportRelease/"+this.taskId)
+    }
   },
   mounted() {
     if(this.role === '0')

@@ -62,7 +62,7 @@ export default {
       },
       role:window.localStorage.getItem("role"),
       isSelected: false,
-      isAble: this.taskState || this.role === '1' || this.isSelected
+      isAble: true
     }
   },
   mounted() {
@@ -74,6 +74,7 @@ export default {
         {
           this.task = res.task
           this.isSelected = res.isSelected
+          this.isAble= this.task.taskState === 0 && this.role === '1' && this.isSelected === 0
         }
       })
     }
@@ -100,9 +101,9 @@ export default {
       const token = window.localStorage.getItem("token")
       acceptTask({token:token,taskId:this.taskId})
       .then(res => {
-        if(res.response.ode === 0){
+        if(res.response.code === 0){
           this.$router.push("/taskEnrollSucceed")
-          console.log(res.response.msg)
+          console.log(res.response.message)
           console.log(res.data)
         }
         else {
