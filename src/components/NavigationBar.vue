@@ -63,7 +63,7 @@ export default {
 <style scoped>
 nav{
   width: 100%;
-  height: 50px;
+  height: 15%;
   vertical-align: middle;
   display: flex;
   flex-direction: row;

@@ -13,13 +13,13 @@
         </div>
         <div class="task_container_2">
           <el-row class="task_happen_time">
-            <el-col :span="30">{{task.taskStartTime}} - {{task.taskEndTime}}</el-col>
+            <el-col :span="30">{{ parseTime(task.taskStartTime,"{y}-{m}-{d}") }} - {{ parseTime(task.taskEndTime,"{y}-{m}-{d}")}}</el-col>
           </el-row>
           <div>
             <el-row class="task_info" justify="end" >
               <el-col :span="6"  class="task_info_item">招聘 <span style="font-weight: bold;color:#409efc ">{{task.workerNumTotal}}</span> 人</el-col>
               <el-col :span="8"  class="task_info_item">剩余 <span style="font-weight: bold;color:#409efc ">{{task.workerNumLeft}}</span> 名额</el-col>
-            <el-col :span="10"  class="task_info_item">发布于 {{task.taskStartTime}}</el-col>
+            <el-col :span="10"  class="task_info_item">发布于 {{parseTime(task.taskStartTime,"{y}-{m}-{d}")}}</el-col>
           </el-row>
           </div>
         </div>
@@ -29,10 +29,13 @@
 </template>
 
 <script>
-
+import {parseTime} from "@/utils/utils";
 export default {
   name: "TaskItem",
-  props: ["task"]
+  props: ["task"],
+  methods:{
+    parseTime
+  }
 }
 </script>
 

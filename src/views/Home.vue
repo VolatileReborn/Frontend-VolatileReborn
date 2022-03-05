@@ -1,6 +1,6 @@
 <template>
   <div class="home_pic">
-    <img src="../assets/home_pic.png">
+    <img src="../assets/home_pic.png" alt="">
   </div>
 </template>
 
@@ -20,8 +20,11 @@ export default {
 </script>
 
 <style scoped>
+template{
+  height:100%;
+  width:100%;
+}
 img{
   width: 100%;
-  height: 555px;
 }
 </style>

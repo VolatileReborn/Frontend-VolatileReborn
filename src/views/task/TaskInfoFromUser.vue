@@ -155,6 +155,7 @@ export default {
       .then(res => {
         if(res.response.code === 0)
         {
+
           console.log(res.response.msg)
           this.task.workerNumTotal = res.workerNumTotal
           this.task.taskState = res.taskState

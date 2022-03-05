@@ -79,7 +79,7 @@
                 :limit="1"
                 show-file-list
                 :auto-upload="true"
-                :http-request="fnUploadRequest"
+                :http-request="fnUploadRequest1"
                 accept=".md,.doc,.pdf,.docx"
                 :on-success="handleUploadSuccess2"
                 >
@@ -177,11 +177,11 @@ export default {
       rules,
       taskTypes: [
         {
-          value: '0',
+          value: 0,
           label: '功能测试'
         },
         {
-          value: '1',
+          value: 1,
           label: '性能测试',
         }
       ],
@@ -195,14 +195,18 @@ export default {
   components: {},
   methods: {
     handleSubmit() {
+      const startTime = new Date(this.task_form.taskStartTime).getTime()
+      const endTime = new Date(this.task_form.taskEndTime).getTime()
+
       const task = {
         "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
         "executableFileList": this.task_form.executableFileList,
         "taskIntroduction": this.task_form.taskIntroduction,
-        "taskStartTime": this.task_form.taskStartTime,
-        "taskEndTime": this.task_form.taskEndTime,
+        "taskStartTime": startTime,
+        "taskEndTime": endTime,
         "taskType": this.task_form.taskType,
         "taskName": this.task_form.taskName,
+        "workerNumTotal":this.task_form.workerNumTotal
       }
       publishTask({token: this.token, task: task})
           .then(res => {
@@ -219,17 +223,27 @@ export default {
     },
     async fnUploadRequest(option) {
       await oss.ossUploadFile(option).then(res => {
-        this.file.fileName = res.fileName;
-        this.file.fileURL = res.fileUrl;
+        const file = {
+          fileName : res.fileName,
+          fileURL: res.fileUrl
+        }
+        task_form.executableFileList.push(file)
+      })
+    },
+    async fnUploadRequest1(option) {
+      await oss.ossUploadFile(option).then(res => {
+        const file = {
+          fileName : res.fileName,
+          fileURL: res.fileUrl
+        }
+        task_form.requirementDescriptionFileList.push(file)
       })
     },
     handleUploadSuccess1() {
-      task_form.executableFileList.push(this.file)
       console.log("executableFileList:")
       console.log(this.file)
     },
     handleUploadSuccess2() {
-      task_form.requirementDescriptionFileList.push(this.file)
       console.log("requirementDescriptionFileList")
       console.log(this.file)
     }
