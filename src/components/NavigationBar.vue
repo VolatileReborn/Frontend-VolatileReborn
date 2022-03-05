@@ -35,6 +35,9 @@
     <div v-if="nickname !== null&&role==='0'" class="check_in_container">
       <el-button @click="direct_router('/userCenterofEmployer')">个人中心</el-button>
     </div>
+    <div v-if="nickname !== null&&role==='2'" class="check_in_container">
+      <el-button @click="direct_router('/userCenterOfManager')">个人中心</el-button>
+    </div>
   </nav>
 </template>
 

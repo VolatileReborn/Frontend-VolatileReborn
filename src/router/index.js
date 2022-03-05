@@ -18,6 +18,8 @@ import UndertakingTasksForEmployee from "@/views/undertakingTasksForEmployee/Und
 import FinishedTasksForEmployee from "@/views/finishedTasksForEmployee"
 import FinishedTasksForEmployer from "@/views/finishedTasksForEmployer"
 import ReportReleaseSucceed from "@/views/report/ReportReleaseSucceed"
+import UserCenterOfManager from "@/views/user/UserCenterOfManager";
+
 
 const routerHistory = createWebHistory();
 const routes = [
@@ -81,6 +83,11 @@ const routes = [
         path:"/userCenterofEmployer",
         name: "UserCenterofEmployer",
         component: UserCenterofEmployer
+    },
+    {
+        path:"/userCenterOfManager",
+        name: "UserCenterOfManager",
+        component: UserCenterOfManager
     },
     {
         path : "/1",

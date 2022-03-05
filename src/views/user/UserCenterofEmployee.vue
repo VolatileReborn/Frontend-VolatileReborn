@@ -9,7 +9,7 @@
         class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
-        :router=true
+        @select="handleSelect"
       >       
         <el-menu-item index="1">
           <el-icon><location /></el-icon>
@@ -21,11 +21,14 @@
         </el-menu-item>
       </el-menu>
         </el-aside>
-        <el-main>Main</el-main>
+        <el-main> <task-item class="task_item_container"
+                             v-for="item in taskList"
+                             v-bind:task="item"
+                             v-bind:key="item.taskId"
+                             style="width:100%;margin-left:-20px"
+                             @click="check_route(item.taskId)"></task-item></el-main>
       </el-container>
     </el-container>
-
-    
   </div>
 </template>
 
@@ -68,10 +71,12 @@
 }
 </style>
 
-
 <script>
 import {Location} from "@element-plus/icons-vue"
 import {Management} from "@element-plus/icons-vue"
+import TaskItem from "@/components/TaskItem";
+import {employeeBrowserUndertakingTasks} from "@/api/usercenter";
+import {employeeBrowserFinishedTasks} from "@/api/usercenter";
 export default {
   name: 'user-center',
   data() {
@@ -79,6 +84,7 @@ export default {
       username: '',
       isCollapse: false,
        breadcrumbItems: ['正在进行'],
+      taskList:[]
     }
   },
   methods: {
@@ -92,23 +98,50 @@ export default {
     handleSelect(key, keyPath){
         switch(key){
           case '1':
-            this.$router.push('/Page1');
+            // this.$router.push('/Page1');
             this.breadcrumbItems  = ['正在进行']
+            employeeBrowserUndertakingTasks({token:window.localStorage.getItem("token")})
+                .then(res => {
+                  if(res.code === 1)
+                  {
+                    this.taskList = res.data.taskList
+                  }
+                })
             break;
           case '2':
-            this.$router.push('/Page2')
+            // this.$router.push('/Page2')
             this.breadcrumbItems  = ['历史任务']
+              employeeBrowserFinishedTasks({token:window.localStorage.getItem("token")})
+              .then(res => {
+                if(res.code === 1)
+                {
+                  this.taskList = res.data.finishedTaskList
+                }
+              })
             break;
-          
         }
         console.log(key, keyPath);
       },
+    check_route(taskId){
+      this.$router.push("/taskInfoFromUser/"+taskId)
+    }
+
     
   },
   components:{
     Location,
-    Management
+    Management,
+    TaskItem
+  },
+  mounted() {
+    employeeBrowserUndertakingTasks({token:window.localStorage.getItem("token")})
+    .then(res => {
+      if(res.code === 1)
+      {
+        this.taskList = res.data.taskList
+      }
+    })
   }
-  
+
 }
 </script>

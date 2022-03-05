@@ -48,7 +48,7 @@
       </div>
       <div ><el-button v-if="role === '1'" type="danger" style="margin-right:500px">提交报告</el-button></div>
       <el-divider ><el-icon><star-filled /></el-icon></el-divider>
-      <div class="report_container" v-if="role === '0'">
+      <div class="report_container" v-if="role === '0' || role === '2'">
         <el-row>
           <el-col :span="15"><span style="font-weight: bolder">报告展示</span></el-col>
           <el-col :span="5">
@@ -71,6 +71,7 @@ import {ElMessage} from "element-plus";
 import {Edit} from "@element-plus/icons-vue"
 import {StarFilled} from "@element-plus/icons-vue"
 import {employerBrowserTaskDetail} from "@/api/task";
+import {browserReports} from "@/api/report";
 import oss from "@/utils/oss"
 
 const goReport = (val) =>{
@@ -98,24 +99,24 @@ export default {
         is_selected: false,
         //todo:reportList数据获取
         reportList:[
-          {
-            reportId:0,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          },
-          {
-            reportId:1,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          },
-          {
-            reportId:2,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          },
-          {
-            reportId:3,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          },
-          {
-            reportId:4,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          },
-          {
-            reportId:5,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          },
+          // {
+          //   reportId:0,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
+          // },
+          // {
+          //   reportId:1,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
+          // },
+          // {
+          //   reportId:2,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
+          // },
+          // {
+          //   reportId:3,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
+          // },
+          // {
+          //   reportId:4,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
+          // },
+          // {
+          //   reportId:5,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
+          // },
         ]
       },
       isAble: !this.taskState,
@@ -178,6 +179,18 @@ export default {
           this.task.taskEndTime = res.data.endTime
         }
       })
+
+      if(this.role === '0' || this.role === '2' )
+      {
+        browserReports({token:window.localStorage.getItem("token"),taskId:this.taskId})
+        .then(res => {
+          if(res.code === 1)
+          {
+            this.task.reportList = res.data.reportList
+          }
+        })
+      }
+
     }
   }
 }

@@ -12,6 +12,7 @@ export const employeeBrowserUndertakingTasks = payload => {
             return res.data
         })
 
+
 }
 
 /**
@@ -37,6 +38,20 @@ export const employeeBrowserUndertakingTasks = payload => {
         .then(res => {
             return res.data
         })
+// return Promise.resolve({
+//         "code":1,
+//         "msg":"获取数据成功",
+//         "data":{
+//             "token":token,
+//             "taskList":[
+//                 {taskId: 0,taskName: 'test_task',taskType: 0,workerNumTotal: 10,workerNumLeft: 5,taskStartTime: '2022-3-1',taskEndTime: '2022-5-3'},
+//                 {taskId: 1,taskName: 'test_task333',taskType: 1,workerNumTotal: 20,workerNumLeft: 6,taskStartTime: '2022-3-1',taskEndTime: '2022-5-3'},
+//                 {taskId: 2,taskName: 'test_task5',taskType: 0,workerNumTotal: 20,workerNumLeft: 6,taskStartTime: '2022-3-1',taskEndTime: '2022-5-3'},
+//                 {taskId: 3,taskName: 'test_task363',taskType: 1,workerNumTotal: 20,workerNumLeft: 6,taskStartTime: '2022-3-1',taskEndTime: '2022-5-3'},
+//             ]
+//         }
+//     })
+
 
 }
 

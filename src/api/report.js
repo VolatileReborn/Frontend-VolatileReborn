@@ -1,5 +1,5 @@
 import {EMPLOYEE_MODULE} from "@/api/_prefix";
-// import {EMPLOYER_MODULE} from "@/api/_prefix";
+import {EMPLOYER_MODULE} from "@/api/_prefix";
 import axios from "axios";
 
 /**
@@ -22,4 +22,18 @@ export const publishReport = payload => {
     //         "taskId":taskId
     //     }
     // })
+}
+
+
+/**
+ * 发包方查看测试报告列表 GET /employer/checkReports
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const browserReports = payload =>  {
+    const {token,taskId} = payload;
+    return axios.get(`${EMPLOYER_MODULE}/checkReports?token=${token}&taskId=${taskId}`)
+        .then(res => {
+            return res.data
+        })
 }
