@@ -17,8 +17,8 @@
       </div>
     </template>
     <div class="information">
-      <div>发布日期 ： {{task.taskStartTime}}</div>
-      <div style="margin-top: 5px">结束日期 ： {{task.taskEndTime}}</div>
+      <div>发布日期 ： {{parseTime(task.taskStartTime)}}</div>
+      <div style="margin-top: 5px">结束日期 ： {{ parseTime(task.taskEndTime)}}</div>
       <div style="margin-top: 5px">参与人员 ： 剩余 {{task.workerNumLeft}}  人  |  总需  {{task.workerNumTotal}} 人</div>
     </div>
     <div class="need_information">
@@ -44,11 +44,13 @@ import {ElMessage} from "element-plus";
 import {acceptTask} from "@/api/task";
 import {employeeTaskDetail} from "@/api/square";
 import {employerTaskDetail} from "@/api/square";
+import {parseTime} from "@/utils/utils";
+
 export default {
   name: "TaskInfoFromSquare",
   data() {
     return {
-      taskId: this.$route.params.taskId,
+      taskId: parseInt(this.$route.params.taskId),
       task: {
         // taskId: 0,
         // taskName: 'test_task',
@@ -74,7 +76,7 @@ export default {
         {
           this.task = res.task
           this.isSelected = res.isSelected
-          this.isAble= this.task.taskState === 0 && this.role === '1' && this.isSelected === 0
+          this.isAble= this.task.taskState === 0 && this.role === '1'
         }
       })
     }
@@ -97,17 +99,23 @@ export default {
     Edit
   },
   methods: {
+    parseTime,
     enroll(){
       const token = window.localStorage.getItem("token")
       acceptTask({token:token,taskId:this.taskId})
       .then(res => {
-        if(res.response.code === 0){
+        if(res.status === 500){
           this.$router.push("/taskEnrollSucceed")
           console.log(res.response.message)
           console.log(res.data)
         }
         else {
-          console.log(res.response.msg)
+          if(res.response.code === 2)
+          {
+            ElMessage.error(res.response.message);
+            console.log(res.response.msg)
+          }
+
         }
       })
     },

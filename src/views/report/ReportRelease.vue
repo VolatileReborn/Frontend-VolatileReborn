@@ -141,12 +141,18 @@ export default {
       {
         console.log("获取任务数据成功")
         this.task = res.task
+        report_form.reportName = ''
+        report_form.defectPictureList=[]
+        report_form.defectReproductionStep=''
+        report_form.defectExplain=''
+        report_form.testEquipmentInformation=''
       }
       else
       {
         console.log(res.response.msg)
       }
     })
+
   },
   components:{
     Checked

@@ -17,8 +17,8 @@
         </div>
       </template>
       <div class="information">
-        <div>发布日期 ： {{task.taskStartTime}}</div>
-        <div style="margin-top: 5px">结束日期 ： {{task.taskEndTime}}</div>
+        <div>发布日期 ： {{ parseTime(task.taskStartTime)}}</div>
+        <div style="margin-top: 5px">结束日期 ： {{parseTime(task.taskEndTime)}}</div>
         <div style="margin-top: 5px">参与人员 ： 剩余 <span style="font-weight: bold;color:#409efc ">{{task.workerNumLeft}}</span>  人  <el-divider direction="vertical" ></el-divider>  总需  <span style="font-weight: bold;color:#409efc ">{{task.workerNumTotal}}</span> 人</div>
       </div>
       <div class="need_information">
@@ -72,7 +72,7 @@ import {StarFilled} from "@element-plus/icons-vue"
 import {employerBrowserTaskDetail} from "@/api/task";
 import {browserReports} from "@/api/report";
 import oss from "@/utils/oss"
-
+import {parseTime} from "@/utils/utils";
 const goReport = (val) =>{
   console.log(val)
   this.$router.push({
@@ -121,6 +121,7 @@ export default {
     // ReportItem
   },
   methods: {
+    parseTime,
     go_route(){
       if(this.role === '0')
       {
@@ -159,8 +160,6 @@ export default {
     }
   },
   mounted() {
-    if(this.role === '0')
-    {
       employerBrowserTaskDetail({token:window.localStorage.getItem("token"),taskId:this.taskId})
       .then(res => {
         if(res.response.code === 0)
@@ -178,8 +177,7 @@ export default {
           this.task.taskEndTime = res.endTime
         }
       })
-
-      if(this.role === '0' || this.role === '2' )
+      if(this.role === '0' || this.role === '2')
       {
         browserReports({token:window.localStorage.getItem("token"),taskId:this.taskId})
         .then(res => {
@@ -191,7 +189,7 @@ export default {
       }
 
     }
-  }
+
 }
 </script>
 
