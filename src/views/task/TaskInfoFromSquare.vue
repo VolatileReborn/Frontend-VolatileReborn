@@ -104,10 +104,12 @@ export default {
       const token = window.localStorage.getItem("token")
       acceptTask({token:token,taskId:this.taskId})
       .then(res => {
+        console.log(res)
         if(res.status === 500){
           this.$router.push("/taskEnrollSucceed")
-          console.log(res.response.message)
-          console.log(res.data)
+          // console.log(res.response.message)
+          // console.log(res.data)
+
         }
         else {
           if(res.response.code === 2)
