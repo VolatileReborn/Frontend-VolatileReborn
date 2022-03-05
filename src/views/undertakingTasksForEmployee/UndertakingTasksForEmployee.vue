@@ -15,10 +15,10 @@
 
 <script>
 import TaskItem from "@/components/TaskItem";
-import {employerBrowserUndertakingTasks} from "@/api/usercenter"; //这里添加任务接口
+import {employeeBrowserUndertakingTasks} from "@/api/usercenter"; //这里添加任务接口
 
 export default {
-  name: "employerBrowserUndertakingTasks",
+  name: "UndertakingTasksForEmployee",
   data() {
     return {
 
@@ -27,7 +27,7 @@ export default {
     }
   },
   mounted(){//这里也要用到任务接口
-    employerBrowserUndertakingTasks({token:window.localStorage.getItem("token")}).then(res=>{
+    employeeBrowserUndertakingTasks({token:window.localStorage.getItem("token")}).then(res=>{
       if(res.code === 1)
       {
         console.log(res.msg)

@@ -5,8 +5,9 @@
       <el-header></el-header>
       <el-container>
         <el-aside width="200px" >
+          <span style="font-weight:bolder;font-size: larger">已发布任务</span>
           <el-menu
-        default-active="1"
+        default-active="3"
         class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
@@ -18,14 +19,12 @@
         </el-menu-item>
         
         <el-menu-item index="4">
-          <el-icon><icon-menu /></el-icon>
+          <el-icon><management /></el-icon>
           <span>历史任务</span>
         </el-menu-item>
-        
-        
       </el-menu>
         </el-aside>
-        <el-main>Main</el-main>
+        <el-main>{{ test }}</el-main>
       </el-container>
     </el-container>
 
@@ -52,7 +51,7 @@
 }
 
 .common-layout .el-main {
-  background-color: light-grey;
+  background-color: lightgray;
   color: var(--el-text-color-primary);
   text-align: center;
   line-height: 160px;
@@ -74,13 +73,16 @@
 
 
 <script>
+import {Location} from "@element-plus/icons-vue"
+import {Management} from "@element-plus/icons-vue"
 export default {
   name: 'user-center',
   data() {
     return {
       username: '',
       isCollapse: false,
-       breadcrumbItems: ['正在进行'],
+      breadcrumbItems: ['正在进行'],
+      test:1
     }
   },
   methods: {
@@ -94,12 +96,14 @@ export default {
     handleSelect(key, keyPath){
         switch(key){
           case '3':
-            this.$router.push('/Page3');
+            // this.$router.push('/Page3');
             this.breadcrumbItems  = ['正在进行']
+            this.test=1
             break;
           case '4':
-            this.$router.push('/Page4')
+            // this.$router.push('/Page4')
             this.breadcrumbItems  = ['历史任务']
+            this.test=2
             break;
           
         }
@@ -107,6 +111,13 @@ export default {
       },
     
   },
-  
+  components: {
+    Location,
+    Management
+  },
+  mounted() {
+    if()
+  }
+
 }
 </script>

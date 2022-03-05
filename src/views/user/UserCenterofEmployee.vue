@@ -1,6 +1,5 @@
 <template>
   <div class="user-center">
-   
     <el-container>
       <el-header></el-header>
       <el-container>
@@ -16,13 +15,10 @@
           <el-icon><location /></el-icon>
           <span>正在进行</span>
         </el-menu-item>
-        
         <el-menu-item index="2">
-          <el-icon><icon-menu /></el-icon>
+          <el-icon><management /></el-icon>
           <span>历史任务</span>
         </el-menu-item>
-        
-        
       </el-menu>
         </el-aside>
         <el-main>Main</el-main>
@@ -52,7 +48,7 @@
 }
 
 .common-layout .el-main {
-  background-color: light-grey;
+  background-color: lightgray;
   color: var(--el-text-color-primary);
   text-align: center;
   line-height: 160px;
@@ -74,6 +70,8 @@
 
 
 <script>
+import {Location} from "@element-plus/icons-vue"
+import {Management} from "@element-plus/icons-vue"
 export default {
   name: 'user-center',
   data() {
@@ -107,6 +105,10 @@ export default {
       },
     
   },
+  components:{
+    Location,
+    Management
+  }
   
 }
 </script>

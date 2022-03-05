@@ -19,6 +19,17 @@
 						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
 						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber">
 						<input type="password" placeholder="密码" v-model="form.userpwd">
+            <div>
+<!--              <el-radio v-model="form.role" label="0" >发包方</el-radio>-->
+<!--              <el-radio v-model="form.role" label="1">众包工人</el-radio>-->
+              <el-select v-model="form.role" placeholder="选择你的身份" size="large" style="width: 310px">
+                <el-option
+                    v-for="item in roles"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"></el-option>
+              </el-select>
+            </div>
 					</div>
 					<button class="bbutton" @click="handleRegister">注册</button>
 				</div>
@@ -54,9 +65,19 @@ export default{
 				form:{
 					username:'',
 					phonenumber:'',
-					userpwd:''
-				}
-				
+					userpwd:'',
+          role:0
+				},
+        roles:[
+          {
+            value:0,
+            label:'发包方',
+          },
+          {
+            value:1,
+            label:'众包工人'
+          }
+        ]
 			}
 				
 		},
@@ -134,7 +155,7 @@ export default{
           register({
             phoneNumber: this.form.phonenumber,
             password: this.form.userpwd,
-            role: 0,
+            role: this.form.role,
             nickname: this.form.username
           })
               .then(res => {

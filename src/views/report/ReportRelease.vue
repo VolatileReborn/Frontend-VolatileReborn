@@ -20,6 +20,9 @@
         <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">缺陷提交</div>
       </div>
       <el-form :model="report_form" label-width="120px" label-position="right" style="width:80%" :rules="rules">
+        <el-form-item label="测试报告名称" prop="reportName">
+          <el-input v-model="report_form.reportName" />
+        </el-form-item>
         <el-form-item label="缺陷情况说明" prop="defectExplain">
           <el-input v-model="report_form.defectExplain" :rows="3" type="textarea" />
         </el-form-item>
@@ -64,6 +67,7 @@ import {publishReport} from "@/api/report";
 import oss from '@/utils/oss'
 
 const report_form = reactive({
+  reportName:'',
   defectPictureList:[],
   defectExplain:'',
   defectReproductionStep:'',
@@ -71,6 +75,13 @@ const report_form = reactive({
 })
 
 const rules = reactive({
+  reportName:[
+    {
+      required:true,
+      message:'请填写报告名称',
+      trigger:'blur'
+    }
+  ],
   defectExplain:[
     {
       required:true,

@@ -29,10 +29,10 @@
         </el-button>
       </div>
     </div>
-    <div v-if="nickname !== null&&role===1" class="check_in_container" >
+    <div v-if="nickname !== null&&role==='1'" class="check_in_container" >
       <el-button @click="direct_router('/userCenterofEmployee')">个人中心</el-button>
     </div>
-    <div v-if="nickname !== null&&role===0" class="check_in_container">
+    <div v-if="nickname !== null&&role==='0'" class="check_in_container">
       <el-button @click="direct_router('/userCenterofEmployer')">个人中心</el-button>
     </div>
   </nav>
@@ -43,7 +43,8 @@ export default {
   name: "NavigationBar",
   data() {
     return {
-      nickname: window.localStorage.getItem("nickname")
+      nickname: window.localStorage.getItem("nickname"),
+      role:window.localStorage.getItem("role")
     }
   },
   methods: {
