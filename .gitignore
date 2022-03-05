@@ -1,4 +1,4 @@
 .DS_Store
-**/git rm -r -f --cached **/node_modules/node_modules/
+node_modules/
 dist/
 npm-debug.log
