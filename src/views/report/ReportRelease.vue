@@ -180,7 +180,7 @@ export default {
       await oss.ossUploadFile(option).then(res => {
         const file = {
           fileName:res.fileName,
-          fileUrl:res.fileUrl
+          fileURL:res.fileUrl
         }
         report_form.defectPictureList.push(file)
       })
