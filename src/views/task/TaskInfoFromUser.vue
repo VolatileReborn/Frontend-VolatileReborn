@@ -38,10 +38,10 @@
           <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">附件下载</div>
         </div>
           <div>
-          <a :href="exeUrl" :download="exeName">
+          <a :href="exeUrl" download="待测应用可执行文件">
             <el-button type="text" @click="downloadExe">一、点击下载待测应用可执行文件</el-button>
           </a>
-            <a :href="docUrl" :download="docName">
+            <a :href="docUrl" download="测试需求描述文件">
           <el-button type="text" @click="downloadDoc">二、点击下载测试需求描述文件</el-button>
             </a>
           </div>
@@ -56,9 +56,9 @@
           </el-col>
         </el-row>
         <el-table :data="task.reportList" height="250" style="width:1500px;margin-top: 10px" stripe border highlight-current-row @current-change="goReport">
+          <el-table-column type="index" width="50"></el-table-column>
           <el-table-column prop="reportId" label="报告ID" width="180" />
-          <el-table-column prop="reportName" label="报告名称" width="180" />
-          <el-table-column prop="defectExplain" label="缺陷说明" />
+          <el-table-column prop="workerId" label="测试工人ID" width="180" />
         </el-table>
       </div>
     </el-card>
@@ -75,8 +75,14 @@ import {browserReports} from "@/api/report";
 import oss from "@/utils/oss"
 
 const goReport = (val) =>{
-  console.log("reportId="+val.reportId)
-
+  console.log(val)
+  this.$router.push({
+    path:"/reportInfo",
+    params:{
+      taskId:this.taskId,
+      reportId:val.reportId
+    }
+  })
 }
 
 export default {
@@ -99,24 +105,6 @@ export default {
         is_selected: false,
         //todo:reportList数据获取
         reportList:[
-          // {
-          //   reportId:0,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          // },
-          // {
-          //   reportId:1,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          // },
-          // {
-          //   reportId:2,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          // },
-          // {
-          //   reportId:3,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          // },
-          // {
-          //   reportId:4,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          // },
-          // {
-          //   reportId:5,reportName:'test_report1',defectExplain:'测试报告缺陷说明'
-          // },
         ]
       },
       isAble: !this.taskState,
@@ -165,18 +153,18 @@ export default {
     {
       employerBrowserTaskDetail({token:window.localStorage.getItem("token"),taskId:this.taskId})
       .then(res => {
-        if(res.code === 1)
+        if(res.response.code === 0)
         {
-          console.log(res.msg)
-          this.task.workerNumTotal = res.data.workerNumTotal
-          this.task.taskState = res.data.taskState
-          this.task.workerNumLeft = res.data.workerNumLeft
-          this.task.requirementDescriptionFileList = res.data.requirementDescriptionFileList
-          this.task.executableFileList = res.data.executableFileList
-          this.task.taskName = res.data.taskName
-          this.task.taskIntroduction = res.data.taskIntroduction
-          this.task.taskStartTime = res.data.beginTime
-          this.task.taskEndTime = res.data.endTime
+          console.log(res.response.msg)
+          this.task.workerNumTotal = res.workerNumTotal
+          this.task.taskState = res.taskState
+          this.task.workerNumLeft = res.workerNumLeft
+          this.task.requirementDescriptionFileList = res.requirementDescriptionFileList
+          this.task.executableFileList = res.executableFileList
+          this.task.taskName = res.taskName
+          this.task.taskIntroduction = res.taskIntroduction
+          this.task.taskStartTime = res.beginTime
+          this.task.taskEndTime = res.endTime
         }
       })
 
@@ -184,9 +172,9 @@ export default {
       {
         browserReports({token:window.localStorage.getItem("token"),taskId:this.taskId})
         .then(res => {
-          if(res.code === 1)
+          if(res.response.code === 0)
           {
-            this.task.reportList = res.data.reportList
+            this.task.reportList = res.reportList
           }
         })
       }

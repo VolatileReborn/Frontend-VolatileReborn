@@ -100,5 +100,15 @@ export default {
             })
         })
 
+    },
+
+    ossGetReviewUrl(fileName){
+        const self = this
+        return new Promise(resolve => {
+            self.createOssClient().then(client => {
+                const url = client.signatureUrl(fileName)
+                resolve({reviewURL:url})
+            })
+        })
     }
 }

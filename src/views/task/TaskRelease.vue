@@ -185,7 +185,7 @@ export default {
           label: '性能测试',
         }
       ],
-      userToken: window.localStorage.getItem("userToken"),
+      token: window.localStorage.getItem("token"),
       file: {
         fileName: '',
         fileURL: ''
@@ -195,7 +195,6 @@ export default {
   components: {},
   methods: {
     handleSubmit() {
-      // window.localStorage.setItem("userToken", "testToken")
       const task = {
         "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
         "executableFileList": this.task_form.executableFileList,
@@ -205,14 +204,13 @@ export default {
         "taskType": this.task_form.taskType,
         "taskName": this.task_form.taskName,
       }
-      publishTask({token: this.userToken, task: task})
+      publishTask({token: this.token, task: task})
           .then(res => {
-            if (res.code === 1) {
-              console.log(res.msg)
-              console.log(res.data)
+            if (res.response.code === 0) {
+              console.log(res.response.msg)
               this.$router.push("/taskEnrollSucceed")
             } else {
-              console.log(res.msg)
+              console.log(res.response.msg)
             }
           })
     },

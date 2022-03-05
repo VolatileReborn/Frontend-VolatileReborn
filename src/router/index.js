@@ -20,6 +20,7 @@ import FinishedTasksForEmployer from "@/views/finishedTasksForEmployer"
 import ReportReleaseSucceed from "@/views/report/ReportReleaseSucceed"
 import UserCenterOfManager from "@/views/user/UserCenterOfManager";
 
+import ReportInfo from "@/views/report/ReportInfo";
 
 const routerHistory = createWebHistory();
 const routes = [
@@ -53,6 +54,11 @@ const routes = [
         path: "/taskInfoFromUser/:taskId",
         name: "TaskInfoFromUser",
         component: TaskInfoFromUser
+    },
+    {
+        path: "/reportInfo",
+        name: "ReportInfo",
+        component: ReportInfo
     },
     {
         path: "/taskEnrollSucceed",

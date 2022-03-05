@@ -88,68 +88,6 @@ export default{
 				this.form.phonenumber = ''
 				this.form.userpwd = ''
 			},
-			// login() {
-			// 	const self = this;
-			// 	if (self.form.phonenumber != "" && self.form.userpwd != "") {
-			// 		self.$axios({
-			// 			method:'post',
-			// 			url: 'http://localhost/api/user/login',
-			// 			data: {
-			// 				email: self.form.phonenumber,
-			// 				password: self.form.userpwd
-			// 			}
-			// 		})
-			// 		.then( res => {
-			// 			switch(res.data){
-			// 				case 0:
-			// 					alert("登录成功！");
-			// 					break;
-			// 				case -1:
-			// 					this.emailError = true;
-			// 					break;
-			// 				case 1:
-			// 					this.passwordError = true;
-			// 					break;
-			// 			}
-			// 		})
-			// 		.catch( err => {
-			// 			console.log(err);
-			// 		})
-			// 	} else{
-			// 		alert("填写不能为空！");
-			// 	}
-			// },
-
-			// register(){
-			// 	const self = this;
-			// 	if(self.form.username != "" && self.form.phonenumber != "" && self.form.userpwd != ""){
-			// 		self.$axios({
-			// 			method:'post',
-			// 			url: 'http://localhost/api/user/add',
-			// 			data: {
-			// 				username: self.form.username,
-			// 				email: self.form.phonenumber,
-			// 				password: self.form.userpwd
-			// 			}
-			// 		})
-			// 		.then( res => {
-			// 			switch(res.data){
-			// 				case 0:
-			// 					alert("注册成功！");
-			// 					this.login();
-			// 					break;
-			// 				case -1:
-			// 					this.existed = true;
-			// 					break;
-			// 			}
-			// 		})
-			// 		.catch( err => {
-			// 			console.log(err);
-			// 		})
-			// 	} else {
-			// 		alert("填写不能为空！");
-			// 	}
-			// }
       handleRegister(){
         if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "") {
           register({
@@ -159,12 +97,12 @@ export default{
             nickname: this.form.username
           })
               .then(res => {
-                if (res.code === 1) {
-                  console.log(res.msg)
-                  console.log(res.data)
+                if (res.response.code === 0) {
+                  // console.log(res.msg)
+                  // console.log(res.data)
                   this.$router.push("/registerSucceed/"+this.form.username)
                 } else {
-                  console.log(res.msg)
+                  console.log(res.response.message)
                 }
               });
         }else{alert("填写不能为空！");}
@@ -176,13 +114,14 @@ export default{
             password: this.form.userpwd
 			
           }).then(res =>{
-            if(res.code === 1){
+            console.log(res)
+            if(res.response.code === 0){
               // console.log(res.msg)
               // console.log(res.data)
 		
-              window.localStorage.setItem("userToken",res.data.token)
-              window.localStorage.setItem("nickname",res.data.nickname)
-              window.localStorage.setItem("role",res.data.role)
+              window.localStorage.setItem("token",res.token)
+              window.localStorage.setItem("nickname",res.nickname)
+              window.localStorage.setItem("role",res.role)
               console.log(window.localStorage.getItem("nickname"))
               console.log(window.localStorage.getItem("role"))
               ElMessage({
@@ -195,7 +134,7 @@ export default{
               },4000)
             }
             else {
-              console.log(res.msg)
+              console.log(res.response.message)
             }
           })
         }else {

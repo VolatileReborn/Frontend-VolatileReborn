@@ -27,10 +27,10 @@ export default {
   },
   mounted(){//这里也要用到任务接口
     employerBrowserUndertakingTasks({token:window.localStorage.getItem("token")}).then(res=>{
-      if(res.code === 1)
+      if(res.response.code === 0)
       {
         console.log(res.msg)
-        this.taskList = res.data.taskList
+        this.taskList = res.undertakingTaskList
       }
     })
   },

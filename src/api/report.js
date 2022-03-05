@@ -37,3 +37,29 @@ export const browserReports = payload =>  {
             return res.data
         })
 }
+
+/**
+ * 接包方查看报告详情 GET /employee/reportDetail
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const employeeGetReportInfo = payload => {
+    const {taskId,reportId,token} = payload;
+    return axios.get(`${EMPLOYEE_MODULE}/reportDetail?taskId=${taskId}&reportId=${reportId}&token=${token}`)
+        .then(res => {
+            return res.data
+        })
+}
+
+/**
+ * 发包方查看报告详情 GET /employer/reportDetail
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const employerGetReportInfo = payload => {
+    const {taskId,reportId,token} = payload;
+    return axios.get(`${EMPLOYER_MODULE}/reportDetail?taskId=${taskId}&reportId=${reportId}&token=${token}`)
+        .then(res => {
+            return res.data
+        })
+}

@@ -1,4 +1,6 @@
 import {SQUARE_MODULE} from "@/api/_prefix";
+import {EMPLOYEE_MODULE} from "@/api/_prefix";
+import {EMPLOYER_MODULE} from "@/api/_prefix";
 import axios from "axios";
 
 /**
@@ -7,7 +9,7 @@ import axios from "axios";
  */
 export const employeeBrowserUndertakingTasks = payload => {
     const {token} = payload;
-    return axios.get(`/api/employee/browserUndertakingTasks?token=${token}`)
+    return axios.get(`${EMPLOYEE_MODULE}/browserUndertakingTasks?token=${token}`)
         .then(res => {
             return res.data
         })
@@ -21,7 +23,7 @@ export const employeeBrowserUndertakingTasks = payload => {
  */
  export const employeeBrowserFinishedTasks = payload => {
     const {token} = payload;
-    return axios.get(`/api/employee/browserFinishedTasks?token=${token}`)
+    return axios.get(`${EMPLOYEE_MODULE}/browserFinishedTasks?token=${token}`)
         .then(res => {
             return res.data
         })
@@ -34,7 +36,7 @@ export const employeeBrowserUndertakingTasks = payload => {
  */
  export const employerBrowserUndertakingTasks = payload => {
     const {token} = payload;
-    return axios.get(`/api/employer/browserUndertakingTasks?token=${token}`)
+    return axios.get(`${EMPLOYER_MODULE}/browserUndertakingTasks?token=${token}`)
         .then(res => {
             return res.data
         })
@@ -61,7 +63,7 @@ export const employeeBrowserUndertakingTasks = payload => {
  */
  export const employerBrowserFinishedTasks = payload => {
     const {token} = payload;
-    return axios.get(`/api/employer/browserFinishedTasks ?token=${token}`)
+    return axios.get(`${EMPLOYER_MODULE}/browserFinishedTasks?token=${token}`)
         .then(res => {
             return res.data
         })
@@ -131,7 +133,7 @@ export const employerTaskDetail = payload => {
 
 export const publishReport=payload=>{
     const {testReport,token,taskId}=payload
-    return axios.post(`/api/employee/uploadTestReport`,{testReport,token,taskId})
+    return axios.post(`${EMPLOYEE_MODULE}/uploadTestReport`,{testReport,token,taskId})
         .then(res=>{
             return res.data
         })

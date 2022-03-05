@@ -137,14 +137,14 @@ export default {
   mounted() {
     employeeTaskDetail({taskId:this.taskId,token:window.localStorage.getItem("token")})
     .then(res => {
-      if(res.code === 1)
+      if(res.response.code === 0)
       {
         console.log("获取任务数据成功")
-        this.task = res.data.task
+        this.task = res.task
       }
       else
       {
-        console.log(res.msg)
+        console.log(res.response.msg)
       }
     })
   },
@@ -156,14 +156,13 @@ export default {
       const token = window.localStorage.getItem("token")
       publishReport({testReport: report_form,token:token,taskId:this.taskId})
       .then(res =>{
-        if(res.code === 1)
+        if(res.response.code === 0)
         {
-          console.log(res.msg)
-          console.log(res.data.testReport)
+          console.log(res.response.msg)
         }
         else
         {
-          console.log(res.msg)
+          console.log(res.response.msg)
         }
       })
     },

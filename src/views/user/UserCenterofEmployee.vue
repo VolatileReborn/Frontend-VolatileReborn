@@ -102,9 +102,9 @@ export default {
             this.breadcrumbItems  = ['正在进行']
             employeeBrowserUndertakingTasks({token:window.localStorage.getItem("token")})
                 .then(res => {
-                  if(res.code === 1)
+                  if(res.response.code === 0)
                   {
-                    this.taskList = res.data.taskList
+                    this.taskList = res.taskList
                   }
                 })
             break;
@@ -113,9 +113,9 @@ export default {
             this.breadcrumbItems  = ['历史任务']
               employeeBrowserFinishedTasks({token:window.localStorage.getItem("token")})
               .then(res => {
-                if(res.code === 1)
+                if(res.response.code === 0)
                 {
-                  this.taskList = res.data.finishedTaskList
+                  this.taskList = res.finishedTaskList
                 }
               })
             break;
@@ -136,9 +136,9 @@ export default {
   mounted() {
     employeeBrowserUndertakingTasks({token:window.localStorage.getItem("token")})
     .then(res => {
-      if(res.code === 1)
+      if(res.response.code === 0)
       {
-        this.taskList = res.data.taskList
+        this.taskList = res.taskList
       }
     })
   }

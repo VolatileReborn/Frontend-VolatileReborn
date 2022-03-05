@@ -70,24 +70,24 @@ export default {
     {
       employeeTaskDetail({token:window.localStorage.getItem("token"),taskId:this.taskId})
       .then(res => {
-        if(res.code === 1)
+        if(res.response.code === 0)
         {
-          this.task = res.data.task
-          this.isSelected = res.data.isSelected
+          this.task = res.task
+          this.isSelected = res.isSelected
         }
       })
     }
     else if(this.role === '0')
     {
-      employerTaskDetail({token:window.localStorage.getItem("userToken"),taskId:this.taskId})
+      employerTaskDetail({token:window.localStorage.getItem("token"),taskId:this.taskId})
       .then(res => {
-        if(res.code === 1)
+        if(res.response.code === 0)
         {
-          console.log(res.msg)
-          this.task = res.data.task
+          console.log(res.response.msg)
+          this.task = res.task
         }
         else {
-          console.log(res.msg)
+          console.log(res.response.msg)
         }
       })
     }
@@ -100,13 +100,13 @@ export default {
       const token = window.localStorage.getItem("token")
       acceptTask({token:token,taskId:this.taskId})
       .then(res => {
-        if(res.code === 1){
+        if(res.response.ode === 0){
           this.$router.push("/taskEnrollSucceed")
-          console.log(res.msg)
+          console.log(res.response.msg)
           console.log(res.data)
         }
         else {
-          console.log(res.msg)
+          console.log(res.response.msg)
         }
       })
     },

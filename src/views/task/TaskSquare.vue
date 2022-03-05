@@ -38,10 +38,10 @@ export default {
   },
   mounted(){
     browserTasks().then(res=>{
-      if(res.code === 1)
+      if(res.response.code === 0)
       {
         console.log(res.msg)
-        this.taskList = res.data.taskList
+        this.taskList = res.taskList
       }
     })
   },

@@ -158,12 +158,12 @@ import {ref} from "vue"
             nickname: this.form.username
           })
               .then(res => {
-                if (res.code === 1) {
-                  console.log(res.msg)
-                  console.log(res.data)
+                if (res.response.code === 0) {
+                  // console.log(res.msg)
+                  // console.log(res.data)
                   this.$router.push("/registerSucceed/"+this.form.username)
                 } else {
-                  console.log(res.msg)
+                  console.log(res.response.msg)
                 }
               });
         }else{alert("填写不能为空！");}
@@ -174,12 +174,12 @@ import {ref} from "vue"
             phoneNumber: this.form.phonenumber,
             password: this.form.userpwd
           }).then(res =>{
-            if(res.code === 1){
-              console.log(res.msg)
-              console.log(res.data)
-              window.localStorage.setItem("userToken",res.data.token)
-              window.localStorage.setItem("nickname",res.data.nickname)
-              window.localStorage.setItem("role",res.data.role)
+            if(res.response.code === 0){
+              // console.log(res.msg)
+              // console.log(res.data)
+              window.localStorage.setItem("token",res.token)
+              window.localStorage.setItem("nickname",res.nickname)
+              window.localStorage.setItem("role",res.role)
               ElMessage({
                 message: "登录成功",
                 type: 'success',
@@ -190,7 +190,7 @@ import {ref} from "vue"
               },4000)
             }
             else {
-              console.log(res.msg)
+              console.log(res.response.message)
             }
           })
         }else {
