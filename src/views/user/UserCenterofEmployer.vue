@@ -10,9 +10,9 @@
         default-active="3"
         class="el-menu-vertical-demo"
         @open="handleOpen"
-        @close="handleClose"
-        :router=true
-      >       
+        @close="handleClose">
+<!--        :router=true-->
+
         <el-menu-item index="3">
           <el-icon><location /></el-icon>
           <span>正在进行</span>
@@ -116,7 +116,7 @@ export default {
     Management
   },
   mounted() {
-    if()
+
   }
 
 }
