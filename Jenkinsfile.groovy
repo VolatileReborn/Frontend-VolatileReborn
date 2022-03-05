@@ -77,7 +77,7 @@ node("slave1") {
     }
     stage("run container") {
         sh "docker image ls"
-        sh "docker container run --name ${CONTAINER_NAME} --net=host   ${IMAGE_TO_RUN}"
+        sh "docker container run --name ${CONTAINER_NAME} --net=host -d  ${IMAGE_TO_RUN}"
     }
     stage("signal gitlab: deployed"){
         updateGitlabCommitStatus name: 'deployed', state: 'success'
