@@ -38,7 +38,7 @@ node("slave1") {
     }
     stage('build with npm') {
 
-        sh 'npm config set registry http://registry.cnpmjs.org'
+//         sh 'npm config set registry http://registry.cnpmjs.org'
         sh 'npm install'
         sh 'npm run build'
         echo "build finish on ${vm_ip}"
