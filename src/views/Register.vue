@@ -152,7 +152,7 @@ import {ref} from "vue"
       handleRegister(){
         if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "") {
           register({
-            phoneNumber: this.form.phonenumber,
+            phone_number: this.form.phonenumber,
             password: this.form.userpwd,
             role: this.form.role,
             nickname: this.form.username
@@ -171,7 +171,7 @@ import {ref} from "vue"
       handleLogin(){
         if (this.form.phonenumber !== "" && this.form.userpwd !== "") {
           login({
-            phoneNumber: this.form.phonenumber,
+            phone_number: this.form.phonenumber,
             password: this.form.userpwd
           }).then(res =>{
             if(res.response.code === 0){

@@ -1,4 +1,4 @@
-import {createRouter,createWebHistory} from "vue-router";
+import {createRouter,createWebHashHistory} from "vue-router";
 import Home from "@/views/Home.vue";
 import Login from "@/views/Login";
 import Register from "@/views/Register";
@@ -19,10 +19,9 @@ import FinishedTasksForEmployee from "@/views/finishedTasksForEmployee"
 import FinishedTasksForEmployer from "@/views/finishedTasksForEmployer"
 import ReportReleaseSucceed from "@/views/report/ReportReleaseSucceed"
 import UserCenterOfManager from "@/views/user/UserCenterOfManager";
-
 import ReportInfo from "@/views/report/ReportInfo";
 
-const routerHistory = createWebHistory();
+const routerHistory = createWebHashHistory();
 const routes = [
     {
         path: "/",

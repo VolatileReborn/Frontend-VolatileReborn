@@ -1,6 +1,5 @@
 <template>
   <nav>
-
     <div class="logo_container" @click="direct_router('/')" >
       <img src="../assets/logo.png">
       <div class="logo_text">在线众包平台</div>
@@ -47,7 +46,7 @@ export default {
   data() {
     return {
       nickname: window.localStorage.getItem("nickname"),
-      role:window.localStorage.getItem("role")
+      role:window.localStorage.getItem("role"),
     }
   },
   methods: {

@@ -37,8 +37,8 @@ export const register = payload => {
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const login = payload => {
-    const {phoneNumber,password} = payload;
-    return axios.get(`${USER_MODULE}/login?phoneNumber=${phoneNumber}&password=${password}`)
+    const {phone_number,password} = payload;
+    return axios.get(`${USER_MODULE}/login?phone_number=${phone_number}&password=${password}`)
         .then(res => {
             return res.data;
         })

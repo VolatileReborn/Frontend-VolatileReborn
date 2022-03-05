@@ -54,6 +54,7 @@
 import {login} from "@/api/user";
 import {register} from "@/api/user";
 import {ElMessage} from "element-plus"
+
 export default{
 		name:'login-register',
 		data(){
@@ -100,6 +101,7 @@ export default{
                 if (res.response.code === 0) {
                   // console.log(res.msg)
                   // console.log(res.data)
+                  console.log(res.response)
                   this.$router.push("/registerSucceed/"+this.form.username)
                 } else {
                   console.log(res.response.message)
@@ -110,7 +112,7 @@ export default{
       handleLogin(){
         if (this.form.phonenumber !== "" && this.form.userpwd !== "") {
           login({
-            phoneNumber: this.form.phonenumber,
+            phone_number: this.form.phonenumber,
             password: this.form.userpwd
 			
           }).then(res =>{
@@ -130,7 +132,7 @@ export default{
                 onClose: () =>{ this.$router.push("/taskSquare")}
               })
               setTimeout(()=>{
-                this.$router.go(0)
+              this.$router.go(0)
               },4000)
             }
             else {

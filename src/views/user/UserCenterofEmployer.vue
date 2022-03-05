@@ -110,7 +110,8 @@ export default {
                 .then(res => {
                   if(res.response.code === 0)
                   {
-                    this.taskList = res.taskList
+                    console.log(res)
+                    this.taskList = res.undertakingTaskList
                   }
                 })
             break;
@@ -144,7 +145,7 @@ export default {
       if(res.response.code === 0)
       {
         console.log(res.response.msg)
-        this.taskList = res.taskList
+        this.taskList = res.undertakingTaskList
         console.log(res.taskList)
       }
     })

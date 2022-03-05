@@ -32,7 +32,7 @@ export const browserTasks = () => {
  */
 export const employeeTaskDetail = payload =>{
     const {token,taskId} = payload ;
-    return axios.get(`${SQUARE_MODULE}/employeeTaskDetail/${taskId}?token=${token}`)
+    return axios.get(`${SQUARE_MODULE}/employeeTaskDetail/taskId=${taskId}?token=${token}`)
         .then(res =>{
             return res.data
         })
@@ -65,7 +65,7 @@ export const employeeTaskDetail = payload =>{
  */
 export const employerTaskDetail = payload => {
     const {token,taskId} = payload;
-    return axios.get(`${SQUARE_MODULE}/employerTaskDetail/${taskId}?token=${token}`)
+    return axios.get(`${SQUARE_MODULE}/employerTaskDetail?taskId=${taskId}&token=${token}`)
         .then(res => {
             return res.data
         })

@@ -104,7 +104,7 @@ export default {
                 .then(res => {
                   if(res.response.code === 0)
                   {
-                    this.taskList = res.taskList
+                    this.taskList = res.undertakingTaskList
                   }
                 })
             break;
