@@ -8,14 +8,9 @@ import { USER_MODULE} from "@/api/_prefix";
  * @returns {*}
  */
 export const register = payload => {
-    const {phoneNumber,password,role,nickname} = payload;
+    const {phone_number,password,role,nickname} = payload;
     return axios
-        .post(`${USER_MODULE}/register`,{
-            phoneNumber,
-            password,
-            role,
-            nickname
-        })
+        .get(`${USER_MODULE}/register?phone_number=${phone_number}&password=${password}&role=${role}&nickname=${nickname}`)
         .then(res => {
             return res.data;
         })

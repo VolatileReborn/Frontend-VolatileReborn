@@ -1,7 +1,7 @@
 <template>
   <el-divider></el-divider>
   <el-breadcrumb separator="/"  class="breadcrumb">
-    <el-breadcrumb-item :to="{path: '/TaskSquare'}">个人中心</el-breadcrumb-item>
+    <el-breadcrumb-item @click="go_route">个人中心</el-breadcrumb-item>
     <el-breadcrumb-item>任务详情</el-breadcrumb-item>
   </el-breadcrumb>
   <div class="container">
@@ -122,6 +122,20 @@ export default {
     // ReportItem
   },
   methods: {
+    go_route(){
+      if(this.role === '0')
+      {
+        this.$router.push("/userCenterofEmployer")
+      }
+      if(this.role === '1')
+      {
+        this.$router.push("/userCenterofEmployee")
+      }
+      if(this.role === '2')
+      {
+        this.$router.push("userCenterOfManager")
+      }
+    },
     enroll(){
       this.$router.push("/taskEnrollSucceed")
     },

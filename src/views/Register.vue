@@ -161,8 +161,14 @@ import {ref} from "vue"
                 if (res.response.code === 0) {
                   // console.log(res.msg)
                   // console.log(res.data)
-                  this.$router.push("/registerSucceed/"+this.form.username)
+                  console.log(res.response.message)
+                  this.$router.push("/registerSucceed")
                 } else {
+                  if(res.response.code === 1)
+                    ElMessage({
+                      message: res.response.message,
+                      type: 'error',
+                    })
                   console.log(res.response.msg)
                 }
               });

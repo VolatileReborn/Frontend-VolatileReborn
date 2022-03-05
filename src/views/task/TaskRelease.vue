@@ -212,7 +212,7 @@ export default {
           .then(res => {
             if (res.response.code === 0) {
               console.log(res.response.msg)
-              this.$router.push("/taskEnrollSucceed")
+              this.$router.push("/taskReleaseSucceed")
             } else {
               console.log(res.response.msg)
             }

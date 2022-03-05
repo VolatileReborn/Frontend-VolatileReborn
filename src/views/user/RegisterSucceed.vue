@@ -7,7 +7,7 @@
       <img src="../../assets/success.png">
     </template>
     <template #title>
-      <div style="font-weight: bolder;font-size:xx-large">你好，用户 {{username}} </div>
+      <div style="font-weight: bolder;font-size:xx-large">你好，欢迎加入众包世界 </div>
     </template>
     <template #extra>
       <el-button type="primary" plain size="large" @click="direct_route('/login')">立即登录</el-button>
@@ -20,7 +20,6 @@ export default {
   name: "RegisterSucceed",
   data(){
     return{
-      username: this.$route.params.nickname
     }
   },
   methods: {

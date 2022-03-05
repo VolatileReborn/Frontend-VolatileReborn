@@ -92,7 +92,7 @@ export default{
       handleRegister(){
         if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "") {
           register({
-            phoneNumber: this.form.phonenumber,
+            phone_number: this.form.phonenumber,
             password: this.form.userpwd,
             role: this.form.role,
             nickname: this.form.username
@@ -102,7 +102,7 @@ export default{
                   // console.log(res.msg)
                   // console.log(res.data)
                   console.log(res.response)
-                  this.$router.push("/registerSucceed/"+this.form.username)
+                  this.$router.push("/registerSucceed")
                 } else {
                   console.log(res.response.message)
                 }
@@ -114,7 +114,6 @@ export default{
           login({
             phone_number: this.form.phonenumber,
             password: this.form.userpwd
-			
           }).then(res =>{
             console.log(res)
             if(res.response.code === 0){

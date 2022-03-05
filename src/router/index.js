@@ -20,6 +20,7 @@ import FinishedTasksForEmployer from "@/views/finishedTasksForEmployer"
 import ReportReleaseSucceed from "@/views/report/ReportReleaseSucceed"
 import UserCenterOfManager from "@/views/user/UserCenterOfManager";
 import ReportInfo from "@/views/report/ReportInfo";
+import TaskReleaseSucceed from "@/views/task/TaskReleaseSucceed"
 
 const routerHistory = createWebHashHistory();
 const routes = [
@@ -65,7 +66,7 @@ const routes = [
         component: TaskEnrollSucceed
     },
     {
-        path: "/registerSucceed/:nickname",
+        path: "/registerSucceed",
         name: "RegisterSucceed",
         component: RegisterSucceed
     },
@@ -118,6 +119,11 @@ const routes = [
         path: "/reportReleaseSucceed",
         name: "ReportReleaseSucceed",
         component: ReportReleaseSucceed
+    },
+    {
+        path: "/taskReleaseSucceed",
+        name: "TaskReleaseSucceed",
+        component: TaskReleaseSucceed
     }
 ];
 const router = createRouter({
