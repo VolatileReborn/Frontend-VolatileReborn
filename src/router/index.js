@@ -11,12 +11,6 @@ import TaskInfoFromUser from "@/views/task/TaskInfoFromUser";
 import ReportRelease from "@/views/report/ReportRelease";
 import UserCenterofEmployee from "@/views/user/UserCenterofEmployee"
 import UserCenterofEmployer from "@/views/user/UserCenterofEmployer"
-// import UndertakingTasksForEmployee from "@/views/undertakingTasksForEmployee/UndertakingTasksForEmployee"
-// import UndertakingTasksForEmployer from "@/views/undertakingTasksForEmployer"
-import UndertakingTasksForEmployer from "@/views/undertakingTasksforEmployer/UndertakingTasksForEmployer";
-import UndertakingTasksForEmployee from "@/views/undertakingTasksForEmployee/UndertakingTasksForEmployee";
-import FinishedTasksForEmployee from "@/views/finishedTasksForEmployee"
-import FinishedTasksForEmployer from "@/views/finishedTasksForEmployer"
 import ReportReleaseSucceed from "@/views/report/ReportReleaseSucceed"
 import UserCenterOfManager from "@/views/user/UserCenterOfManager";
 import ReportInfo from "@/views/report/ReportInfo";
@@ -95,26 +89,7 @@ const routes = [
         name: "UserCenterOfManager",
         component: UserCenterOfManager
     },
-    {
-        path : "/1",
-        name: "UndertakingTasksForEmployee",
-        component: UndertakingTasksForEmployee
-    },
-    {
-        path : "/2",
-        name: "FinishedTasksForEmployee",
-        component: FinishedTasksForEmployee
-    },
-    {
-        path : "/3",
-        name: "UndertakingTasksForEmployer",
-        component: UndertakingTasksForEmployer
-    },
-    {
-        path : "/4",
-        name: "FinishedTasksForEmployer",
-        component: FinishedTasksForEmployer
-    },
+
     {
         path: "/reportReleaseSucceed",
         name: "ReportReleaseSucceed",

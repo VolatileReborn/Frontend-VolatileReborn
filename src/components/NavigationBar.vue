@@ -28,14 +28,13 @@
         </el-button>
       </div>
     </div>
-    <div v-if="nickname !== null&&role==='1'" class="check_in_container" >
-      <el-button @click="direct_router('/userCenterofEmployee')">个人中心</el-button>
-    </div>
-    <div v-if="nickname !== null&&role==='0'" class="check_in_container">
-      <el-button @click="direct_router('/userCenterofEmployer')">个人中心</el-button>
-    </div>
-    <div v-if="nickname !== null&&role==='2'" class="check_in_container">
-      <el-button @click="direct_router('/userCenterOfManager')">个人中心</el-button>
+    <div v-if="nickname !== null" class="check_in_container">
+      <div  >
+        <el-button type="primary" @click="direct_router('/userInfo')" plain class="check_in_item">个人中心</el-button>
+      </div>
+      <div>
+        <el-button @click="login_out" type="primary" class="check_in_item">登出</el-button>
+      </div>
     </div>
   </nav>
 </template>
@@ -43,6 +42,7 @@
 <script>
 export default {
   name: "NavigationBar",
+  inject:['reload'],
   data() {
     return {
       nickname: window.localStorage.getItem("nickname"),
@@ -50,11 +50,30 @@ export default {
     }
   },
   methods: {
-    direct_router(link){
-      if(this.$route.path !== link) {
-        this.$router.push(link);
+    direct_router(link) {
+      if(link === '/register' || link === '/login')
+      {
+        this.$router.push(link)
       }
-    }
+      else if(link === '/userInfo') {
+        switch (this.role) {
+          case 0:
+            this.$router.push("/userCenterofEmployer")
+            break
+          case 1:
+            this.$router.push("/userCenterofEmployee")
+            break
+          case 2:
+            this.$router.push("/userCenterOfManager")
+            break
+        }
+      }
+    },
+    login_out() {
+      window.localStorage.clear();
+      this.$router.push("/login")
+      this.reload()
+    },
   }
 }
 </script>

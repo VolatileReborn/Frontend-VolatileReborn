@@ -17,18 +17,22 @@
 					<div class="bform">
 						<input type="text" placeholder="用户名" v-model="form.username">
 						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber">
-						<input type="password" placeholder="密码" v-model="form.userpwd">
-            <div>
-<!--              <el-radio v-model="form.role" label="0" >发包方</el-radio>-->
-<!--              <el-radio v-model="form.role" label="1">众包工人</el-radio>-->
-              <el-select v-model="form.role" placeholder="选择你的身份" size="large" style="width: 310px">
+						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber" style="margin-top: 5px">
+						<input type="password" placeholder="密码" v-model="form.userpwd" style="margin-top: 5px">
+            <input type="password" placeholder="确认密码" v-model="form.seconduserpwd" style="margin-top: 5px">
+            <div class="role_select_container">
+              <div>
+                <el-button type="text" class="role_select_text" >身份选择</el-button>
+              </div>
+              <div>
+              <el-select v-model="form.role" placeholder="选择你的身份"  >
                 <el-option
                     v-for="item in roles"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"></el-option>
               </el-select>
+              </div>
             </div>
 					</div>
 					<button class="bbutton" @click="handleRegister">注册</button>
@@ -54,9 +58,9 @@
 import {login} from "@/api/user";
 import {register} from "@/api/user";
 import {ElMessage} from "element-plus"
-
 export default{
 		name:'login-register',
+    inject:['reload'],
 		data(){
 			return {
 				isLogin:true,
@@ -67,6 +71,7 @@ export default{
 					username:'',
 					phonenumber:'',
 					userpwd:'',
+          seconduserpwd:'',
           role:0
 				},
         roles:[
@@ -91,59 +96,67 @@ export default{
 			},
       handleRegister(){
         if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "") {
-          register({
-            phone_number: this.form.phonenumber,
-            password: this.form.userpwd,
-            role: this.form.role,
-            nickname: this.form.username
-          })
-              .then(res => {
-                if (res.response.code === 0) {
-                  // console.log(res.msg)
-                  // console.log(res.data)
-                  console.log(res.response)
-                  this.$router.push("/registerSucceed")
-                } else {
-                  console.log(res.response.message)
-                }
-              });
-        }else{alert("填写不能为空！");}
-      },
+          if (this.form.userpwd !== this.form.seconduserpwd) {
+            ElMessage.error('两次输入密码不一致！')
+          } else {
+            register({
+              phone_number: this.form.phonenumber,
+              password: this.form.userpwd,
+              role: this.form.role,
+              nickname: this.form.username
+            })
+                .then(res => {
+                  if (res.response.code === 0) {
+                    // console.log(res.msg)
+                    // console.log(res.data)
+                    console.log(res.response)
+                    this.$router.push("/registerSucceed")
+                  } else {
+                    console.log(res.response.message)
+                  }
+                });
+          }
+        }
+        else
+          {
+            alert("填写不能为空！");
+          }
+        },
       handleLogin(){
         if (this.form.phonenumber !== "" && this.form.userpwd !== "") {
           login({
             phone_number: this.form.phonenumber,
             password: this.form.userpwd
-          }).then(res =>{
+          }).then(res => {
             console.log(res)
-            if(res.response.code === 0){
+            if (res.response.code === 0) {
               // console.log(res.msg)
               // console.log(res.data)
-		
-              window.localStorage.setItem("token",res.token)
-              window.localStorage.setItem("nickname",res.nickname)
-              window.localStorage.setItem("role",res.role)
+
+              window.localStorage.setItem("token", res.token)
+              window.localStorage.setItem("nickname", res.nickname)
+              window.localStorage.setItem("role", res.role)
               console.log(window.localStorage.getItem("nickname"))
               console.log(window.localStorage.getItem("role"))
               ElMessage({
                 message: "登录成功",
                 type: 'success',
-                onClose: () =>{ this.$router.push("/taskSquare")}
+                onClose: () => {
+                  this.$router.push("/taskSquare")
+                  this.reload()
+                },
+
               })
-              setTimeout(()=>{
-              this.$router.go(0)
-              },4000)
-            }
-            else {
+            } else {
               console.log(res.response.message)
             }
           })
         }else {
           alert("填写不能为空！");
         }
-      }
-		},
 
+      }
+      },
 	}
 </script>
 
@@ -281,4 +294,15 @@ export default{
 		transform: translateX(-100%);
 		transition: all 1s;
 	}
+  .role_select_container{
+    display: flex;
+    flex-direction: row;
+    width: 310px;
+    margin-top: 5px
+  }
+  .role_select_text{
+    color: cadetblue;
+    margin-right: 15px;
+    margin-left: 15px;
+  }
 </style>

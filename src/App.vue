@@ -1,20 +1,19 @@
 <template>
   <v-app>
     <div id="app">
-      <NavigationBar />
-      <router-view v-if="isRouterAlive"/>
+      <NavigationBar v-if="isRouterAlive"/>
+      <router-view />
     </div>
   </v-app>
 </template>
 
 <script scope>
 import NavigationBar from "@/components/NavigationBar";
-
 export default {
   name: "App",
   provide(){
     return {
-      reloadAll: this.reloadAll
+      reload: this.reload
     }
   },
   data(){
@@ -26,7 +25,7 @@ export default {
     NavigationBar
   },
   methods:{
-      reloadAll(){
+      reload(){
         this.isRouterAlive = false
         this.$nextTick(() => {
           this.isRouterAlive =true

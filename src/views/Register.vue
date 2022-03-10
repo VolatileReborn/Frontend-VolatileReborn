@@ -19,16 +19,20 @@
 						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
 						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber">
 						<input type="password" placeholder="密码" v-model="form.userpwd">
-            <div>
-<!--              <el-radio v-model="form.role" label="0" >发包方</el-radio>-->
-<!--              <el-radio v-model="form.role" label="1">众包工人</el-radio>-->
-              <el-select v-model="form.role" placeholder="选择你的身份" size="large" style="width: 310px">
-                <el-option
-                  v-for="item in roles"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"></el-option>
-              </el-select>
+            <input type="password" placeholder="确认密码" v-model="form.seconduserpwd" style="margin-top: 5px">
+            <div class="role_select_container">
+              <div>
+                <el-button type="text" class="role_select_text" >身份选择</el-button>
+              </div>
+              <div>
+                <el-select v-model="form.role" placeholder="选择你的身份"  >
+                  <el-option
+                      v-for="item in roles"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"></el-option>
+                </el-select>
+              </div>
             </div>
 					</div>
 					<button class="bbutton" @click="handleRegister">注册</button>
@@ -57,6 +61,7 @@ import {ElMessage} from "element-plus"
 import {ref} from "vue"
 	export default{
 		name:'login-register',
+    inject:['reload'],
 		data(){
 			return {
 				isLogin:false,
@@ -67,6 +72,7 @@ import {ref} from "vue"
 					username:'',
 					phonenumber:'',
 					userpwd:'',
+          seconduserpwd: '',
           role:ref(0)
 				},
         roles:[
@@ -88,91 +94,33 @@ import {ref} from "vue"
 				this.form.phonenumber = ''
 				this.form.userpwd = ''
 			},
-			// login() {
-			// 	const self = this;
-			// 	if (self.form.phonenumber != "" && self.form.userpwd != "") {
-			// 		self.$axios({
-			// 			method:'post',
-			// 			url: 'http://localhost/api/user/login',
-			// 			data: {
-			// 				email: self.form.phonenumber,
-			// 				password: self.form.userpwd
-			// 			}
-			// 		})
-			// 		.then( res => {
-			// 			switch(res.data){
-			// 				case 0:
-			// 					alert("登录成功！");
-			// 					break;
-			// 				case -1:
-			// 					this.emailError = true;
-			// 					break;
-			// 				case 1:
-			// 					this.passwordError = true;
-			// 					break;
-			// 			}
-			// 		})
-			// 		.catch( err => {
-			// 			console.log(err);
-			// 		})
-			// 	} else{
-			// 		alert("填写不能为空！");
-			// 	}
-			// },
-			// handleRegister(){
-			// 	const self = this;
-			// 	if(self.form.username != "" && self.form.phonenumber != "" && self.form.userpwd != ""){
-			// 		self.$axios({
-			// 			method:'post',
-			// 			url: 'http://localhost/api/user/add',
-			// 			data: {
-			// 				username: self.form.username,
-			// 				email: self.form.phonenumber,
-			// 				password: self.form.userpwd
-			// 			}
-			// 		})
-			// 		.then( res => {
-			// 			switch(res.data){
-			// 				case 0:
-			// 					alert("注册成功！");
-			// 					this.login();
-			// 					break;
-			// 				case -1:
-			// 					this.existed = true;
-			// 					break;
-			// 			}
-			// 		})
-			// 		.catch( err => {
-			// 			console.log(err);
-			// 		})
-			// 	} else {
-			// 		alert("填写不能为空！");
-			// 	}
-			// }
       handleRegister(){
         if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "") {
-          register({
-            phone_number: this.form.phonenumber,
-            password: this.form.userpwd,
-            role: this.form.role,
-            nickname: this.form.username
-          })
-              .then(res => {
-                if (res.response.code === 0) {
-                  // console.log(res.msg)
-                  // console.log(res.data)
-                  console.log(res.response.message)
-                  this.$router.push("/registerSucceed")
-                } else {
-                  if(res.response.code === 1)
-                    ElMessage({
-                      message: res.response.message,
-                      type: 'error',
-                    })
-                  console.log(res.response.msg)
-                }
-              });
-        }else{alert("填写不能为空！");}
+          if (this.form.userpwd !== this.form.seconduserpwd) {
+            ElMessage.error('两次输入密码不一致！')
+          } else {
+            register({
+              phone_number: this.form.phonenumber,
+              password: this.form.userpwd,
+              role: this.form.role,
+              nickname: this.form.username
+            })
+                .then(res => {
+                  if (res.response.code === 0) {
+                    // console.log(res.msg)
+                    // console.log(res.data)
+                    console.log(res.response)
+                    this.$router.push("/registerSucceed")
+                  } else {
+                    console.log(res.response.message)
+                  }
+                });
+          }
+        }
+        else
+        {
+          alert("填写不能为空！");
+        }
       },
       handleLogin(){
         if (this.form.phonenumber !== "" && this.form.userpwd !== "") {
@@ -189,11 +137,12 @@ import {ref} from "vue"
               ElMessage({
                 message: "登录成功",
                 type: 'success',
-                onClose: () =>{this.$router.push("/taskSquare")}
+                onClose: () =>{this.$router.push("/taskSquare")
+                  this.reload()},
               })
-              setTimeout(()=>{
-                this.$router.go(0)
-              },4000)
+              // setTimeout(()=>{
+              //   this.$router.go(0)
+              // },4000)
             }
             else {
               console.log(res.response.message)
@@ -341,4 +290,15 @@ import {ref} from "vue"
 		transform: translateX(-100%);
 		transition: all 1s;
 	}
+  .role_select_container{
+    display: flex;
+    flex-direction: row;
+    width: 310px;
+    margin-top: 5px
+  }
+  .role_select_text{
+    color: cadetblue;
+    margin-right: 15px;
+    margin-left: 15px;
+  }
 </style>
