@@ -1,7 +1,32 @@
 import {EMPLOYEE_MODULE} from "@/api/_prefix";
 import {EMPLOYER_MODULE} from "@/api/_prefix";
 import axios from "axios";
+import JSONBIG from "json-bigint";
 
+axios.interceptors.request.use(
+    config => {
+        const token = window.localStorage.getItem("token");
+        if(token && token!=="")
+        {
+            config.headers.Authorization = token;
+        }
+        return config
+    },
+    error => {
+        console.log(error)
+        return Promise.reject(error)
+    }
+)
+axios.defaults.transformResponse = [
+    function (data) {
+        const json = JSONBIG ({
+            storeAsString: true
+        })
+        const res = json.parse(data)
+        return res
+
+    }
+]
 /**
  * 接包方发布测试报告 POST /employee/uploadTestReport
  * @param payload

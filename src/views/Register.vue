@@ -95,7 +95,7 @@ import {ref} from "vue"
 				this.form.userpwd = ''
 			},
       handleRegister(){
-        if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "") {
+        if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "" && this.form.seconduserpwd !== "") {
           if (this.form.userpwd !== this.form.seconduserpwd) {
             ElMessage.error('两次输入密码不一致！')
           } else {

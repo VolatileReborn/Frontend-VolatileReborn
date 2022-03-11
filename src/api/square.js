@@ -1,5 +1,31 @@
 import {SQUARE_MODULE} from "@/api/_prefix";
 import axios from "axios";
+import JSONBIG from "json-bigint";
+
+axios.interceptors.request.use(
+    config => {
+        const token = window.localStorage.getItem("token");
+        if(token && token!=="")
+        {
+            config.headers.Authorization = token;
+        }
+        return config
+    },
+    error => {
+        console.log(error)
+        return Promise.reject(error)
+    }
+)
+axios.defaults.transformResponse = [
+    function (data) {
+        const json = JSONBIG ({
+            storeAsString: true
+        })
+        const res = json.parse(data)
+        return res
+
+    }
+]
 
 /**
  * 浏览任务广场 GET /square/browserTasks

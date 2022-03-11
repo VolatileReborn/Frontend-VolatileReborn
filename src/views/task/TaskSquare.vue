@@ -40,8 +40,9 @@ export default {
     browserTasks().then(res=>{
       if(res.response.code === 0)
       {
-        console.log(res.msg)
+        console.log(res.response)
         this.taskList = res.taskList
+        // console.log(this.taskList)
       }
     })
   },

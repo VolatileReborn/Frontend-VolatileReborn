@@ -1,8 +1,34 @@
 import axios from "axios"
+// import axiosHttp from "@/api/http"
 import {TASK_MODULE} from "@/api/_prefix";
 import {EMPLOYER_MODULE} from "@/api/_prefix";
+// import {getCurrentInstance} from "vue";
+import JSONBIG from 'json-bigint'
+axios.interceptors.request.use(
+    config => {
+        const token = window.localStorage.getItem("token");
+        if(token && token!=="")
+        {
+            config.headers.Authorization = token;
+        }
+        return config
+    },
+    error => {
+        console.log(error)
+        return Promise.reject(error)
+    }
+)
+axios.defaults.transformResponse = [
+    function (data) {
+        const json = JSONBIG ({
+            storeAsString: true
+        })
+        const res = json.parse(data)
+        return res
 
-
+    }
+]
+// const {proxy} = getCurrentInstance();
 /**
  * 发布任务 POST /task/publishTask
  * @param payload
@@ -15,12 +41,12 @@ export const publishTask = payload => {
             return res.data
         })
     // return Promise.resolve({
-    //     "code":1,
-    //     "msg":'任务发布成功',
-    //     "data":{
-    //         "token" :token,
-    //         "task" :task
-    //     }
+    //    "response":{
+    //        "code":0,
+    //        "message":'任务发布成功'
+    //    },
+    //     "token":token,
+    //     "task":task
     // })
 }
 

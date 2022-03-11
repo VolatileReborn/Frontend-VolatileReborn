@@ -185,9 +185,8 @@ export default {
         report_form.defectPictureList.push(file)
       })
     },
-    handleUploadSuccess(){
+    handleUploadSuccess() {
       console.log(report_form.defectPictureList)
-      //todo:添加路由：报告提交成功
 
     }
   }

@@ -51,23 +51,26 @@ export default {
   },
   methods: {
     direct_router(link) {
-      if(link === '/register' || link === '/login')
-      {
-        this.$router.push(link)
-      }
-      else if(link === '/userInfo') {
+     if(link === '/userInfo') {
         switch (this.role) {
-          case 0:
+          case '0':
             this.$router.push("/userCenterofEmployer")
             break
-          case 1:
+          case '1':
             this.$router.push("/userCenterofEmployee")
             break
-          case 2:
+          case '2':
             this.$router.push("/userCenterOfManager")
             break
         }
       }
+     else
+     {
+       if(this.$route.path !== link)
+       {
+         this.$router.push(link)
+       }
+     }
     },
     login_out() {
       window.localStorage.clear();

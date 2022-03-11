@@ -95,8 +95,8 @@ export default {
         taskType: 0,
         workerNumTotal: 0,
         workerNumLeft: 0,
-        taskStartTime: '',
-        taskEndTime: '',
+        taskStartTime: 0,
+        taskEndTime: 0,
         taskState: true,
         taskIntroduction: '',
         requirementDescriptionFileList:[],
@@ -164,7 +164,6 @@ export default {
       .then(res => {
         if(res.response.code === 0)
         {
-
           console.log(res.response.msg)
           this.task.workerNumTotal = res.workerNumTotal
           this.task.taskState = res.taskState
