@@ -1,57 +1,57 @@
 <template>
-	<div class="login-register">
-		<div class="contain">
-			<div class="big-box" :class="{active:isLogin}">
-				<div class="big-contain" v-if="isLogin">
-					<div class="btitle">账户登录</div>
-					<div class="bform">
-						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber">
-						<span class="errTips" v-if="phonenumberError">* 手机号填写错误 *</span>
-						<input type="password" placeholder="密码" v-model="form.userpwd">
-						<span class="errTips" v-if="emailError">* 密码填写错误 *</span>
-					</div>
-					<button class="bbutton" @click="handleLogin">登录</button>
-				</div>
-				<div class="big-contain" v-else>
-					<div class="btitle">创建账户</div>
-					<div class="bform">
-						<input type="text" placeholder="用户名" v-model="form.username">
-						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber" style="margin-top: 5px">
-						<input type="password" placeholder="密码" v-model="form.userpwd" style="margin-top: 5px">
-            <input type="password" placeholder="确认密码" v-model="form.seconduserpwd" style="margin-top: 5px">
-            <div class="role_select_container">
-              <div>
-                <el-button type="text" class="role_select_text" >身份选择</el-button>
-              </div>
-              <div>
-              <el-select v-model="form.role" placeholder="选择你的身份"  >
-                <el-option
-                    v-for="item in roles"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"></el-option>
-              </el-select>
+    <div class="login-register">
+      <div class="contain">
+        <div class="big-box" :class="{active:isLogin}">
+          <div class="big-contain" v-if="isLogin">
+            <div class="btitle">账户登录</div>
+            <div class="bform">
+              <input type="phonenumber" placeholder="手机号" v-model="form.phonenumber">
+              <span class="errTips" v-if="phonenumberError">* 手机号填写错误 *</span>
+              <input type="password" placeholder="密码" v-model="form.userpwd">
+              <span class="errTips" v-if="emailError">* 密码填写错误 *</span>
+            </div>
+            <button class="bbutton" @click="handleLogin">登录</button>
+          </div>
+          <div class="big-contain" v-else>
+            <div class="btitle">创建账户</div>
+            <div class="bform">
+              <input type="text" placeholder="用户名" v-model="form.username">
+              <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
+              <input type="phonenumber" placeholder="手机号" v-model="form.phonenumber" style="margin-top: 5px">
+              <input type="password" placeholder="密码" v-model="form.userpwd" style="margin-top: 5px">
+              <input type="password" placeholder="确认密码" v-model="form.seconduserpwd" style="margin-top: 5px">
+              <div class="role_select_container">
+                <div>
+                  <el-button type="text" class="role_select_text" >身份选择</el-button>
+                </div>
+                <div>
+                  <el-select v-model="form.role" placeholder="选择你的身份"  >
+                    <el-option
+                        v-for="item in roles"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"></el-option>
+                  </el-select>
+                </div>
               </div>
             </div>
-					</div>
-					<button class="bbutton" @click="handleRegister">注册</button>
-				</div>
-			</div>
-			<div class="small-box" :class="{active:isLogin}">
-				<div class="small-contain" v-if="isLogin">
-					<div class="stitle">你好，朋友!</div>
-					<p class="scontent">开始注册，加入众包世界</p>
-					<button class="sbutton" @click="changeType">注册</button>
-				</div>
-				<div class="small-contain" v-else>
-					<div class="stitle">欢迎回来!</div>
-					<p class="scontent">进入众包世界，请登录你的账户</p>
-					<button class="sbutton" @click="changeType">登录</button>
-				</div>
-			</div>
-		</div>
-	</div>
+            <button class="bbutton" @click="handleRegister">注册</button>
+          </div>
+        </div>
+        <div class="small-box" :class="{active:isLogin}">
+          <div class="small-contain" v-if="isLogin">
+            <div class="stitle">你好，朋友!</div>
+            <p class="scontent">开始注册，加入众包世界</p>
+            <button class="sbutton" @click="changeType">注册</button>
+          </div>
+          <div class="small-contain" v-else>
+            <div class="stitle">欢迎回来!</div>
+            <p class="scontent">进入众包世界，请登录你的账户</p>
+            <button class="sbutton" @click="changeType">登录</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -163,7 +163,7 @@ export default{
 <style scoped="scoped">
 	.login-register{
 		width: 100vw;
-		height: 100vh;
+		height: 90vh;
 		box-sizing: border-box;
 	}
 	.contain{

@@ -4,7 +4,7 @@
     <el-breadcrumb-item @click="go_route">个人中心</el-breadcrumb-item>
     <el-breadcrumb-item>任务详情</el-breadcrumb-item>
   </el-breadcrumb>
-  <div class="container">
+  <div class="container" v-infinite-scroll="load" style="overflow: auto">
     <el-card class="box_card">
       <template #header>
         <div class="card_header">
@@ -73,6 +73,7 @@ import {employerBrowserTaskDetail} from "@/api/task";
 import {browserReports} from "@/api/report";
 import oss from "@/utils/oss"
 import {parseTime} from "@/utils/utils";
+import {ref} from "vue"
 const goReport = (val) =>{
   console.log(val)
   this.$router.push({
@@ -84,6 +85,10 @@ const goReport = (val) =>{
   })
 }
 
+const count = ref(0);
+const load = () => {
+  count.value += 2
+}
 export default {
   name: "TaskInfoFromUser",
   data() {
@@ -121,6 +126,7 @@ export default {
     // ReportItem
   },
   methods: {
+    load,
     parseTime,
     go_route(){
       if(this.role === '0')
@@ -198,6 +204,12 @@ export default {
   font-family: 幼圆;
   font-size: medium;
   margin-top: -10px;
+}
+.container{
+  height: 80vh;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 .box_card{
   width: 90%;

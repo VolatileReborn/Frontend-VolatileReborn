@@ -17,8 +17,8 @@
 					<div class="bform">
 						<input type="text" placeholder="用户名" v-model="form.username">
 						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber">
-						<input type="password" placeholder="密码" v-model="form.userpwd">
+						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber" style="margin-top: 5px">
+						<input type="password" placeholder="密码" v-model="form.userpwd" style="margin-top: 5px">
             <input type="password" placeholder="确认密码" v-model="form.seconduserpwd" style="margin-top: 5px">
             <div class="role_select_container">
               <div>
@@ -159,7 +159,7 @@ import {ref} from "vue"
 <style scoped="scoped">
 	.login-register{
 		width: 100vw;
-		height: 100vh;
+		height: 90vh;
 		box-sizing: border-box;
 	}
 	.contain{

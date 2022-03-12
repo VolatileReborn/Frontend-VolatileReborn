@@ -29,7 +29,7 @@
                      v-for="item in taskList"
                      v-bind:task="item"
                      v-bind:key="item.taskId"
-                     style="width:100%;margin-left:-20px"
+                     style="width:100%;margin-left:-20px;margin-top: 5px"
                      @click="check_route(item.taskId)"></task-item>
         </el-main>
       </el-container>

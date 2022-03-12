@@ -84,7 +84,7 @@ export default {
 <style scoped>
 nav{
   width: 100%;
-  height: 15%;
+  height: 10vh;
   vertical-align: middle;
   display: flex;
   flex-direction: row;

@@ -226,7 +226,6 @@ export default {
           fileName : res.fileName,
           fileURL: res.fileUrl
         }
-
         task_form.executableFileList.push(file)
         console.log(task_form.executableFileList)
       })

@@ -9,7 +9,7 @@
 <!--    <task-item></task-item>-->
 <!--  </el-pagination>-->
   <div class="task_container">
-      <div >
+      <div v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
         <task-item class="task_item_container"
         v-for="item in taskList"
         v-bind:task="item"
@@ -28,6 +28,11 @@
 import TaskItem from "@/components/TaskItem";
 import {Upload} from "@element-plus/icons-vue"
 import {browserTasks} from "@/api/square";
+import {ref} from "vue"
+const count = ref(0);
+const load = () => {
+  count.value += 2
+}
 export default {
   name: "TaskSquare",
   data() {
@@ -51,6 +56,7 @@ export default {
     Upload
   },
   methods: {
+    load,
     check_route(taskId){
       this.$router.push("/taskInfoFromSquare/"+taskId);
     },
@@ -63,18 +69,29 @@ export default {
 
 <style scoped>
 .task_container{
-  width: 100%;
+  width:  100vw;
   display: flex;
   flex-direction: column;
   align-content: center;
-  margin-top: -10px;
+  justify-content: center;
+  /*margin-top: -10px;*/
+  height: 80vh;
+  margin: auto;
 }
 .task_item_container{
   margin-top: 5px;
+
+}
+.infinite-list{
+  height: 80vh;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 .upload_btn{
   position: absolute;
   right: 20px;
   bottom: 80px;
+  background-color: #42b983;
 }
 </style>
