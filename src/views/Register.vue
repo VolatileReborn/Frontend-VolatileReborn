@@ -98,7 +98,11 @@ import {ref} from "vue"
         if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "") {
           if (this.form.userpwd !== this.form.seconduserpwd) {
             ElMessage.error('两次输入密码不一致！')
-          } else {
+          } 
+			else if(this.form.phonenumber.length!=11){
+				ElMessage.error('手机号必须为11位！')
+			} 
+			else{
             register({
               phone_number: this.form.phonenumber,
               password: this.form.userpwd,
