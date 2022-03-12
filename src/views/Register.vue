@@ -57,8 +57,10 @@
 <script>
 import {register} from "@/api/user";
 import {login} from "@/api/user";
-import {ElMessage} from "element-plus"
-import {ref} from "vue"
+import {ElMessage} from "element-plus";
+import {ref} from "vue";
+import {Encrypt} from "@/utils/utils"
+
 	export default{
 		name:'login-register',
     inject:['reload'],
@@ -104,8 +106,8 @@ import {ref} from "vue"
 			} 
 			else{
             register({
-              phone_number: this.form.phonenumber,
-              password: this.form.userpwd,
+              phone_number: Encrypt(this.form.phonenumber),
+              password: Encrypt(this.form.userpwd),
               role: this.form.role,
               nickname: this.form.username
             })
