@@ -16,8 +16,6 @@ export default {
     return {
       msg: 'HELLO!',
       pics:[
-        // {path: require("../assets/home_pic.png")},
-        // {path: require("../assets/success.png")},
         {path: require("../assets/home_pic_1.png")},
         {path: require("../assets/home_pic_2.jpg")}
       ]
