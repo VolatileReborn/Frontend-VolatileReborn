@@ -19,7 +19,7 @@
         </el-icon>
         <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">缺陷提交</div>
       </div>
-      <el-form :model="report_form" label-width="120px" label-position="right" style="width:80%" :rules="rules">
+      <el-form ref="basicInfo" :model="report_form" label-width="120px" label-position="right" style="width:80%" :rules="rules" class="basicInfo">
         <el-form-item label="测试报告名称" prop="reportName">
           <el-input v-model="report_form.reportName" />
         </el-form-item>
@@ -50,7 +50,7 @@
           </el-upload>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">提交</el-button>
+          <el-button type="primary" @click="onSubmit('basicInfo')">提交</el-button>
           <el-button @click="cancelSubmit">取消</el-button>
         </el-form-item>
       </el-form>
@@ -158,7 +158,15 @@ export default {
     Checked
   },
   methods:{
-    onSubmit() {
+    onSubmit(formName) {
+      this.$refs[formName].validate(valid =>{
+        if (valid){
+          return true
+        }else{
+          alert("必填项不能为空")
+          return false
+        }
+      })
       const token = window.localStorage.getItem("token")
       publishReport({testReport: report_form,token:token,taskId:this.taskId})
       .then(res =>{

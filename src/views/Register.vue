@@ -57,8 +57,10 @@
 <script>
 import {register} from "@/api/user";
 import {login} from "@/api/user";
-import {ElMessage} from "element-plus"
-import {ref} from "vue"
+import {ElMessage} from "element-plus";
+import {ref} from "vue";
+import {Encrypt} from "@/utils/utils"
+
 	export default{
 		name:'login-register',
     inject:['reload'],
@@ -98,10 +100,14 @@ import {ref} from "vue"
         if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "" && this.form.seconduserpwd !== "") {
           if (this.form.userpwd !== this.form.seconduserpwd) {
             ElMessage.error('两次输入密码不一致！')
-          } else {
+          } 
+			else if(this.form.phonenumber.length!=11){
+				ElMessage.error('手机号必须为11位！')
+			} 
+			else{
             register({
-              phone_number: this.form.phonenumber,
-              password: this.form.userpwd,
+              phone_number: Encrypt(this.form.phonenumber),
+              password: Encrypt(this.form.userpwd),
               role: this.form.role,
               nickname: this.form.username
             })

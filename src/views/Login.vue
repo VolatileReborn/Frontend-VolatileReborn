@@ -57,7 +57,9 @@
 <script>
 import {login} from "@/api/user";
 import {register} from "@/api/user";
-import {ElMessage} from "element-plus"
+import {ElMessage} from "element-plus";
+import {Encrypt} from "@/utils/utils";
+
 export default{
 		name:'login-register',
     inject:['reload'],
@@ -125,8 +127,9 @@ export default{
       handleLogin(){
         if (this.form.phonenumber !== "" && this.form.userpwd !== "") {
           login({
-            phone_number: this.form.phonenumber,
-            password: this.form.userpwd
+			
+            phone_number: Encrypt(this.form.phonenumber),
+            password: Encrypt(this.form.userpwd)
           }).then(res => {
             console.log(res)
             if (res.response.code === 0) {

@@ -163,3 +163,18 @@ export const publishReport=payload=>{
             return res.data
         })
 }
+
+
+/**
+ * 完成任务 PUT /api/employer/browserChecked
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+ export const browserChecked = payload => {
+    const {token,taskId} = payload;
+    return axios.put(`${EMPLOYER_MODULE}/browserChecked`,{token,taskId})
+        .then(res => {
+            return res.data
+        })
+    
+}

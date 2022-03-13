@@ -61,6 +61,10 @@
           <el-table-column prop="workerId" label="测试工人ID" width="180" />
         </el-table>
       </div>
+      <div v-if="this.role === '0'">
+        <el-button v-if="isAble" type="danger" round class="check_btn" size="large" @click="finish()" >结束任务</el-button>
+
+      </div>
     </el-card>
   </div>
 </template>
@@ -71,9 +75,11 @@ import {Edit} from "@element-plus/icons-vue"
 import {StarFilled} from "@element-plus/icons-vue"
 import {employerBrowserTaskDetail} from "@/api/task";
 import {browserReports} from "@/api/report";
+import {browserChecked} from "@/api/usercenter";
 import oss from "@/utils/oss"
 import {parseTime} from "@/utils/utils";
 import {ref} from "vue"
+import {ElMessage} from "element-plus";
 const goReport = (val) =>{
   console.log(val)
   this.$router.push({
@@ -111,7 +117,7 @@ export default {
         reportList:[
         ]
       },
-      isAble: !this.taskState,
+      isAble: false,
       role:window.localStorage.getItem("role"),
       exeUrl:'',
       exeName:'',
@@ -163,6 +169,27 @@ export default {
     goReport,
     goRelease(){
       this.$router.push("/reportRelease/"+this.taskId)
+    },
+    finish(){
+      const token = window.localStorage.getItem("token")
+      browserChecked({token:token,taskId:this.taskId})
+      .then(res => {
+        console.log(res)
+        if(res.status === 0){
+          console.log(res.response.msg)
+          this.$router.push("/taskFinished")
+
+
+        }
+        else {
+          if(res.response.code === 2)
+          {
+            ElMessage.error(res.response.message);
+            console.log(res.response.msg)
+          }
+
+        }
+      })
     }
   },
   mounted() {
@@ -170,6 +197,7 @@ export default {
       .then(res => {
         if(res.response.code === 0)
         {
+
           console.log(res.response.msg)
           this.task.workerNumTotal = res.workerNumTotal
           this.task.taskState = res.taskState
@@ -189,6 +217,7 @@ export default {
           if(res.response.code === 0)
           {
             this.task.reportList = res.reportList
+            this.isAble= this.task.taskState === 0 && this.role === '0'
           }
         })
       }

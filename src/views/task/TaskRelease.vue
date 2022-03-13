@@ -7,7 +7,7 @@
       </div>
     </template>
     <div class="input_container">
-      <el-form :model="task_form" label-width="120px" label-position="right" :rules="rules" >
+      <el-form ref="basicInfo" :model="task_form" label-width="120px" label-position="right" :rules="rules" class="basicInfo" >
         <el-form-item label="任务名称" prop="taskName">
           <el-input v-model="task_form.taskName" ></el-input>
         </el-form-item>
@@ -95,7 +95,7 @@
           </div>
         </el-form-item>
         <el-form-item style="margin-left: 340px">
-          <el-button type="primary" @click="handleSubmit">提交任务</el-button>
+          <el-button type="primary" @click="handleSubmit('basicInfo')">提交任务</el-button>
           <el-button @click="goBack">取消</el-button>
         </el-form-item>
       </el-form>
@@ -190,11 +190,15 @@ export default {
   },
   components: {},
   methods: {
-    handleSubmit() {
-      // const startTime = new Date(this.task_form.taskStartTime).getTime()
-      // const endTime = new Date(this.task_form.taskEndTime).getTime()
-      // const startTime = this.task_form.taskStartTime;
-      // const endTime = this.task_form.taskEndTime;
+    handleSubmit(formName) {
+      this.$refs[formName].validate(valid =>{
+        if (valid){
+          return true
+        }else{
+          alert("必填项不能为空")
+          return false
+        }
+      })
 
       const task = {
         "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
