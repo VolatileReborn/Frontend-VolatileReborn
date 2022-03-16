@@ -110,9 +110,9 @@ export default {
         switch(key){
           case '3':
             this.breadcrumbItems  = ['正在进行']
-            employerBrowserUndertakingTasks({token:window.localStorage.getItem("token")})
+            employerBrowserUndertakingTasks()
                 .then(res => {
-                  if(res.response.code === 0)
+                  if(res.response.code%100 === 0)
                   {
                     console.log(res)
                     this.taskList = res.undertakingTaskList
@@ -121,9 +121,9 @@ export default {
             break;
           case '4':
             this.breadcrumbItems  = ['历史任务']
-              employerBrowserFinishedTasks({token:window.localStorage.getItem("token")})
+              employerBrowserFinishedTasks()
               .then(res => {
-                if(res.response.code === 0)
+                if(res.response.code%100 === 0)
                 {
                   this.taskList = res.finishedTaskList
                 }
@@ -144,11 +144,11 @@ export default {
     TaskItem
   },
   mounted() {
-      employerBrowserUndertakingTasks({token:window.localStorage.getItem("token")})
+      employerBrowserUndertakingTasks()
     .then(res => {
-      if(res.response.code === 0)
+      if(res.response.code%100 === 0)
       {
-        console.log(res.response.msg)
+        console.log(res.response.message)
         this.taskList = res.undertakingTaskList
         console.log(res.taskList)
       }

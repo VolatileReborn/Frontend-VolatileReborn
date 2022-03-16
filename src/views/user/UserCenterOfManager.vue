@@ -147,7 +147,7 @@ export default {
     //       }
     //     })
     browserTasks().then(res =>{
-      if(res.response.code === 0)
+      if(res.response.code%100 === 0)
       {
         this.taskList = res.taskList
       }

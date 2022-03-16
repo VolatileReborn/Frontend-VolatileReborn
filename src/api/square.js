@@ -56,8 +56,8 @@ export const browserTasks = () => {
  * @returns {Promise<{code: number, data: {task: {workerNumLeft: number, taskType: number, taskState: boolean, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string, taskIntroduction: string}, isSelected: boolean}, message: string}>}
  */
 export const employeeTaskDetail = payload =>{
-    const {token,taskId} = payload ;
-    return axios.get(`${SQUARE_MODULE}/employeeTaskDetail?taskId=${taskId}&token=${token}`)
+    const {taskId} = payload ;
+    return axios.get(`${SQUARE_MODULE}/employeeTaskDetail?taskId=${taskId}`)
         .then(res =>{
             return res.data
         })
@@ -89,8 +89,8 @@ export const employeeTaskDetail = payload =>{
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const employerTaskDetail = payload => {
-    const {token,taskId} = payload;
-    return axios.get(`${SQUARE_MODULE}/employerTaskDetail?taskId=${taskId}&token=${token}`)
+    const {taskId} = payload;
+    return axios.get(`${SQUARE_MODULE}/employerTaskDetail?taskId=${taskId}`)
         .then(res => {
             return res.data
         })

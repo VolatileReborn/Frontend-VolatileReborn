@@ -70,9 +70,9 @@ export default {
   mounted() {
     if(this.role==='1')
     {
-      employeeTaskDetail({token:window.localStorage.getItem("token"),taskId:this.taskId})
+      employeeTaskDetail({taskId:this.taskId})
       .then(res => {
-        if(res.response.code === 0)
+        if(res.response.code%100 === 0)
         {
           this.task = res.task
           this.isSelected = res.isSelected
@@ -82,15 +82,15 @@ export default {
     }
     else if(this.role === '0')
     {
-      employerTaskDetail({token:window.localStorage.getItem("token"),taskId:this.taskId})
+      employerTaskDetail({taskId:this.taskId})
       .then(res => {
-        if(res.response.code === 0)
+        if(res.response.code%100 === 0)
         {
-          console.log(res.response.msg)
+          console.log(res.response.message)
           this.task = res.task
         }
         else {
-          console.log(res.response.msg)
+          console.log(res.response.message)
         }
       })
     }
@@ -101,8 +101,7 @@ export default {
   methods: {
     parseTime,
     enroll(){
-      const token = window.localStorage.getItem("token")
-      acceptTask({token:token,taskId:this.taskId})
+      acceptTask({taskId:this.taskId})
       .then(res => {
         console.log(res)
         if(res.status === 500){
@@ -115,7 +114,7 @@ export default {
           if(res.response.code === 2)
           {
             ElMessage.error(res.response.message);
-            console.log(res.response.msg)
+            console.log(res.response.message)
           }
 
         }

@@ -59,7 +59,7 @@ export default {
   },
   mounted(){
     browserTasks().then(res=>{
-      if(res.response.code === 0)
+      if(res.response.code%100 === 0)
       {
         console.log(res.response)
         this.taskList = res.taskList

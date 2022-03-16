@@ -35,8 +35,8 @@ axios.defaults.transformResponse = [
  * @returns {Promise<{msg: string, code: number, data}>}
  */
 export const publishTask = payload => {
-    const { token,task } = payload;
-    return axios.post(`${TASK_MODULE}/publishTask`,{token,task})
+    const { task } = payload;
+    return axios.post(`${TASK_MODULE}/publishTask`,{task})
         .then(res => {
             return res.data
         })
@@ -56,8 +56,8 @@ export const publishTask = payload => {
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const acceptTask = payload => {
-    const {token,taskId} = payload;
-    return axios.post(`${TASK_MODULE}/acceptTask`,{token,taskId})
+    const {taskId} = payload;
+    return axios.post(`${TASK_MODULE}/acceptTask`,{taskId})
         .then(res => {
             return res.data
         })
@@ -77,8 +77,8 @@ export const acceptTask = payload => {
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const employerBrowserTaskDetail = payload =>{
-    const {token,taskId} = payload
-    return axios.get(`${EMPLOYER_MODULE}/browserTaskDetail?token=${token}&taskId=${taskId}`)
+    const {taskId} = payload
+    return axios.get(`${EMPLOYER_MODULE}/browserTaskDetail?taskId=${taskId}`)
         .then(res => {
             return res.data
         })

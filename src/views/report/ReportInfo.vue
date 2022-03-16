@@ -98,11 +98,10 @@ export default {
     if(window.localStorage.getItem("role") === '1') {
       employeeGetReportInfo({
         taskId: this.$route.params.taskId,
-        reportId: this.reportId,
-        token: window.localStorage.getItem("token")
+        reportId: this.reportId
       })
           .then(res => {
-            if (res.response.code === 0) {
+            if (res.response.code%100 === 0) {
               this.taskReport = res.taskReport
             }
           })
@@ -111,11 +110,10 @@ export default {
       if(window.localStorage.getItem("role") === '0' || window.localStorage.getItem("role") === '2') {
         employerGetReportInfo({
           taskId:this.$route.params.taskId,
-          reportId:this.reportId,
-          token:window.localStorage.getItem("token")
+          reportId:this.reportId
         })
           .then(res => {
-            if(res.response.code === 0)
+            if(res.response.code%100 === 0)
             {
               this.taskReport = res.taskReport
               this.workerId = res.workerId

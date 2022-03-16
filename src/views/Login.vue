@@ -84,6 +84,10 @@ export default{
           {
             value:1,
             label:'众包工人'
+          },
+          {
+            value:2,
+            label:'管理员'
           }
         ]
 			}
@@ -111,7 +115,7 @@ export default{
               nickname: this.form.username
             })
                 .then(res => {
-                  if (res.response.code === 0) {
+                  if (res.response.code%100 === 0) {
                     // console.log(res.msg)
                     // console.log(res.data)
                     console.log(res.response)
@@ -135,7 +139,7 @@ export default{
             password: Encrypt(this.form.userpwd)
           }).then(res => {
             console.log(res)
-            if (res.response.code === 0) {
+            if (res.response.code%100 === 0) {
               // console.log(res.msg)
               // console.log(res.data)
 

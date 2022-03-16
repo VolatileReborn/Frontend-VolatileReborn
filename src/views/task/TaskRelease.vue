@@ -203,9 +203,9 @@ export default {
             "taskName": this.task_form.taskName,
             "workerNumTotal":this.task_form.workerNumTotal
           }
-          publishTask({token: this.token, task: task})
+          publishTask({task: task})
               .then(res => {
-                if (res.response.code === 0) {
+                if (res.response.code%100 === 0) {
                   console.log(res.response.message)
                   console.log(res.task)
                   this.$router.push("/taskReleaseSucceed")

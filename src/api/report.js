@@ -33,8 +33,8 @@ axios.defaults.transformResponse = [
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const publishReport = payload => {
-    const {testReport,token,taskId} = payload
-    return axios.post(`${EMPLOYEE_MODULE}/uploadTestReport`,{testReport,token,taskId})
+    const {testReport,taskId} = payload
+    return axios.post(`${EMPLOYEE_MODULE}/uploadTestReport`,{testReport,taskId})
         .then(res => {
             return res.data
         })
@@ -56,8 +56,8 @@ export const publishReport = payload => {
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const browserReports = payload =>  {
-    const {token,taskId} = payload;
-    return axios.get(`${EMPLOYER_MODULE}/checkReports?token=${token}&taskId=${taskId}`)
+    const {taskId} = payload;
+    return axios.get(`${EMPLOYER_MODULE}/checkReports?taskId=${taskId}`)
         .then(res => {
             return res.data
         })
@@ -69,8 +69,8 @@ export const browserReports = payload =>  {
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const employeeGetReportInfo = payload => {
-    const {taskId,reportId,token} = payload;
-    return axios.get(`${EMPLOYEE_MODULE}/reportDetail?taskId=${taskId}&reportId=${reportId}&token=${token}`)
+    const {taskId,reportId} = payload;
+    return axios.get(`${EMPLOYEE_MODULE}/reportDetail?taskId=${taskId}&reportId=${reportId}`)
         .then(res => {
             return res.data
         })
@@ -82,8 +82,8 @@ export const employeeGetReportInfo = payload => {
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const employerGetReportInfo = payload => {
-    const {taskId,reportId,token} = payload;
-    return axios.get(`${EMPLOYER_MODULE}/reportDetail?taskId=${taskId}&reportId=${reportId}&token=${token}`)
+    const {taskId,reportId} = payload;
+    return axios.get(`${EMPLOYER_MODULE}/reportDetail?taskId=${taskId}&reportId=${reportId}`)
         .then(res => {
             return res.data
         })

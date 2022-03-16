@@ -108,9 +108,9 @@ export default {
             // this.$router.push('/Page1');
             this.breadcrumbItems  = ['正在进行']
               this.key = 1
-            employeeBrowserUndertakingTasks({token:window.localStorage.getItem("token")})
+            employeeBrowserUndertakingTasks()
                 .then(res => {
-                  if(res.response.code === 0)
+                  if(res.response.code%100 === 0)
                   {
                     this.taskList = res.undertakingTaskList
                   }
@@ -120,9 +120,9 @@ export default {
             // this.$router.push('/Page2')
             this.breadcrumbItems  = ['历史任务']
               this.key = 2
-              employeeBrowserFinishedTasks({token:window.localStorage.getItem("token")})
+              employeeBrowserFinishedTasks()
               .then(res => {
-                if(res.response.code === 0)
+                if(res.response.code%100 === 0)
                 {
                   this.taskList = res.finishedTaskList
                 }
@@ -145,9 +145,9 @@ export default {
     TaskItem
   },
   mounted() {
-    employeeBrowserUndertakingTasks({token:window.localStorage.getItem("token")})
+    employeeBrowserUndertakingTasks()
     .then(res => {
-      if(res.response.code === 0)
+      if(res.response.code%100 === 0)
       {
         this.taskList = res.undertakingTaskList
       }

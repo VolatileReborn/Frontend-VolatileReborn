@@ -85,6 +85,10 @@ import {Encrypt} from "@/utils/utils"
           {
             value:1,
             label:'众包工人'
+          },
+          {
+            value:2,
+            label:'管理员'
           }
         ]
 			}
@@ -115,7 +119,7 @@ import {Encrypt} from "@/utils/utils"
               nickname: this.form.username
             })
                 .then(res => {
-                  if (res.response.code === 0) {
+                  if (res.response.code%100 === 0) {
                     // console.log(res.msg)
                     // console.log(res.data)
                     console.log(res.response)
@@ -137,7 +141,7 @@ import {Encrypt} from "@/utils/utils"
             phone_number: this.form.phonenumber,
             password: Encrypt(this.form.userpwd)
           }).then(res =>{
-            if(res.response.code === 0){
+            if(res.response.code%100 === 0){
               // console.log(res.msg)
               // console.log(res.data)
               window.localStorage.setItem("token",res.token)

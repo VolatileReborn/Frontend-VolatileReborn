@@ -32,9 +32,8 @@ axios.defaults.transformResponse = [
  * 接包方浏览正在执行的任务 GET /api/employee/browserUndertakingTasks
   * @returns {Promise<{msg: string, code: number, data: {taskList: [{workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}]}}>}
  */
-export const employeeBrowserUndertakingTasks = payload => {
-    const {token} = payload;
-    return axios.get(`${EMPLOYEE_MODULE}/browserUndertakingTasks?token=${token}`)
+export const employeeBrowserUndertakingTasks = () => {
+    return axios.get(`${EMPLOYEE_MODULE}/browserUndertakingTasks`)
         .then(res => {
             return res.data
         })
@@ -46,9 +45,8 @@ export const employeeBrowserUndertakingTasks = payload => {
  * 接包方浏览已经完成的任务 GET /api/employee/browserFinishedTasks
  * @returns {Promise<{msg: string, code: number, data: {finishedTaskList: [{taskType: number, taskName: string, taskId: number, taskStartTime: string, taskEndTime: string}, {taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {taskType: number, taskName: string, taskId: number, taskStartTime: string, taskEndTime: string}, {taskType: number, taskName: string, taskId: number, taskStartTime: string, taskEndTime: string}]}}>}
  */
- export const employeeBrowserFinishedTasks = payload => {
-    const {token} = payload;
-    return axios.get(`${EMPLOYEE_MODULE}/browserFinishedTasks?token=${token}`)
+ export const employeeBrowserFinishedTasks = () => {
+    return axios.get(`${EMPLOYEE_MODULE}/browserFinishedTasks`)
         .then(res => {
             return res.data
         })
@@ -59,9 +57,8 @@ export const employeeBrowserUndertakingTasks = payload => {
  * 发包方浏览正在执行的任务 GET /api/employer/browserUndertakingTasks
   * @returns {Promise<{msg: string, code: number, data: {taskList: [{workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}]}}>}
  */
- export const employerBrowserUndertakingTasks = payload => {
-    const {token} = payload;
-    return axios.get(`${EMPLOYER_MODULE}/browserUndertakingTasks?token=${token}`)
+ export const employerBrowserUndertakingTasks =() => {
+    return axios.get(`${EMPLOYER_MODULE}/browserUndertakingTasks`)
         .then(res => {
             return res.data
         })
@@ -86,9 +83,8 @@ export const employeeBrowserUndertakingTasks = payload => {
  * 发包方浏览已经完成的任务 GET /api/employer/browserFinishedTasks 
  * @returns {Promise<{msg: string, code: number, data: {finishedTaskList: [{workerNumTotal: number, taskType: number, taskName: string, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumTotal: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumTotal: number, taskType: number, taskName: string, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumTotal: number, taskType: number, taskName: string, taskId: number, taskStartTime: string, taskEndTime: string}]}}>}
  */
- export const employerBrowserFinishedTasks = payload => {
-    const {token} = payload;
-    return axios.get(`${EMPLOYER_MODULE}/browserFinishedTasks?token=${token}`)
+ export const employerBrowserFinishedTasks = () => {
+    return axios.get(`${EMPLOYER_MODULE}/browserFinishedTasks`)
         .then(res => {
             return res.data
         })
@@ -102,8 +98,8 @@ export const employeeBrowserUndertakingTasks = payload => {
  * @returns {Promise<{code: number, data: {task: {workerNumLeft: number, taskType: number, taskState: boolean, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string, taskIntroduction: string}, isSelected: boolean}, message: string}>}
  */
 export const employeeTaskDetail = payload =>{
-    const {token,taskId} = payload ;
-    return axios.get(`${SQUARE_MODULE}/employeeTaskDetail/${taskId}?token=${token}`)
+    const {taskId} = payload ;
+    return axios.get(`${SQUARE_MODULE}/employeeTaskDetail/taskId=${taskId}`)
         .then(res =>{
             return res.data
         })
@@ -130,8 +126,8 @@ export const employeeTaskDetail = payload =>{
 }
 
 export const employerTaskDetail = payload => {
-    const {token,taskId} = payload;
-    return axios.get(`${SQUARE_MODULE}/employerTaskDetail/${taskId}?token=${token}`)
+    const {taskId} = payload;
+    return axios.get(`${SQUARE_MODULE}/employerTaskDetail/taskId=${taskId}`)
         .then(res => {
             return res.data
         })
@@ -157,8 +153,8 @@ export const employerTaskDetail = payload => {
 }
 
 export const publishReport=payload=>{
-    const {testReport,token,taskId}=payload
-    return axios.post(`${EMPLOYEE_MODULE}/uploadTestReport`,{testReport,token,taskId})
+    const {testReport,taskId}=payload
+    return axios.post(`${EMPLOYEE_MODULE}/uploadTestReport`,{testReport,taskId})
         .then(res=>{
             return res.data
         })
@@ -171,8 +167,8 @@ export const publishReport=payload=>{
  * @returns {Promise<AxiosResponse<any>>}
  */
  export const browserChecked = payload => {
-    const {token,taskId} = payload;
-    return axios.put(`${EMPLOYER_MODULE}/browserChecked`,{token,taskId})
+    const {taskId} = payload;
+    return axios.put(`${EMPLOYER_MODULE}/browserChecked`,{taskId})
         .then(res => {
             return res.data
         })

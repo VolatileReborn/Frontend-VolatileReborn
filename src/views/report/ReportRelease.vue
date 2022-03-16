@@ -135,9 +135,9 @@ export default {
     }
   },
   mounted() {
-    employeeTaskDetail({taskId:this.taskId,token:window.localStorage.getItem("token")})
+    employeeTaskDetail({taskId:this.taskId})
     .then(res => {
-      if(res.response.code === 0)
+      if(res.response.code%100 === 0)
       {
         console.log("获取任务数据成功")
         this.task = res.task
@@ -149,7 +149,7 @@ export default {
       }
       else
       {
-        console.log(res.response.msg)
+        console.log(res.response.message)
       }
     })
 
@@ -166,12 +166,12 @@ export default {
           .then(res =>{
         if(res.response.code === 0)
         {
-          console.log(res.response.msg)
+          console.log(res.response.message)
           this.$router.push("/reportReleaseSucceed")
         }
         else
         {
-          console.log(res.response.msg)
+          console.log(res.response.message)
         }
       })
           return true
@@ -180,7 +180,7 @@ export default {
           return false
         }
       })
-      
+
     },
     cancelSubmit(){
       this.$router.back(-1)

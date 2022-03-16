@@ -170,12 +170,11 @@ export default {
       this.$router.push("/reportRelease/"+this.taskId)
     },
     finish(){
-      const token = window.localStorage.getItem("token")
-      browserChecked({token:token,taskId:this.taskId})
+      browserChecked({taskId:this.taskId})
       .then(res => {
         console.log(res)
         if(res.status === 0){
-          console.log(res.response.msg)
+          console.log(res.response.message)
           this.$router.push("/taskFinished")
 
 
@@ -184,7 +183,7 @@ export default {
           if(res.response.code === 2)
           {
             ElMessage.error(res.response.message);
-            console.log(res.response.msg)
+            console.log(res.response.message)
           }
 
         }
@@ -192,12 +191,11 @@ export default {
     }
   },
   mounted() {
-      employerBrowserTaskDetail({token:window.localStorage.getItem("token"),taskId:this.taskId})
+      employerBrowserTaskDetail({taskId:this.taskId})
       .then(res => {
-        if(res.response.code === 0)
+        if(res.response.code%100 === 0)
         {
-
-          console.log(res.response.msg)
+          console.log(res.response.message)
           this.task.workerNumTotal = res.workerNumTotal
           this.task.taskState = res.taskState
           this.task.workerNumLeft = res.workerNumLeft
@@ -211,9 +209,9 @@ export default {
       })
       if(this.role === '0' || this.role === '2')
       {
-        browserReports({token:window.localStorage.getItem("token"),taskId:this.taskId})
+        browserReports({taskId:this.taskId})
         .then(res => {
-          if(res.response.code === 0)
+          if(res.response.code % 100 === 0)
           {
             this.task.reportList = res.reportList
             this.isAble= this.task.taskState === 0 && this.role === '0'
