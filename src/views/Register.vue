@@ -17,8 +17,8 @@
 					<div class="bform">
 						<input type="text" placeholder="用户名" v-model="form.username">
 						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber">
-						<input type="password" placeholder="密码" v-model="form.userpwd">
+						<input type="phonenumber" placeholder="手机号" v-model="form.phonenumber" style="margin-top: 5px">
+						<input type="password" placeholder="密码" v-model="form.userpwd" style="margin-top: 5px">
             <input type="password" placeholder="确认密码" v-model="form.seconduserpwd" style="margin-top: 5px">
             <div class="role_select_container">
               <div>
@@ -97,7 +97,7 @@ import {Encrypt} from "@/utils/utils"
 				this.form.userpwd = ''
 			},
       handleRegister(){
-        if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "") {
+        if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "" && this.form.seconduserpwd !== "") {
           if (this.form.userpwd !== this.form.seconduserpwd) {
             ElMessage.error('两次输入密码不一致！')
           } 
@@ -168,7 +168,7 @@ import {Encrypt} from "@/utils/utils"
 <style scoped="scoped">
 	.login-register{
 		width: 100vw;
-		height: 100vh;
+		height: 90vh;
 		box-sizing: border-box;
 	}
 	.contain{

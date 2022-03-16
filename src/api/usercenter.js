@@ -2,7 +2,32 @@ import {SQUARE_MODULE} from "@/api/_prefix";
 import {EMPLOYEE_MODULE} from "@/api/_prefix";
 import {EMPLOYER_MODULE} from "@/api/_prefix";
 import axios from "axios";
+import JSONBIG from "json-bigint";
 
+axios.interceptors.request.use(
+    config => {
+        const token = window.localStorage.getItem("token");
+        if(token && token!=="")
+        {
+            config.headers.Authorization = token;
+        }
+        return config
+    },
+    error => {
+        console.log(error)
+        return Promise.reject(error)
+    }
+)
+axios.defaults.transformResponse = [
+    function (data) {
+        const json = JSONBIG ({
+            storeAsString: true
+        })
+        const res = json.parse(data)
+        return res
+
+    }
+]
 /**
  * 接包方浏览正在执行的任务 GET /api/employee/browserUndertakingTasks
   * @returns {Promise<{msg: string, code: number, data: {taskList: [{workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}]}}>}

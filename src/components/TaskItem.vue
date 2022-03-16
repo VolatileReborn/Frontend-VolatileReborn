@@ -41,15 +41,17 @@ export default {
 
 <style scoped>
 .task_card{
-  height: 110px;
-  width: 80%;
+  height: 14vh;
+  width: 80vw;
   margin-left: 10%;
   display: flex;
   align-items: center;
+  background-color: white;
+  opacity: 1;
 }
 img{
-  height: 90px;
-  width: 90px;
+  height: 13vh;
+  width: 13vh;
   margin-left: 20px;
 }
 .task_container{

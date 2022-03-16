@@ -1,6 +1,10 @@
 <template>
-  <div class="home_pic">
-    <img src="../assets/home_pic.png" alt="">
+  <div class="home_pic" >
+    <el-carousel height="90vh" style="text-align: center" >
+      <el-carousel-item v-for="item in pics" :key="item" >
+        <el-image :src="item.path" alt="" style="height: 90vh;"/>
+      </el-carousel-item>
+    </el-carousel>
   </div>
 </template>
 
@@ -10,7 +14,11 @@ export default {
   name: "Home",
   data (){
     return {
-      msg: 'HELLO!'
+      msg: 'HELLO!',
+      pics:[
+        {path: require("../assets/home_pic_1.png")},
+        {path: require("../assets/home_pic_2.jpg")}
+      ]
     }
   },
   components:{
@@ -23,8 +31,5 @@ export default {
 template{
   height:100%;
   width:100%;
-}
-img{
-  width: 100%;
 }
 </style>

@@ -19,14 +19,21 @@
           <el-icon><management /></el-icon>
           <span>历史任务</span>
         </el-menu-item>
+        <el-menu-item index="3">
+          <el-icon><management /></el-icon>
+          <span>个人信息</span>
+        </el-menu-item>
       </el-menu>
         </el-aside>
-        <el-main> <task-item class="task_item_container"
+        <el-main>
+         <div v-if="key === 3">个人信息设置</div>
+          <task-item v-else class="task_item_container"
                              v-for="item in taskList"
                              v-bind:task="item"
                              v-bind:key="item.taskId"
                              style="width:100%;margin-left:-20px"
-                             @click="check_route(item.taskId)"></task-item></el-main>
+                             @click="check_route(item.taskId)"></task-item>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -83,12 +90,12 @@ export default {
     return {
       username: '',
       isCollapse: false,
-       breadcrumbItems: ['正在进行'],
-      taskList:[]
+      breadcrumbItems: ['正在进行'],
+      taskList:[],
+      key:1
     }
   },
   methods: {
-    
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -100,6 +107,7 @@ export default {
           case '1':
             // this.$router.push('/Page1');
             this.breadcrumbItems  = ['正在进行']
+              this.key = 1
             employeeBrowserUndertakingTasks({token:window.localStorage.getItem("token")})
                 .then(res => {
                   if(res.response.code === 0)
@@ -111,6 +119,7 @@ export default {
           case '2':
             // this.$router.push('/Page2')
             this.breadcrumbItems  = ['历史任务']
+              this.key = 2
               employeeBrowserFinishedTasks({token:window.localStorage.getItem("token")})
               .then(res => {
                 if(res.response.code === 0)
@@ -119,6 +128,10 @@ export default {
                 }
               })
             break;
+          case '3':
+            this.breadcrumbItems = ['个人信息']
+                this.key = 3
+
         }
         console.log(key, keyPath);
       },

@@ -20,6 +20,8 @@
               <el-date-picker
                 v-model="task_form.taskStartTime"
                 type="date"
+                placeholder="选择任务开始时间"
+                value-format="x"
                 style="width:100%">
               </el-date-picker>
             </el-form-item>
@@ -32,6 +34,8 @@
               <el-date-picker
                 v-model="task_form.taskEndTime"
                 type="date"
+                placeholder="选择任务截至时间"
+                value-format="x"
                 style="width: 100%">
               </el-date-picker>
             </el-form-item>
@@ -56,13 +60,12 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item label="附件"  >
+        <el-form-item label="附件"  required >
           <div style="display: flex;flex-direction: column">
             <el-upload
               action=""
               show-file-list
               accept=".exe,.apk,.jar"
-              :limit="1"
               :auto-upload="true"
               :http-request="fnUploadRequest"
               :on-success="handleUploadSuccess1"
@@ -76,7 +79,6 @@
             </el-upload>
             <el-upload
                 action=""
-                :limit="1"
                 show-file-list
                 :auto-upload="true"
                 :http-request="fnUploadRequest1"
@@ -146,7 +148,6 @@ const rules = reactive({
   ],
   taskStartTime:[
     {
-      type: 'date',
       required: true,
       message: '请选择任务开始时间，注意不要早于当前时间',
       trigger: 'change'
@@ -154,7 +155,6 @@ const rules = reactive({
   ],
   taskEndTime:[
     {
-      type: 'date',
       required: true,
       message: '请选择任务结束时间',
       trigger: 'change'
@@ -186,10 +186,6 @@ export default {
         }
       ],
       token: window.localStorage.getItem("token"),
-      file: {
-        fileName: '',
-        fileURL: ''
-      }
     }
   },
   components: {},
@@ -197,34 +193,32 @@ export default {
     handleSubmit(formName) {
       this.$refs[formName].validate(valid =>{
         if (valid){
+          const task = {
+            "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
+            "executableFileList": this.task_form.executableFileList,
+            "taskIntroduction": this.task_form.taskIntroduction,
+            "taskStartTime": this.task_form.taskStartTime,
+            "taskEndTime": this.task_form.taskEndTime,
+            "taskType": this.task_form.taskType,
+            "taskName": this.task_form.taskName,
+            "workerNumTotal":this.task_form.workerNumTotal
+          }
+          publishTask({token: this.token, task: task})
+              .then(res => {
+                if (res.response.code === 0) {
+                  console.log(res.response.message)
+                  console.log(res.task)
+                  this.$router.push("/taskReleaseSucceed")
+                } else {
+                  console.log(res.response.message)
+                }
+              })
           return true
         }else{
           alert("必填项不能为空")
           return false
         }
       })
-      const startTime = new Date(this.task_form.taskStartTime).getTime()
-      const endTime = new Date(this.task_form.taskEndTime).getTime()
-
-      const task = {
-        "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
-        "executableFileList": this.task_form.executableFileList,
-        "taskIntroduction": this.task_form.taskIntroduction,
-        "taskStartTime": startTime,
-        "taskEndTime": endTime,
-        "taskType": this.task_form.taskType,
-        "taskName": this.task_form.taskName,
-        "workerNumTotal":this.task_form.workerNumTotal
-      }
-      publishTask({token: this.token, task: task})
-          .then(res => {
-            if (res.response.code === 0) {
-              console.log(res.response.msg)
-              this.$router.push("/taskReleaseSucceed")
-            } else {
-              console.log(res.response.msg)
-            }
-          })
     },
     goBack() {
       this.$router.back(-1)
@@ -236,6 +230,7 @@ export default {
           fileURL: res.fileUrl
         }
         task_form.executableFileList.push(file)
+        console.log(task_form.executableFileList)
       })
     },
     async fnUploadRequest1(option) {
@@ -245,15 +240,14 @@ export default {
           fileURL: res.fileUrl
         }
         task_form.requirementDescriptionFileList.push(file)
+        console.log(task_form.requirementDescriptionFileList)
       })
     },
     handleUploadSuccess1() {
       console.log("executableFileList:")
-      console.log(this.file)
     },
     handleUploadSuccess2() {
       console.log("requirementDescriptionFileList")
-      console.log(this.file)
     }
   }
 }
