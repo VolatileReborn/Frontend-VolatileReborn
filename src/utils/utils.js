@@ -72,7 +72,7 @@ export const parseTime = function (time,cFormat) {
 
 
  import CryptoJS from 'crypto-js/crypto-js'
- const KEY = CryptoJS.enc.Utf8.parse("1234567890123456hellose3");
+ const KEY = CryptoJS.enc.Utf8.parse("hellose390123456");
  const IV = CryptoJS.enc.Utf8.parse('1234567890123456');
  
  /**

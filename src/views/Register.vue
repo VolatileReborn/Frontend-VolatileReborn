@@ -101,9 +101,12 @@ import {Encrypt} from "@/utils/utils"
           if (this.form.userpwd !== this.form.seconduserpwd) {
             ElMessage.error('两次输入密码不一致！')
           } 
-			else if(this.form.phonenumber.length!=11){
-				ElMessage.error('手机号必须为11位！')
-			} 
+			// else if(this.form.phonenumber.length!=11){
+			// 	ElMessage.error('手机号必须为11位！')
+			// }
+			else if(!(/^([\d]{11})$/.test(this.form.phonenumber))){
+				ElMessage.error('手机号必须为11位数字！')
+			}   
 			else{
             register({
               phone_number: Encrypt(this.form.phonenumber),

@@ -161,15 +161,9 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid =>{
         if (valid){
-          return true
-        }else{
-          alert("必填项不能为空")
-          return false
-        }
-      })
-      const token = window.localStorage.getItem("token")
-      publishReport({testReport: report_form,token:token,taskId:this.taskId})
-      .then(res =>{
+          const token = window.localStorage.getItem("token")
+          publishReport({testReport: report_form,token:token,taskId:this.taskId})
+          .then(res =>{
         if(res.response.code === 0)
         {
           console.log(res.response.msg)
@@ -180,6 +174,13 @@ export default {
           console.log(res.response.msg)
         }
       })
+          return true
+        }else{
+          alert("必填项不能为空")
+          return false
+        }
+      })
+      
     },
     cancelSubmit(){
       this.$router.back(-1)

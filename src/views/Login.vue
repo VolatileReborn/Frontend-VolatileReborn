@@ -58,7 +58,7 @@
 import {login} from "@/api/user";
 import {register} from "@/api/user";
 import {ElMessage} from "element-plus";
-import {Encrypt} from "@/utils/utils";
+//import {Encrypt} from "@/utils/utils";
 
 export default{
 		name:'login-register',
@@ -100,7 +100,10 @@ export default{
         if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "") {
           if (this.form.userpwd !== this.form.seconduserpwd) {
             ElMessage.error('两次输入密码不一致！')
-          } else {
+          } else if(!(/^([\d]{11})$/.test(this.form.phonenumber))){
+				ElMessage.error('手机号必须为11位数字！')
+			}  
+			else {
             register({
               phone_number: this.form.phonenumber,
               password: this.form.userpwd,
@@ -128,8 +131,8 @@ export default{
         if (this.form.phonenumber !== "" && this.form.userpwd !== "") {
           login({
 			
-            phone_number: Encrypt(this.form.phonenumber),
-            password: Encrypt(this.form.userpwd)
+            phone_number: this.form.phonenumber,
+            password: this.form.userpwd
           }).then(res => {
             console.log(res)
             if (res.response.code === 0) {
