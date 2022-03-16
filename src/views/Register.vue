@@ -131,8 +131,8 @@ import {Encrypt} from "@/utils/utils"
       handleLogin(){
         if (this.form.phonenumber !== "" && this.form.userpwd !== "") {
           login({
-            phone_number: this.form.phonenumber,
-            password: this.form.userpwd
+            phone_number: Encrypt(this.form.phonenumber),
+            password: Encrypt(this.form.userpwd)
           }).then(res =>{
             if(res.response.code === 0){
               // console.log(res.msg)
