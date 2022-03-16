@@ -109,7 +109,7 @@ import {Encrypt} from "@/utils/utils"
 			}   
 			else{
             register({
-              phone_number: Encrypt(this.form.phonenumber),
+              phone_number: this.form.phonenumber,
               password: Encrypt(this.form.userpwd),
               role: this.form.role,
               nickname: this.form.username
@@ -135,7 +135,7 @@ import {Encrypt} from "@/utils/utils"
         if (this.form.phonenumber !== "" && this.form.userpwd !== "") {
           login({
             phone_number: this.form.phonenumber,
-            password: this.form.userpwd
+            password: Encrypt(this.form.userpwd)
           }).then(res =>{
             if(res.response.code === 0){
               // console.log(res.msg)

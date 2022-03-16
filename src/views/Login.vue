@@ -58,7 +58,7 @@
 import {login} from "@/api/user";
 import {register} from "@/api/user";
 import {ElMessage} from "element-plus";
-//import {Encrypt} from "@/utils/utils";
+import {Encrypt} from "@/utils/utils";
 
 export default{
 		name:'login-register',
@@ -106,7 +106,7 @@ export default{
 			else {
             register({
               phone_number: this.form.phonenumber,
-              password: this.form.userpwd,
+              password: Encrypt(this.form.userpwd),
               role: this.form.role,
               nickname: this.form.username
             })
@@ -132,7 +132,7 @@ export default{
           login({
 			
             phone_number: this.form.phonenumber,
-            password: this.form.userpwd
+            password: Encrypt(this.form.userpwd)
           }).then(res => {
             console.log(res)
             if (res.response.code === 0) {

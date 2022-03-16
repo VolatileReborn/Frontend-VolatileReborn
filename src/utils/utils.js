@@ -75,16 +75,33 @@ export const parseTime = function (time,cFormat) {
  const KEY = CryptoJS.enc.Utf8.parse("hellose390123456");
  const IV = CryptoJS.enc.Utf8.parse('1234567890123456');
  
+ 
  /**
   * AES加密 ：字符串 key iv  返回base64 
   */
 
- export const Encrypt = function (text){
-    return CryptoJS.AES.encrypt(text,CryptoJS.enc.Utf8.parse(KEY).toString(),{
-        iv:CryptoJS.enc.Utf8.parse(IV),
-        mode:CryptoJS.mode.CBC,
-        padding:CryptoJS.pad.Pkcs7
-    })
+ export const Encrypt = function (word, keyStr, ivStr){
+     // 字符串类型的key用之前需要用uft8先parse一下才能用
+     let key=KEY;
+     let iv=IV;
+     if(keyStr){
+        key = CryptoJS.enc.Utf8.parse(keyStr);
+        iv = CryptoJS.enc.Utf8.parse(ivStr);
+     }
+     let srcs = CryptoJS.enc.Utf8.parse(word);
+     var encrypted = CryptoJS.AES.encrypt(srcs, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.ZeroPadding
+      });
+     // console.log("-=-=-=-", encrypted.ciphertext)
+      return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+    
+    // return CryptoJS.AES.encrypt(text,CryptoJS.enc.Utf8.parse(KEY).toString(),{
+    //     iv:CryptoJS.enc.Utf8.parse(IV),
+    //     mode:CryptoJS.mode.CBC,
+    //     padding:CryptoJS.pad.Pkcs7
+    // })
 }
 //  export function Encrypt(word, keyStr, ivStr) {
 //    let key = KEY
