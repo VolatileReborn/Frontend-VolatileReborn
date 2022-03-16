@@ -23,7 +23,6 @@ axios.defaults.transformResponse = [
         })
         const res = json.parse(data)
         return res
-
     }
 ]
 
