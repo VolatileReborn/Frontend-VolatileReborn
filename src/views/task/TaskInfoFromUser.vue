@@ -1,7 +1,7 @@
 <template>
   <el-divider></el-divider>
   <el-breadcrumb separator="/"  class="breadcrumb">
-    <el-breadcrumb-item @click="go_route">个人中心</el-breadcrumb-item>
+    <el-breadcrumb-item @click="go_route"><strong>个人中心</strong></el-breadcrumb-item>
     <el-breadcrumb-item>任务详情</el-breadcrumb-item>
   </el-breadcrumb>
   <div class="container" v-infinite-scroll="load" style="overflow: auto">
@@ -37,13 +37,16 @@
           </el-icon>
           <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">附件下载</div>
         </div>
-          <div>
+          <div style="display: flex;flex-direction: row">
           <a :href="exeUrl" download="待测应用可执行文件">
             <el-button type="text" @click="downloadExe">一、点击下载待测应用可执行文件</el-button>
           </a>
-            <a :href="docUrl" download="测试需求描述文件">
+            <a :href="docUrl" download="测试需求描述文件" style="margin-left: 10px">
           <el-button type="text" @click="downloadDoc">二、点击下载测试需求描述文件</el-button>
             </a>
+            <div v-if="this.role === '0'">
+              <el-button v-if="isAble" type="danger" round style="margin-left: 600px" size="large" @click="finish()" >结束任务</el-button>
+            </div>
           </div>
       </div>
       <div ><el-button v-if="role === '1'" type="danger" style="margin-right:500px" @click="goRelease">提交报告</el-button></div>
@@ -60,10 +63,6 @@
           <el-table-column prop="reportId" label="报告ID" width="180" />
           <el-table-column prop="workerId" label="测试工人ID" width="180" />
         </el-table>
-      </div>
-      <div v-if="this.role === '0'">
-        <el-button v-if="isAble" type="danger" round class="check_btn" size="large" @click="finish()" >结束任务</el-button>
-
       </div>
     </el-card>
   </div>
@@ -258,10 +257,5 @@ export default {
 .information{
   display: flex;
   flex-direction: column;
-}
-.check_btn{
-  position: absolute;
-  right: 90px;
-  bottom: 65px;
 }
 </style>

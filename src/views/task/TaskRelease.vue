@@ -60,7 +60,7 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item label="附件"  >
+        <el-form-item label="附件"  required >
           <div style="display: flex;flex-direction: column">
             <el-upload
               action=""
@@ -193,33 +193,32 @@ export default {
     handleSubmit(formName) {
       this.$refs[formName].validate(valid =>{
         if (valid){
+          const task = {
+            "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
+            "executableFileList": this.task_form.executableFileList,
+            "taskIntroduction": this.task_form.taskIntroduction,
+            "taskStartTime": this.task_form.taskStartTime,
+            "taskEndTime": this.task_form.taskEndTime,
+            "taskType": this.task_form.taskType,
+            "taskName": this.task_form.taskName,
+            "workerNumTotal":this.task_form.workerNumTotal
+          }
+          publishTask({token: this.token, task: task})
+              .then(res => {
+                if (res.response.code === 0) {
+                  console.log(res.response.message)
+                  console.log(res.task)
+                  this.$router.push("/taskReleaseSucceed")
+                } else {
+                  console.log(res.response.message)
+                }
+              })
           return true
         }else{
           alert("必填项不能为空")
           return false
         }
       })
-
-      const task = {
-        "requirementDescriptionFileList": this.task_form.requirementDescriptionFileList,
-        "executableFileList": this.task_form.executableFileList,
-        "taskIntroduction": this.task_form.taskIntroduction,
-        "taskStartTime": this.task_form.taskStartTime,
-        "taskEndTime": this.task_form.taskEndTime,
-        "taskType": this.task_form.taskType,
-        "taskName": this.task_form.taskName,
-        "workerNumTotal":this.task_form.workerNumTotal
-      }
-      publishTask({token: this.token, task: task})
-          .then(res => {
-            if (res.response.code === 0) {
-              console.log(res.response.message)
-              console.log(res.task)
-              this.$router.push("/taskReleaseSucceed")
-            } else {
-              console.log(res.response.message)
-            }
-          })
     },
     goBack() {
       this.$router.back(-1)

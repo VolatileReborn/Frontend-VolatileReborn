@@ -10,11 +10,24 @@
 <!--  </el-pagination>-->
   <div class="task_container">
       <div v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
-        <task-item class="task_item_container"
-        v-for="item in taskList"
-        v-bind:task="item"
-        v-bind:key="item.taskId"
-        @click="check_route(item.taskId)"></task-item>
+        <div>
+            <task-item class="task_item_container"
+          v-for="item in currentTaskList"
+          v-bind:task="item"
+          v-bind:key="item.taskId"
+          @click="check_route(item.taskId)"></task-item>
+        </div>
+        <div style="margin: auto;padding-top:5px">
+          <el-pagination
+              hide-on-single-page
+              v-model:currentPage="currentPage"
+              background
+              layout="prev,pager,next"
+              v-model:total="totalPage"
+              @current-change="handleCurrentChange"
+          >
+          </el-pagination>
+        </div>
       </div>
   </div>
   <div v-if="role === '0'" class="upload_btn" @click="releaseTask()">
@@ -38,7 +51,10 @@ export default {
   data() {
     return {
       taskList:[],
-      role:window.localStorage.getItem("role")
+      currentTaskList:[],
+      role:window.localStorage.getItem("role"),
+      currentPage:ref(1),
+      totalPage:ref(1)
     }
   },
   mounted(){
@@ -47,6 +63,8 @@ export default {
       {
         console.log(res.response)
         this.taskList = res.taskList
+        this.currentTaskList = this.taskList.slice(0,5)
+        this.totalPage = this.taskList.length *2;
         // console.log(this.taskList)
       }
     })
@@ -62,6 +80,9 @@ export default {
     },
     releaseTask(){
       this.$router.push("/taskRelease");
+    },
+    handleCurrentChange(){
+        this.currentTaskList = this.taskList.slice((this.currentPage-1)*5,this.currentPage*5)
     }
   }
 }
@@ -76,17 +97,18 @@ export default {
   justify-content: center;
   /*margin-top: -10px;*/
   height: 80vh;
-  margin: auto;
+  margin-top: auto
 }
 .task_item_container{
-  margin-top: 5px;
-
+  margin-top: 3px;
 }
 .infinite-list{
   height: 80vh;
   padding: 0;
   margin: 0;
   list-style: none;
+  display: flex;
+  flex-direction: column;
 }
 .upload_btn{
   position: absolute;

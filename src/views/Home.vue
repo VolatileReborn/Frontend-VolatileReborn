@@ -1,6 +1,6 @@
 <template>
   <div class="home_pic" >
-    <el-carousel height="90vh" style="text-align: center" interval="4000">
+    <el-carousel height="90vh" style="text-align: center" >
       <el-carousel-item v-for="item in pics" :key="item" >
         <el-image :src="item.path" alt="" style="height: 90vh;"/>
       </el-carousel-item>

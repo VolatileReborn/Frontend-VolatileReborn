@@ -5,7 +5,7 @@
       <el-header></el-header>
       <el-container>
         <el-aside width="200px" >
-          <span style="font-weight:bolder;font-size: larger">已发布任务</span>
+<!--          <span style="font-weight:bolder;font-size: larger;margin-left: 25px;font-family: 幼圆,serif">已发布任务</span>-->
           <el-menu
         default-active="3"
         class="el-menu-vertical-demo"
@@ -24,14 +24,18 @@
         </el-menu-item>
       </el-menu>
         </el-aside>
-        <el-main>
+        <div>
+        <el-main style="display: flex;flex-direction: column;text-align: center;width:85vw">
+          <div style="margin-top: -20px">
           <task-item class="task_item_container"
                      v-for="item in taskList"
                      v-bind:task="item"
                      v-bind:key="item.taskId"
-                     style="width:100%;margin-left:-20px;margin-top: 5px"
+                     style="margin-left:5px;margin-top: 5px"
                      @click="check_route(item.taskId)"></task-item>
+          </div>
         </el-main>
+        </div>
       </el-container>
     </el-container>
 
