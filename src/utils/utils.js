@@ -122,3 +122,16 @@ export const parseTime = function (time,cFormat) {
 //    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
  
 //  }
+
+export const debounce = (fun,delay) => {
+     var timer = null
+    delay = delay || 1000
+    return function () {
+         var that = this
+        var args = arguments
+        if(timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+            fun.apply(that,args)
+        },delay)
+    }
+}

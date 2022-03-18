@@ -41,6 +41,7 @@
 import TaskItem from "@/components/TaskItem";
 import {Upload} from "@element-plus/icons-vue"
 import {browserTasks} from "@/api/square";
+import {visitorBrowserTasks} from "@/api/square";
 import {ref} from "vue"
 const count = ref(0);
 const load = () => {
@@ -58,16 +59,28 @@ export default {
     }
   },
   mounted(){
-    browserTasks().then(res=>{
-      if(res.response.code%100 === 0)
-      {
-        console.log(res.response)
-        this.taskList = res.taskList
-        this.currentTaskList = this.taskList.slice(0,5)
-        this.totalPage = this.taskList.length *2;
-        // console.log(this.taskList)
-      }
-    })
+    if(this.role !== null || this.role !== undefined){
+      browserTasks().then(res=>{
+        if(res.response.code%100 === 0)
+        {
+          console.log(res.response)
+          this.taskList = res.taskList
+          this.currentTaskList = this.taskList.slice(0,5)
+          this.totalPage = this.taskList.length *2;
+          // console.log(this.taskList)
+        }
+      })
+    }
+   else {
+     visitorBrowserTasks().then(res => {
+       if(res.response.code % 100 === 0)
+       {
+         this.taskList = res.taskList
+         this.currentTaskList = this.taskList.slice(0,5)
+         this.totalPage = this.taskList.length *2;
+       }
+     })
+    }
   },
   components: {
     TaskItem,

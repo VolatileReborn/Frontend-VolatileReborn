@@ -73,6 +73,7 @@ import {FolderChecked} from "@element-plus/icons-vue"
 import {Edit} from "@element-plus/icons-vue"
 import {StarFilled} from "@element-plus/icons-vue"
 import {employerBrowserTaskDetail} from "@/api/task";
+import {employeeBrowserTaskDetail} from "@/api/task";
 import {browserReports} from "@/api/report";
 import {browserChecked} from "@/api/usercenter";
 import oss from "@/utils/oss"
@@ -114,7 +115,9 @@ export default {
         is_selected: false,
         //todo:reportList数据获取
         reportList:[
-        ]
+        ],
+        isSubmitted:0,
+        reportId:0
       },
       isAble: false,
       role:window.localStorage.getItem("role"),
@@ -191,7 +194,26 @@ export default {
     }
   },
   mounted() {
-      employerBrowserTaskDetail({taskId:this.taskId})
+    if (this.role === '0') {
+      employerBrowserTaskDetail({taskId: this.taskId})
+          .then(res => {
+            if (res.response.code % 100 === 0) {
+              console.log(res.response.message)
+              this.task.workerNumTotal = res.workerNumTotal
+              this.task.taskState = res.taskState
+              this.task.workerNumLeft = res.workerNumLeft
+              this.task.requirementDescriptionFileList = res.requirementDescriptionFileList
+              this.task.executableFileList = res.executableFileList
+              this.task.taskName = res.taskName
+              this.task.taskIntroduction = res.taskIntroduction
+              this.task.taskStartTime = res.beginTime
+              this.task.taskEndTime = res.endTime
+            }
+          })
+    }
+    if(this.role === '1')
+    {
+      employeeBrowserTaskDetail({taskId:this.taskId})
       .then(res => {
         if(res.response.code%100 === 0)
         {
@@ -205,8 +227,15 @@ export default {
           this.task.taskIntroduction = res.taskIntroduction
           this.task.taskStartTime = res.beginTime
           this.task.taskEndTime = res.endTime
+          this.task.isSubmitted = res.isSubmitted
+          this.task.reportId = res.reportId
+        }
+        else
+        {
+          ElMessage.error(res.response.message)
         }
       })
+    }
       if(this.role === '0' || this.role === '2')
       {
         browserReports({taskId:this.taskId})

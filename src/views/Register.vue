@@ -125,7 +125,7 @@ import {Encrypt} from "@/utils/utils"
                     console.log(res.response)
                     this.$router.push("/registerSucceed")
                   } else {
-                    console.log(res.response.message)
+                    ElMessage.error(res.response.message)
                   }
                 });
           }
@@ -158,7 +158,7 @@ import {Encrypt} from "@/utils/utils"
               // },4000)
             }
             else {
-              console.log(res.response.message)
+              ElMessage.error(res.response.message)
             }
           })
         }else {

@@ -39,17 +39,15 @@ export const publishReport = payload => {
             return res.data
         })
     // return Promise.resolve({
-    //     "code":1,
-    //     "msg":'报告发布成功',
-    //     "data":{
-    //         "testReport":testReport,
-    //         "token":token,
-    //         "taskId":taskId
-    //     }
+    //     "response":{
+    //         "code":100,
+    //         "message":'发布成功'
+    //     },
+    //     "testReport":testReport,
+    //     "taskId":taskId
+    //
     // })
 }
-
-
 /**
  * 发包方查看测试报告列表 GET /employer/checkReports
  * @param payload

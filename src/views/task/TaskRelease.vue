@@ -60,7 +60,7 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item label="附件"  required >
+        <el-form-item label="附件"  prop="executableFileList" >
           <div style="display: flex;flex-direction: column">
             <el-upload
               action=""
@@ -108,6 +108,7 @@
 import {publishTask} from "@/api/task";
 import {reactive} from "vue";
 import oss from "@/utils/oss"
+import {debounce} from "@/utils/utils";
 
 const task_form = reactive({
   taskName: '',
@@ -119,6 +120,28 @@ const task_form = reactive({
   executableFileList:[],
   requirementDescriptionFileList:[]
 })
+const validStart = debounce(function (rule,value,callback) {
+  // ElMessage.error('任务开始时间不得早于当前时间')
+  if(task_form.taskStartTime <new Date().getTime() - 60*60*24*1000)
+  {
+    callback(new Error('任务开始时间不得早于当前日期'))
+  }
+  callback()
+},100)
+const validEnd = function (rule, value,callback)  {
+  if(task_form.taskEndTime <= task_form.taskStartTime)
+  {
+    callback(new Error('任务结束时间不得早于开始时间'))
+  }
+  callback()
+}
+const validFiles = function (rule,value,callback) {
+  if(task_form.executableFileList.length === 0 || task_form.requirementDescriptionFileList.length === 0)
+  {
+    callback(new Error('请上传相关文件'))
+  }
+  callback()
+}
 const rules = reactive({
   taskName: [
     {
@@ -151,6 +174,11 @@ const rules = reactive({
       required: true,
       message: '请选择任务开始时间，注意不要早于当前时间',
       trigger: 'change'
+    },
+    {
+      trigger: 'change',
+      type:'date',
+      validator:validStart
     }
   ],
   taskEndTime:[
@@ -158,6 +186,11 @@ const rules = reactive({
       required: true,
       message: '请选择任务结束时间',
       trigger: 'change'
+    },
+    {
+      trigger: 'change',
+      type:'date',
+      validator:validEnd
     }
   ],
   taskType: [
@@ -165,6 +198,13 @@ const rules = reactive({
       required: true,
       message: '请选择测试类型',
       trigger: 'change'
+    }
+  ],
+  executableFileList:[
+    {
+      required:true,
+      validator:validFiles,
+      trigger:'blur'
     }
   ]
 })

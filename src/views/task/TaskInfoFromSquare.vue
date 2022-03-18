@@ -44,6 +44,7 @@ import {ElMessage} from "element-plus";
 import {acceptTask} from "@/api/task";
 import {employeeTaskDetail} from "@/api/square";
 import {employerTaskDetail} from "@/api/square";
+import {visitorTaskDetail} from "@/api/square";
 import {parseTime} from "@/utils/utils";
 
 export default {
@@ -63,8 +64,8 @@ export default {
         // taskIntroduction: '这是一个测试任务',
       },
       role:window.localStorage.getItem("role"),
-      isSelected: false,
-      isAble: true
+      isSelected: 0,
+      isAble: !this.isSelected
     }
   },
   mounted() {
@@ -76,11 +77,11 @@ export default {
         {
           this.task = res.task
           this.isSelected = res.isSelected
-          this.isAble= this.task.taskState === 0 && this.role === '1'
+          this.isAble= this.task.taskState === 0 && this.isSelected === 0
         }
       })
     }
-    else if(this.role === '0')
+    else if(this.role === '0' || this.role === '2')
     {
       employerTaskDetail({taskId:this.taskId})
       .then(res => {
@@ -94,6 +95,18 @@ export default {
         }
       })
     }
+    else {
+      visitorTaskDetail({taskId:this.taskId})
+      .then(res => {
+        if(res.response.code%100 === 0)
+        {
+          this.task = res.task
+        }
+        // else {
+        //   ElMessage.error(res.response.message)
+        // }
+      })
+    }
   },
   components: {
     Edit
@@ -104,24 +117,22 @@ export default {
       acceptTask({taskId:this.taskId})
       .then(res => {
         console.log(res)
-        if(res.status === 500){
+        if(res.response.code%100 === 0){
           this.$router.push("/taskEnrollSucceed")
-          // console.log(res.response.message)
-          // console.log(res.data)
-
         }
         else {
-          if(res.response.code === 2)
-          {
             ElMessage.error(res.response.message);
-            console.log(res.response.message)
-          }
-
         }
       })
     },
     showEnrollError(){
-      ElMessage.error('非常抱歉，报名已经结束，看看其他项目吧');
+      if(this.task.taskState === 1){
+        ElMessage.error('非常抱歉，报名已经结束，看看其他项目吧');
+      }
+      else if(this.isSelected === 1)
+      {
+        ElMessage.error('你已经报名了该项目哦，请前往个人中心查看')
+      }
     }
   }
 }

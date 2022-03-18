@@ -2,6 +2,7 @@ import axios from "axios"
 // import axiosHttp from "@/api/http"
 import {TASK_MODULE} from "@/api/_prefix";
 import {EMPLOYER_MODULE} from "@/api/_prefix";
+import {EMPLOYEE_MODULE} from "@/api/_prefix";
 // import {getCurrentInstance} from "vue";
 import JSONBIG from 'json-bigint'
 axios.interceptors.request.use(
@@ -28,7 +29,6 @@ axios.defaults.transformResponse = [
 
     }
 ]
-// const {proxy} = getCurrentInstance();
 /**
  * 发布任务 POST /task/publishTask
  * @param payload
@@ -62,12 +62,13 @@ export const acceptTask = payload => {
             return res.data
         })
     // return Promise.resolve({
-    //     "code":1,
-    //     "msg":"报名成功",
-    //     "data":{
-    //         "token":token,
-    //         "taskId":taskId
-    //     }
+    //         "taskId":taskId,
+    //     "response":
+    //         {
+    //             "code":500,
+    //             "message":'报名成功'
+    //         }
+    //
     // })
 }
 
@@ -102,4 +103,17 @@ export const employerBrowserTaskDetail = payload =>{
     //         "endTime":'2022-3-5'
     //     }
     // })
+}
+
+/**
+ * 接包方在个人中心查看任务详情 GET /employee/browserTaskDetail
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const employeeBrowserTaskDetail = payload => {
+    const{taskId} = payload
+    return axios.get(`${EMPLOYEE_MODULE}/browserTaskDetail?taskId=${taskId}`)
+        .then(res => {
+            return res.data
+        })
 }

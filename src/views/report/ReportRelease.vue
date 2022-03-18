@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex;justify-content: center;text-align: center">
-  <el-card style="width: 80%">
+  <el-card style="width: 70%;padding-left: 50px">
     <template #header>
       <span style="font-weight: bolder;font-size:x-large">测试报告提交</span>
     </template>
@@ -27,12 +27,12 @@
           <el-input v-model="report_form.defectExplain" :rows="3" type="textarea" />
         </el-form-item>
         <el-form-item label="缺陷复现步骤" prop="defectReproductionStep">
-          <el-input v-model="report_form.defectReproductionStep" :rows="2" type="textarea" />
+          <el-input v-model="report_form.defectReproductionStep" :rows="2" type="textarea" placeholder="从应用启动到缺陷出现的操作步骤"/>
         </el-form-item>
         <el-form-item label="测试设备信息" prop="testEquipmentInformation">
-          <el-input v-model="report_form.testEquipmentInformation" placeholder="从应用启动到缺陷出现的操作步骤"></el-input>
+          <el-input v-model="report_form.testEquipmentInformation" ></el-input>
         </el-form-item>
-        <el-form-item label="缺陷应用截图" required>
+        <el-form-item label="缺陷应用截图" prop="defectPictureList">
           <el-upload
             action=""
             show-file-list
@@ -73,6 +73,13 @@ const report_form = reactive({
   defectReproductionStep:'',
   testEquipmentInformation:''
 })
+const validPics = function (rule,value,callback) {
+  if(report_form.defectPictureList.length === 0)
+  {
+    callback(new Error('请上传缺陷应用截图'))
+  }
+   callback()
+}
 
 const rules = reactive({
   reportName:[
@@ -121,8 +128,15 @@ const rules = reactive({
       trigger:'blur'
     }
   ],
-})
-
+      defectPictureList:[
+        {
+          required:true,
+          validator:validPics,
+          trigger:'blur'
+        }
+      ]
+},
+)
 export default {
   name: "ReportRelease",
   data(){
@@ -161,10 +175,9 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid =>{
         if (valid){
-          const token = window.localStorage.getItem("token")
-          publishReport({testReport: report_form,token:token,taskId:this.taskId})
+          publishReport({testReport: report_form,taskId:this.taskId})
           .then(res =>{
-        if(res.response.code === 0)
+        if(res.response.code%100 === 0)
         {
           console.log(res.response.message)
           this.$router.push("/reportReleaseSucceed")

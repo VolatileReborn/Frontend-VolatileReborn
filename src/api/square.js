@@ -27,7 +27,7 @@ axios.defaults.transformResponse = [
 ]
 
 /**
- * 浏览任务广场 GET /square/browserTasks
+ * 用户浏览任务广场 GET /square/browserTasks
  * @returns {Promise<{msg: string, code: number, data: {taskList: [{workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}, {workerNumLeft: number, taskType: number, taskName: string, workerNumTotal: number, taskId: number, taskStartTime: string, taskEndTime: string}]}}>}
  */
 export const browserTasks = () => {
@@ -49,6 +49,17 @@ export const browserTasks = () => {
     // })
 
 }
+
+/**
+ * 游客浏览任务广场 GET /square/visitorBrowserTasks
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const visitorBrowserTasks = () => {
+    return axios.get(`${SQUARE_MODULE}/visitorBrowserTasks`)
+        .then(res =>  {
+            return res.data
+        })
+}
 /**
  * 接包方浏览大厅中的具体任务 GET /square/employeeTaskDetail
  * 报告发布页也使用了该接口
@@ -62,24 +73,23 @@ export const employeeTaskDetail = payload =>{
             return res.data
         })
     // return Promise.resolve({
-    //     "code":1,
-    //     "message":"接包方浏览任务",
-    //     "data":{
-    //         "task":{
-    //             taskId: 0,
-    //             taskName: 'test_task',
-    //             taskType: 0,
-    //             workerNumTotal: 10,
-    //             workerNumLeft: 5,
-    //             taskStartTime: '2022-3-1',
-    //             taskEndTime: '2022-5-3',
-    //             taskState: true,
-    //             taskIntroduction: '这是一个测试任务',
-    //         },
-    //         "isSelected":false,
-    //         "token":token,
-    //         "taskId":taskId
-    //     }
+    //     "response":{
+    //         "code":100,
+    //         "message":"接包方浏览任务",
+    //     },
+    //     "task": {
+    //         taskId: 0,
+    //         taskName: 'test_task',
+    //         taskType: 0,
+    //         workerNumTotal: 10,
+    //         workerNumLeft: 5,
+    //         taskStartTime: '2022-3-1',
+    //         taskEndTime: '2022-5-3',
+    //         taskState: 1,
+    //         taskIntroduction: '这是一个测试任务',
+    //     },
+    //     "isSelected":0,
+    //     "taskId":taskId
     // })
 }
 
@@ -113,4 +123,35 @@ export const employerTaskDetail = payload => {
     //     }
     // })
 
+}
+
+/**
+ * 未登录游客查看任务广场中的具体任务
+ * @param payload
+ * @returns {Promise<{data: {task: {workerNumLeft: number, taskType: number, taskState: boolean, taskName: string, workerNumTotal: number, taskId, taskStartTime: string, taskEndTime: string, taskIntroduction: string}, response: {code: number, message: string}}}>}
+ */
+export const visitorTaskDetail = payload => {
+    const {taskId} = payload
+    return axios.get(`${SQUARE_MODULE}/taskDetail?taskId=${taskId}`)
+        .then(res => {
+            res.data
+        })
+    // return Promise.resolve({
+    //         "response":{
+    //             "code": 700,
+    //             "message":'获取数据成功'
+    //         },
+    //         "task":{
+    //             taskId: taskId,
+    //             taskName: 'test_task',
+    //             taskType: 0,
+    //             workerNumTotal: 10,
+    //             workerNumLeft: 5,
+    //             taskStartTime: '2022-3-1',
+    //             taskEndTime: '2022-5-3',
+    //             taskState: true,
+    //             taskIntroduction: '这是一个测试任务',
+    //         }
+    //
+    // })
 }

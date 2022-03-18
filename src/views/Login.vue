@@ -104,7 +104,8 @@ export default{
         if(this.form.username !== "" && this.form.phonenumber !== "" && this.form.userpwd !== "" && this.form.seconduserpwd !== "") {
           if (this.form.userpwd !== this.form.seconduserpwd) {
             ElMessage.error('两次输入密码不一致！')
-          } else if(!(/^([\d]{11})$/.test(this.form.phonenumber))){
+          } else
+            if(!(/^([\d]{11})$/.test(this.form.phonenumber))){
 				ElMessage.error('手机号必须为11位数字！')
 			}  
 			else {
@@ -122,6 +123,7 @@ export default{
                     this.$router.push("/registerSucceed")
                   } else {
                     console.log(res.response.message)
+                    ElMessage.error(res.response.message)
                   }
                 });
           }
@@ -134,15 +136,13 @@ export default{
       handleLogin(){
         if (this.form.phonenumber !== "" && this.form.userpwd !== "") {
           login({
-			
             phone_number: this.form.phonenumber,
             password: Encrypt(this.form.userpwd)
           }).then(res => {
             console.log(res)
             if (res.response.code%100 === 0) {
               // console.log(res.msg)
-              // console.log(res.data)
-
+              // console.log(res.data
               window.localStorage.setItem("token", res.token)
               window.localStorage.setItem("nickname", res.nickname)
               window.localStorage.setItem("role", res.role)
@@ -155,10 +155,9 @@ export default{
                   this.$router.push("/taskSquare")
                   this.reload()
                 },
-
               })
             } else {
-              console.log(res.response.message)
+              ElMessage.error(res.response.message)
             }
           })
         }else {
