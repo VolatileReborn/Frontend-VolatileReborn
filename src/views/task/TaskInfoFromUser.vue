@@ -58,10 +58,10 @@
 
           </el-col>
         </el-row>
-        <el-table :data="task.reportList" height="250" style="width:1500px;margin-top: 10px" stripe border highlight-current-row @current-change="goReport">
-          <el-table-column type="index" width="50"></el-table-column>
-          <el-table-column prop="reportId" label="报告ID" width="180" />
-          <el-table-column prop="workerId" label="测试工人ID" width="180" />
+        <el-table :data="task.reportList" height="250" style="width:1500px;margin-top: 10px;text-align: center" stripe border highlight-current-row @current-change="goReport">
+          <el-table-column type="index" width="100" />
+          <el-table-column prop="reportId" label="报告ID" width="200" />
+          <el-table-column prop="workerId" label="测试工人ID" width="200" />
         </el-table>
       </div>
     </el-card>
@@ -80,16 +80,6 @@ import oss from "@/utils/oss"
 import {parseTime} from "@/utils/utils";
 import {ref} from "vue"
 import {ElMessage} from "element-plus";
-const goReport = (val) =>{
-  console.log(val)
-  this.$router.push({
-    path:"/reportInfo",
-    params:{
-      taskId:this.taskId,
-      reportId:val.reportId
-    }
-  })
-}
 
 const count = ref(0);
 const load = () => {
@@ -168,7 +158,16 @@ export default {
             console.log(this.docName)
           })
     },
-    goReport,
+    goReport(val){
+      console.log(val.reportId)
+      this.$router.push({
+        name:"ReportInfo",
+        params:{
+          taskId:this.taskId,
+          reportId:val.reportId
+        }
+      })
+    },
     goRelease(){
       this.$router.push("/reportRelease/"+this.taskId)
     },
@@ -225,8 +224,8 @@ export default {
           this.task.executableFileList = res.executableFileList
           this.task.taskName = res.taskName
           this.task.taskIntroduction = res.taskIntroduction
-          this.task.taskStartTime = res.beginTime
-          this.task.taskEndTime = res.endTime
+          this.task.taskStartTime = res.taskStartTime
+          this.task.taskEndTime = res.taskEndTime
           this.task.isSubmitted = res.isSubmitted
           this.task.reportId = res.reportId
         }

@@ -1,6 +1,6 @@
 <template>
   <div style="display:flex;text-align: center;justify-content: center">
-    <div style="margin-top: 50px;font-weight: bolder;font-size: xx-large">注   册   成   功</div>
+    <div style="padding-top: 50px;font-weight: bolder;font-size: xx-large">注   册   成   功</div>
   </div>
   <el-result>
     <template #icon>

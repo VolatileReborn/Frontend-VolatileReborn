@@ -1,6 +1,5 @@
 <template>
-  <el-result
-     style="margin-top: 100px">
+  <el-result style="padding-top:150px">
     <template #icon>
       <img src="../../assets/success.png">
     </template>

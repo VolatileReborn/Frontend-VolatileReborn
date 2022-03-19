@@ -42,10 +42,9 @@ export const publishTask = payload => {
         })
     // return Promise.resolve({
     //    "response":{
-    //        "code":0,
+    //        "code":100,
     //        "message":'任务发布成功'
     //    },
-    //     "token":token,
     //     "task":task
     // })
 }

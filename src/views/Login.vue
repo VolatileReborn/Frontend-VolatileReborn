@@ -151,6 +151,7 @@ export default{
               ElMessage({
                 message: "登录成功",
                 type: 'success',
+                duration:1000,
                 onClose: () => {
                   this.$router.push("/taskSquare")
                   this.reload()
