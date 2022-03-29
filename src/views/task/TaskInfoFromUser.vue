@@ -10,7 +10,8 @@
         <div class="card_header">
           <span style="font-size: larger">{{task.taskName}}</span>
           <div class="header_tags">
-            <el-tag class="header_tag" type="warning">竞标中</el-tag>
+            <el-tag v-if="task.taskState === 0 && task.workerNumLeft > 0" class="header_tag" type="warning">竞标中</el-tag>
+            <el-tag v-if="task.taskState === 1 || task.workerNumLeft === 0" class="header_tag" type="info">竞标结束</el-tag>
             <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>
             <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>
           </div>
@@ -20,7 +21,6 @@
         <div>发布日期 ： {{ parseTime(task.taskStartTime)}}</div>
         <div style="margin-top: 5px">结束日期 ： {{parseTime(task.taskEndTime)}}</div>
         <div style="margin-top: 5px">参与人员 ： 剩余 <span style="font-weight: bold;color:#409efc ">{{task.workerNumLeft}}</span>  人  <el-divider direction="vertical" ></el-divider>  总需  <span style="font-weight: bold;color:#409efc ">{{task.workerNumTotal}}</span> 人</div>
-      </div>
       <div class="need_information">
         <div style="display: flex;flex-direction: row;margin-top:20px">
           <el-icon color="#409efc" :size="30">
@@ -38,31 +38,56 @@
           <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">附件下载</div>
         </div>
           <div style="display: flex;flex-direction: row">
-          <a :href="exeUrl" download="待测应用可执行文件">
+<!--          <a :href="exeUrl" download="待测应用可执行文件">-->
             <el-button type="text" @click="downloadExe">一、点击下载待测应用可执行文件</el-button>
-          </a>
-            <a :href="docUrl" download="测试需求描述文件" style="margin-left: 10px">
+<!--          </a>-->
+<!--            <a :href="docUrl" download="测试需求描述文件" style="margin-left: 10px">-->
           <el-button type="text" @click="downloadDoc">二、点击下载测试需求描述文件</el-button>
-            </a>
+<!--            </a>-->
             <div v-if="this.role === '0'">
               <el-button v-if="isAble" type="danger" round style="margin-left: 600px" size="large" @click="finish()" >结束任务</el-button>
             </div>
           </div>
       </div>
-      <div ><el-button v-if="role === '1'" type="danger" style="margin-right:500px" @click="goRelease">提交报告</el-button></div>
+      <div v-if="role === '1'" style="position: relative;margin-left: 1000px" >
+        <el-button  v-if="task.isSubmitted === 0" type="danger"  @click="goRelease">提交报告</el-button>
+        <el-button  v-if="task.isSubmitted === 1" type="primary"  @click="goReportInfo">我的报告</el-button>
+      </div>
+      </div>
       <el-divider ><el-icon><star-filled /></el-icon></el-divider>
-      <div class="report_container" v-if="role === '0' || role === '2'">
+      <div class="report_container" >
         <el-row>
           <el-col :span="15"><span style="font-weight: bolder">报告展示</span></el-col>
           <el-col :span="5">
-
           </el-col>
         </el-row>
-        <el-table :data="task.reportList" height="250" style="width:1500px;margin-top: 10px;text-align: center" stripe border highlight-current-row @current-change="goReport">
-          <el-table-column type="index" width="100" />
-          <el-table-column prop="reportId" label="报告ID" width="200" />
-          <el-table-column prop="workerId" label="测试工人ID" width="200" />
+        <el-table :data="task.reportList"
+                  height="250"
+                  style="width:100%;margin-top: 10px;text-align: center"
+                  stripe
+                  border
+                  size="large"
+                  highlight-current-row
+                  type-layout="auto">
+          <el-table-column type="index" width="100" align="center" />
+          <el-table-column prop="reportId" label="报告ID"  align="center"/>
+          <el-table-column label="测试工人ID" align="center" >
+            <template #default="scope">
+              <div style="display: flex;align-items: center;justify-content: center">
+                <el-icon><Avatar /></el-icon>
+                <span style="margin-left: 10px;">{{scope.row.workerId}}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template #default="scope">
+            <el-button size="small" type="primary" @click="goReport(scope.row.reportId)">查看报告</el-button>
+            </template>
+          </el-table-column>
         </el-table>
+      <div class="relation_container" id="my_graph">
+
+      </div>
       </div>
     </el-card>
   </div>
@@ -72,14 +97,18 @@
 import {FolderChecked} from "@element-plus/icons-vue"
 import {Edit} from "@element-plus/icons-vue"
 import {StarFilled} from "@element-plus/icons-vue"
+import {Avatar} from "@element-plus/icons-vue"
 import {employerBrowserTaskDetail} from "@/api/task";
 import {employeeBrowserTaskDetail} from "@/api/task";
+import  {adminGetTaskDetail} from "@/api/usercenter";
 import {browserReports} from "@/api/report";
 import {browserChecked} from "@/api/usercenter";
 import oss from "@/utils/oss"
 import {parseTime} from "@/utils/utils";
 import {ref} from "vue"
 import {ElMessage} from "element-plus";
+import * as echarts from 'echarts'
+
 
 const count = ref(0);
 const load = () => {
@@ -98,15 +127,14 @@ export default {
         workerNumLeft: 0,
         taskStartTime: 0,
         taskEndTime: 0,
-        taskState: true,
+        taskState: ref(),
         taskIntroduction: '',
         requirementDescriptionFileList:[],
         executableFileList:[],
         is_selected: false,
-        //todo:reportList数据获取
         reportList:[
         ],
-        isSubmitted:0,
+        isSubmitted:ref(),
         reportId:0
       },
       isAble: false,
@@ -121,6 +149,7 @@ export default {
     FolderChecked,
     Edit,
     StarFilled,
+    Avatar
     // ReportItem
   },
   methods: {
@@ -137,34 +166,59 @@ export default {
       }
       if(this.role === '2')
       {
-        this.$router.push("userCenterOfManager")
+        this.$router.push("/userCenterOfManager")
       }
     },
     downloadExe(){
-      oss.ossGetDownloadUrl(this.task.executableFileList[0].fileURL.substr(49))
-      .then(res => {
-        this.exeUrl = res.downloadURL
-        this.exeName = this.task.executableFileList[0].fileName
-        console.log(this.exeUrl)
-        console.log(this.exeName)
+      console.log('开始下载')
+      console.log(this.task.executableFileList)
+      this.task.executableFileList.forEach(item => {
+        oss.ossGetDownloadUrl(item.fileURL.substr(49))
+            .then( res => {
+              const url = res.downloadURL
+              console.log(url)
+              const iframe = document.createElement("iframe")
+              iframe.style.display = "none"
+              iframe.style.height=0
+              iframe.src=url
+              document.body.appendChild(iframe)
+              setTimeout(() => {
+                iframe.remove()
+              },1000)
+            })
       })
     },
     downloadDoc(){
-      oss.ossGetDownloadUrl(this.task.requirementDescriptionFileList[0].fileURL.substr(49))
-          .then(res => {
-            this.docUrl = res.downloadURL
-            this.docName = this.task.requirementDescriptionFileList[0].fileName
-            console.log(this.docUrl)
-            console.log(this.docName)
-          })
+      this.task.requirementDescriptionFileList.forEach(item => {
+        oss.ossGetDownloadUrl(item.fileURL.substr(49))
+        .then( res => {
+          const url = res.downloadURL
+          const iframe = document.createElement("iframe")
+          iframe.style.display = "none"
+          iframe.style.height=0
+          iframe.src=url
+          document.body.appendChild(iframe)
+          setTimeout(() => {
+            iframe.remove()
+          },1000)
+        })
+      })
     },
-    goReport(val){
-      console.log(val.reportId)
+    goReport(reportId){
       this.$router.push({
         name:"ReportInfo",
         params:{
           taskId:this.taskId,
-          reportId:val.reportId
+          reportId:reportId
+        }
+      })
+    },
+    goReportInfo(){
+      this.$router.push({
+        name:"ReportInfo",
+        params:{
+          taskId:this.taskId,
+          reportId:this.task.reportId
         }
       })
     },
@@ -193,8 +247,25 @@ export default {
     }
   },
   mounted() {
-    if (this.role === '0') {
+    if (this.role === '0' ) {
       employerBrowserTaskDetail({taskId: this.taskId})
+          .then(res => {
+            if (res.response.code % 100 === 0) {
+              console.log(res.response.message)
+              this.task.workerNumTotal = res.workerNumTotal
+              this.task.taskState = res.taskState
+              this.task.workerNumLeft = res.workerNumLeft
+              this.task.requirementDescriptionFileList = res.requirementDescriptionFileList
+              this.task.executableFileList = res.executableFileList
+              this.task.taskName = res.taskName
+              this.task.taskIntroduction = res.taskIntroduction
+              this.task.taskStartTime = res.beginTime
+              this.task.taskEndTime = res.endTime
+            }
+          })
+    }
+    if (this.role === '2' ) {
+      adminGetTaskDetail({taskId: this.taskId})
           .then(res => {
             if (res.response.code % 100 === 0) {
               console.log(res.response.message)
@@ -235,19 +306,48 @@ export default {
         }
       })
     }
-      if(this.role === '0' || this.role === '2')
-      {
-        browserReports({taskId:this.taskId})
-        .then(res => {
-          if(res.response.code % 100 === 0)
-          {
-            this.task.reportList = res.reportList
-            this.isAble= this.task.taskState === 0 && this.role === '0'
-          }
-        })
+        browserReports({taskId: this.taskId})
+            .then(res => {
+              if (res.response.code % 100 === 0) {
+                this.task.reportList = res.reportList
+                this.isAble = this.task.taskState === 0 && this.role === '0'
+              }
+            })
+        var myChart = echarts.init(document.getElementById("my_graph"),'dark');
+        window.onresize = function () {
+          myChart.resize()// 自适应宽高
+        }
+        var option = {
+          title: {
+            text: '报告相似度关系展示图'
+          },
+          tooltip: {}, // 提示框
+          series: [
+            {
+              type:"graph",
+              layout:"none",
+              roam:true, // 鼠标缩放
+              color:[], // 自定义调色盘
+              data:[],
+              links:[],
+              categories:[],
+              label:{}, // 节点label显示
+              lineStyle:{
+                color:'source',
+                curveness:0.3
+              },
+              emphasis:{
+                focus:'adjacency',
+                lineStyle: {
+                  width:10
+                }
+              }
+            }
+          ]
+        };
+        myChart.setOption(option);
       }
 
-    }
 
 }
 </script>
@@ -274,6 +374,7 @@ export default {
   margin-left: 5px;
   display: flex;
   flex-direction: column;
+  padding-left: 20px;
 }
 .header_tags{
   display: flex;
@@ -283,5 +384,11 @@ export default {
 .information{
   display: flex;
   flex-direction: column;
+  padding-left: 20px;
+}
+.relation_container{
+  margin-top: 10px;
+  width:100%;
+  height:400px;
 }
 </style>

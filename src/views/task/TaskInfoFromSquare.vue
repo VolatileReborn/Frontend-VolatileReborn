@@ -81,7 +81,7 @@ export default {
         }
       })
     }
-    else if(this.role === '0' || this.role === '2')
+    else if(this.role === '0' )
     {
       employerTaskDetail({taskId:this.taskId})
       .then(res => {
@@ -102,9 +102,9 @@ export default {
         {
           this.task = res.task
         }
-        // else {
-        //   ElMessage.error(res.response.message)
-        // }
+        else {
+          ElMessage.error(res.response.message)
+        }
       })
     }
   },

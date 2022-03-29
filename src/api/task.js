@@ -72,7 +72,7 @@ export const acceptTask = payload => {
 }
 
 /**
- * 发包方在个人中心查看报告详情 GET /employer/browserTaskDetail
+ * 发包方在个人中心查看任务详情 GET /employer/browserTaskDetail
  * @param payload
  * @returns {Promise<AxiosResponse<any>>}
  */
@@ -84,23 +84,52 @@ export const employerBrowserTaskDetail = payload =>{
         })
 
     // return Promise.resolve({
-    //     "code":1,
-    //     "msg":'获取任务数据成功',
-    //     "data":{
-    //         "token":token,
-    //         "taskId":taskId,
-    //         "workerNumTotal": 20,
-    //         "taskState":true,
-    //         "workerNumLeft": 5,
-    //         "requirementDescriptionFileList":[
-    //             {"fileName": "G-Git.pdf", "fileURL": "https://se3-volatile.oss-cn-beijing.aliyuncs.com/files/20220305/20220305015239_g5m5.pdf"}],
-    //         "executableFileList":[{"fileName": "Firefox-latest.exe", "fileURL": "https://se3-volatile.oss-cn-beijing.aliyuncs.com/files/20220305/20220305015153_m51l.exe"}],
-    //         "taskName":'测试任务',
-    //         "taskIntroduction":'测试任务简介',
-    //         "type": 0,
-    //         "beginTime": '2022-3-5',
-    //         "endTime":'2022-3-5'
-    //     }
+    //     "similarity": 11,
+    //     "taskDifficulty": 54,
+    //     "taskUrgency": "qui dolore",
+    //     "taskDeviceRequirements": [
+    //         {
+    //             "Android": false,
+    //             "Linux": true,
+    //             "IOS": true
+    //         }
+    //     ],
+    //     "beginTime": 24365288336,
+    //     "requirementDescriptionFileList": [
+    //         {
+    //             "fileName": "口保保二林入",
+    //             "fileURL": "http://nqwel.bh/cxascldl"
+    //         },
+    //         {
+    //             "fileName": "价老角",
+    //             "fileURL": "http://ufnfjhlfj.cl/qltuyxlf"
+    //         },
+    //         {
+    //             "fileName": "量气北土达回",
+    //             "fileURL": "http://rekvnuc.mn/zmucm"
+    //         },
+    //         {
+    //             "fileName": "非取称设重改",
+    //             "fileURL": "http://tbyxnwcmg.sb/skmggbgbj"
+    //         }
+    //     ],
+    //     "endTime": 35996875291,
+    //     "response": {
+    //         "message": "laborum proident Duis non",
+    //         "code": -99349848
+    //     },
+    //     "taskState": 87,
+    //     "taskIntroduction": "cillum",
+    //     "taskName": "那完没",
+    //     "executableFileList": [
+    //         {
+    //             "fileName": "民解面你",
+    //             "fileURL": "http://ljec.aw/fvbcxor"
+    //         }
+    //     ],
+    //     "type": -58506106,
+    //     "workerNumTotal": 37,
+    //     "workerNumLeft": 95
     // })
 }
 
@@ -115,4 +144,77 @@ export const employeeBrowserTaskDetail = payload => {
         .then(res => {
             return res.data
         })
+
+    // return new Promise({
+    //     "taskDifficulty": 43,
+    //     "taskUrgency": "aliquip",
+    //     "taskDeviceRequirements": [
+    //         {
+    //             "Linux": false,
+    //             "IOS": false,
+    //             "Android": true
+    //         },
+    //         {
+    //             "Android": true,
+    //             "Linux": true,
+    //             "IOS": true
+    //         },
+    //         {
+    //             "Linux": false,
+    //             "IOS": false,
+    //             "Android": true
+    //         },
+    //         {
+    //             "Android": true,
+    //             "IOS": true,
+    //             "Linux": true
+    //         }
+    //     ],
+    //     "beginTime": 170597701571,
+    //     "requirementDescriptionFileList": [
+    //         {
+    //             "fileName": "术本有设",
+    //             "fileURL": "http://sdupmhxy.ir/bdieeq"
+    //         },
+    //         {
+    //             "fileName": "分十群组始达外",
+    //             "fileURL": "http://kec.mz/wsgu"
+    //         },
+    //         {
+    //             "fileName": "采道且标法",
+    //             "fileURL": "http://ppqtomhdxy.my/xiwyqc"
+    //         },
+    //         {
+    //             "fileName": "进却面",
+    //             "fileURL": "http://ircxzum.ml/hvtpgf"
+    //         }
+    //     ],
+    //     "endTime": 995527581327,
+    //     "response": {
+    //         "message": "aute",
+    //         "code": 76
+    //     },
+    //     "taskState": 44,
+    //     "taskIntroduction": "ullamco minim",
+    //     "taskName": "里史料来九道",
+    //     "executableFileList": [
+    //         {
+    //             "fileName": "据北主你",
+    //             "fileURL": "http://djc.asia/eexskcpfug"
+    //         },
+    //         {
+    //             "fileURL": "http://esdckkd.ev/voujxvbk",
+    //             "fileName": "见维计提建切"
+    //         },
+    //         {
+    //             "fileName": "区保响南今但器",
+    //             "fileURL": "http://psnqqbqy.th/jwsgkkvuxu"
+    //         }
+    //     ],
+    //     "type": 100,
+    //     "workerNumTotal": 71,
+    //     "workerNumLeft": 24,
+    //     "isSubmitted": 69,
+    //     "reportId": 48
+    // })
 }

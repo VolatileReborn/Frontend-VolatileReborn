@@ -65,17 +65,17 @@
             <el-upload
               action=""
               show-file-list
-              accept=".exe,.apk,.jar"
+              accept=".exe,.apk,.jar,.c,.cpp,.py"
               :auto-upload="true"
               :http-request="fnUploadRequest"
               :on-success="handleUploadSuccess1"
               >
               <el-button type="primary" plain>点击上传待测应用可执行文件</el-button>
-              <template #tip>
-                <div style="color:#9A9A9A;font-size: small;margin-left: 5px">
-                请上传.exe,.apk,.jar类型的文件
-                </div>
-              </template>
+<!--              <template #tip>-->
+<!--                <div style="color:#9A9A9A;font-size: small;margin-left: 5px">-->
+<!--                请上传.exe,.apk,.jar类型的文件-->
+<!--                </div>-->
+<!--              </template>-->
             </el-upload>
             <el-upload
                 action=""
@@ -86,11 +86,11 @@
                 :on-success="handleUploadSuccess2"
                 >
               <el-button type="primary" plain >点击上传测试需求描述文件</el-button>
-              <template #tip>
-                <div style="color:#9A9A9A;font-size: small;margin-left: 5px">
-                  请上传.doc,.md,.pdf,.docx类型的文件
-                </div>
-              </template>
+<!--              <template #tip>-->
+<!--                <div style="color:#9A9A9A;font-size: small;margin-left: 5px">-->
+<!--                  请上传.doc,.md,.pdf,.docx类型的文件-->
+<!--                </div>-->
+<!--              </template>-->
             </el-upload>
           </div>
         </el-form-item>

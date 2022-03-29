@@ -126,7 +126,7 @@ export const employerTaskDetail = payload => {
 }
 
 /**
- * 未登录游客查看任务广场中的具体任务
+ * 未登录游客查看任务广场中的具体任务 GET /square/taskDetail
  * @param payload
  * @returns {Promise<{data: {task: {workerNumLeft: number, taskType: number, taskState: boolean, taskName: string, workerNumTotal: number, taskId, taskStartTime: string, taskEndTime: string, taskIntroduction: string}, response: {code: number, message: string}}}>}
  */

@@ -59,7 +59,7 @@ export default {
     }
   },
   mounted(){
-    if(this.role !== null || this.role !== undefined){
+    if(this.role === '1'){
       browserTasks().then(res=>{
         if(res.response.code%100 === 0)
         {
@@ -67,7 +67,6 @@ export default {
           this.taskList = res.taskList
           this.currentTaskList = this.taskList.slice(0,5)
           this.totalPage = this.taskList.length *2;
-          // console.log(this.taskList)
         }
       })
     }

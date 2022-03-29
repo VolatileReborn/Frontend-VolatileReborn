@@ -1,5 +1,6 @@
 import {EMPLOYEE_MODULE} from "@/api/_prefix";
 import {EMPLOYER_MODULE} from "@/api/_prefix";
+import {ADMIN_MODULE} from "@/api/_prefix";
 import axios from "axios";
 import JSONBIG from "json-bigint";
 
@@ -64,7 +65,7 @@ export const employeeBrowserUndertakingTasks = () => {
 //         "msg":"获取数据成功",
 //         "data":{
 //             "token":token,
-//             "taskList":[
+//             "undertakingTaskList":[
 //                 {taskId: 0,taskName: 'test_task',taskType: 0,workerNumTotal: 10,workerNumLeft: 5,taskStartTime: '2022-3-1',taskEndTime: '2022-5-3'},
 //                 {taskId: 1,taskName: 'test_task333',taskType: 1,workerNumTotal: 20,workerNumLeft: 6,taskStartTime: '2022-3-1',taskEndTime: '2022-5-3'},
 //                 {taskId: 2,taskName: 'test_task5',taskType: 0,workerNumTotal: 20,workerNumLeft: 6,taskStartTime: '2022-3-1',taskEndTime: '2022-5-3'},
@@ -83,6 +84,16 @@ export const employeeBrowserUndertakingTasks = () => {
             return res.data
         })
 
+    // return new Promise({
+    //     "response":
+    //         {
+    //             "code":100,
+    //             "message":'获取数据成功'
+    //         },
+    //     "FinishedTaskList":[]
+    // })
+
+
 }
 
 /**
@@ -93,6 +104,43 @@ export const employeeBrowserUndertakingTasks = () => {
  export const browserChecked = payload => {
     const {taskId} = payload;
     return axios.put(`${EMPLOYER_MODULE}/browserChecked`,{taskId})
+        .then(res => {
+            return res.data
+        })
+}
+
+/**
+ * 管理员查看系统所有任务 GET /admin/browserAllTasks
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+ export const adminBrowserAllTasks = () => {
+     return axios.get(`${ADMIN_MODULE}/browserAllTasks`)
+         .then(res =>{
+             return res.data
+         })
+}
+
+/**
+ * 管理员设置推荐规则 POST /admin/setRecommendRule
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const setRecommendRule = payload => {
+     const {rule} = payload
+    return axios.post(`${ADMIN_MODULE}/setRecommendRule`,{rule})
+        .then(res=>{
+            return res.data
+        })
+}
+
+/**
+ * 管理员个人中心获取任务详情
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const adminGetTaskDetail = payload => {
+    const {taskId} = payload
+    return axios.get(`${ADMIN_MODULE}/browserTaskDetail?taskId=${taskId}`)
         .then(res => {
             return res.data
         })

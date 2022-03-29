@@ -2,40 +2,44 @@
   <div class="user-center">
    
     <el-container>
-      <el-header></el-header>
+<!--      <el-header></el-header>-->
       <el-container>
         <el-aside width="200px" >
 <!--          <span style="font-weight:bolder;font-size: larger;margin-left: 25px;font-family: 幼圆,serif">已发布任务</span>-->
           <el-menu
         default-active="3"
-        class="el-menu-vertical-demo"
+        background-color="#545c64"
+        active-text-color="#ffd04b"
+        text-color="#fff"
+        style="height: 90vh"
         @open="handleOpen"
         @close="handleClose"
         @select="handleSelect"
           >
+            <el-menu-item index="0" style="padding-left: 50px">
+              <el-icon :size="80"><Menu /></el-icon>
+              <span style="font-weight: bolder;font-size: x-large">菜单</span>
+            </el-menu-item>
         <el-menu-item index="3">
           <el-icon><location /></el-icon>
           <span>正在进行</span>
         </el-menu-item>
-        
         <el-menu-item index="4">
           <el-icon><management /></el-icon>
           <span>历史任务</span>
         </el-menu-item>
       </el-menu>
         </el-aside>
-        <div>
-        <el-main style="display: flex;flex-direction: column;text-align: center;width:85vw">
-          <div style="margin-top: -20px">
+        <el-main class="main_container">
+          <div >
           <task-item class="task_item_container"
                      v-for="item in taskList"
                      v-bind:task="item"
                      v-bind:key="item.taskId"
-                     style="margin-left:5px;margin-top: 5px"
+                     style="margin-left:50px;margin-top: 5px;width:90%;padding-left: 40px"
                      @click="check_route(item.taskId)"></task-item>
           </div>
         </el-main>
-        </div>
       </el-container>
     </el-container>
 
@@ -43,49 +47,13 @@
   </div>
 </template>
 
-<style scoped>
-.common-layout .el-header {
-  background-color: #C1CBD7;
-  color: var(--el-text-color-primary);
-  text-align: center;
-  line-height: 60px;
-}
-.common-layout .el-footer {
-  line-height: 60px;
-}
 
-.common-layout .el-aside {
-  background-color: #d3dce6;
-  color: var(--el-text-color-primary);
-  text-align: center;
-  line-height: 200px;
-}
-
-.common-layout .el-main {
-  background-color: lightgray;
-  color: var(--el-text-color-primary);
-  text-align: center;
-  line-height: 160px;
-}
-
-.common-layout > .el-container {
-  margin-bottom: 40px;
-}
-
-.common-layout .el-container:nth-child(5) .el-aside,
-.common-layout .el-container:nth-child(6) .el-aside {
-  line-height: 260px;
-}
-
-.common-layout .el-container:nth-child(7) .el-aside {
-  line-height: 320px;
-}
-</style>
 
 
 <script>
 import {Location} from "@element-plus/icons-vue"
 import {Management} from "@element-plus/icons-vue"
+import {Menu} from "@element-plus/icons-vue"
 import {employerBrowserUndertakingTasks} from "@/api/usercenter";
 import {employerBrowserFinishedTasks} from "@/api/usercenter";
 import TaskItem from "@/components/TaskItem";
@@ -139,6 +107,7 @@ export default {
     
   },
   components: {
+    Menu,
     Location,
     Management,
     TaskItem
@@ -157,3 +126,44 @@ export default {
 
 }
 </script>
+<style scoped>
+.common-layout .el-header {
+  background-color: #C1CBD7;
+  color: var(--el-text-color-primary);
+  text-align: center;
+  line-height: 60px;
+}
+.common-layout .el-footer {
+  line-height: 60px;
+}
+
+.common-layout .el-aside {
+  background-color: #d3dce6;
+  color: var(--el-text-color-primary);
+  text-align: center;
+  line-height: 200px;
+}
+
+.common-layout .el-main {
+  background-color: lightgray;
+  color: var(--el-text-color-primary);
+  text-align: center;
+  line-height: 160px;
+}
+
+.common-layout > .el-container {
+  margin-bottom: 40px;
+}
+
+.common-layout .el-container:nth-child(5) .el-aside,
+.common-layout .el-container:nth-child(6) .el-aside {
+  line-height: 260px;
+}
+
+.common-layout .el-container:nth-child(7) .el-aside {
+  line-height: 320px;
+}
+.main_container{
+  background-color: rgba(220,220,220,0.7);
+}
+</style>

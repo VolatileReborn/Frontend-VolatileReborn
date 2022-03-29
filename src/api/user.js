@@ -1,6 +1,31 @@
 import axios from "axios"
 import { USER_MODULE} from "@/api/_prefix";
+import JSONBIG from "json-bigint";
 
+axios.interceptors.request.use(
+    config => {
+        const token = window.localStorage.getItem("token");
+        if(token && token!=="")
+        {
+            config.headers.Authorization = token;
+        }
+        return config
+    },
+    error => {
+        console.log(error)
+        return Promise.reject(error)
+    }
+)
+axios.defaults.transformResponse = [
+    function (data) {
+        const json = JSONBIG ({
+            storeAsString: true
+        })
+        const res = json.parse(data)
+        return res
+
+    }
+]
 
 /**
  * 用户注册 POST /user/register
@@ -48,4 +73,49 @@ export const login = payload => {
     //     }
     //
     // })
+}
+
+/**
+ * 接包方获取用户资料 GET /user/getUserData
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const getProfile = () => {
+    return axios.get(`${USER_MODULE}/getUserData`)
+        .then(res => {
+            return res.data
+        })
+
+    // return new Promise({
+    //     "response":
+    //         {
+    //             "code":100,
+    //             "message":'获取个人资料成功'
+    //         },
+    //     "nickname":'小明',
+    //     "taskFavorList":'???',
+    //     "device":['安卓','ios'],
+    //     "professionalSkill":'擅长的技术'
+    // })
+}
+
+/**
+ * 接包方设置用户资料 POST /user/setUserProfile
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const setProfile = payload => {
+    const {professionalSkill,nickname,taskFavorList,device}  = payload
+    return axios.post(`${USER_MODULE}/setUserProfile`,{professionalSkill,nickname,taskFavorList,device})
+        .then(res => {
+            return res.data
+        })
+
+    // return new Promise({
+    //     "response":
+    //         {
+    //             "code":100,
+    //             "message":'个人资料修改成功'
+    //         }
+    // })
+
 }

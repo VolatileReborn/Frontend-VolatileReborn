@@ -16,6 +16,7 @@ import UserCenterOfManager from "@/views/user/UserCenterOfManager";
 import ReportInfo from "@/views/report/ReportInfo";
 import TaskReleaseSucceed from "@/views/task/TaskReleaseSucceed"
 import TaskFinished from "@/views/user/TaskFinished"
+import ReportCooperate from "@/views/report/ReportCooperate"
 
 const routerHistory = createWebHashHistory();
 const routes = [
@@ -105,6 +106,11 @@ const routes = [
         path: "/taskFinished",
         name: "TaskFinished",
         component: TaskFinished
+    },
+    {
+        path:"/reportCooperate",
+        name:"ReportCooperate",
+        component: ReportCooperate
     }
 ];
 const router = createRouter({

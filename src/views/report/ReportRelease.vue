@@ -40,6 +40,7 @@
             :http-request="fnUploadRequest"
             :on-success="handleUploadSuccess"
             :file-list="fileList"
+            accept=".jpg,.jpeg,.png,.gif"
             list-type="picture">
             <el-button type="primary">点击上传应用截图</el-button>
             <template #tip>

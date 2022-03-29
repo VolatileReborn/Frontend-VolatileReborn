@@ -8,7 +8,7 @@
     <el-card class="box_card" >
       <template #header>
         <div style="display: flex;flex-direction: column">
-          <div><span style="font-weight: bolder;font-size: xx-large">测试报告</span></div>
+          <div><span style="font-weight: bolder;font-size: xx-large">{{ this.taskReport.reportName }}</span></div>
           <div style="font-size: small;color:#9A9A9A" v-if="workerId !== -1">测试工人ID: {{this.workerId}}</div>
         </div>
       </template>
@@ -68,6 +68,7 @@ import {StarFilled} from "@element-plus/icons-vue"
 import {employeeGetReportInfo} from "@/api/report";
 import {employerGetReportInfo} from "@/api/report";
 import {ref} from 'vue'
+import {ElMessage} from "element-plus";
 // import {debounce} from "@/utils/utils";
 //
 // var reviewRes = {}
@@ -89,6 +90,7 @@ export default {
   data() {
     return {
       taskReport: {
+        reportName:'',
         defectExplain:'',
 		defectReproduction:'',
 		testEquipmentInfo:'',
@@ -124,15 +126,19 @@ export default {
       })
           .then(res => {
             if (res.response.code %100 === 0) {
+              console.log(res)
               this.taskReport.defectPictureList = res.defectPictureList
               this.taskReport.defectPictureList.forEach(item => {
                 this.srcList.push(item.fileURL)
               })
               console.log(this.srcList)
+              this.taskReport.reportName = res.taskReport
               this.taskReport.defectExplain = res.defectExplain
               this.taskReport.defectReproduction = res.defectReproduction
               this.taskReport.testEquipmentInfo = res.testEquipmentInfo
-              this.workerId = res.workerId
+            }
+            else{
+              ElMessage.error(res.response.message)
             }
           })
     }
