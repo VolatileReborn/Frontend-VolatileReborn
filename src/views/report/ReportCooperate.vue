@@ -2,7 +2,7 @@
   <el-container style="height: 90vh">
     <el-aside width="40%" style="background-color: rgba(220,220,220,0.7);font-size: larger">
       <el-tag style="position: absolute;left: 10px;font-size: small;margin-top: 10px">协作父报告</el-tag>
-     <el-row style="justify-content: center;margin-top: 50px">
+     <!-- <el-row style="justify-content: center;margin-top: 50px">
        <el-col span="24" style="font-size: larger;font-weight: bolder;font-family: 幼圆">{{parentReport.taskReport}}</el-col>
      </el-row>
       <div style="padding:10px">
@@ -27,7 +27,8 @@
             </div>
           </div></el-col>
       </el-row>
-      </div>
+      </div> -->
+      <report-info-item v-bind:reportInfo="parentReport"></report-info-item>
     </el-aside>
     <el-main style="border: 1px solid #d3dce6">
       <el-tag style="position: absolute;font-size: small;margin-top: -10px">协作子报告</el-tag>
@@ -75,6 +76,7 @@
 import {employeeGetReportInfo} from "@/api/report";
 import {reactive} from "vue"
 import {publishCooperation} from "@/api/report";
+import ReportInfoItem from "@/components/ReportInfoItem"
 import oss from '@/utils/oss'
 const report_form = reactive({
   reportName:'',
@@ -164,6 +166,10 @@ export default {
       rules,
       fileList:[]
   }
+  },
+  components:{
+    
+    ReportInfoItem
   },
   mounted() {
     console.log(this.$route.params)

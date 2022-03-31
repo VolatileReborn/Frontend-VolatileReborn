@@ -1,7 +1,6 @@
 <template>
   <div class="user-center">
     <el-container>
-<!--      <el-header></el-header>-->
       <el-container>
         <el-aside width="200px" >
           <el-menu
@@ -45,7 +44,15 @@
       </el-menu>
         </el-aside>
         <el-main class="main_container">
-          <div v-if="key === 3.1">可协作报告列表<el-button @click="goReportCooperate(2,4)">去协作</el-button> </div>
+          <div v-if="key === 3.1">
+                        <report-item class="report_item_container"
+                             v-for="item in reportList"
+                             v-bind:report="item"
+                             v-bind:key="item.reportId"
+                             style="margin-left:50px;margin-top: 5px;width:90%;padding-left: 40px"
+                             @click="check_route(item.reportId)"></report-item>
+            <el-button @click="goReportCooperate(2,4)">去协作</el-button> 
+          </div>
           <div v-if="key === 3.2">我的协作</div>
          <div v-if="key === 4" >
            <div v-if="change">
@@ -146,6 +153,7 @@ import {Avatar} from "@element-plus/icons-vue"
 import {Promotion} from "@element-plus/icons-vue"
 import {User} from "@element-plus/icons-vue"
 import TaskItem from "@/components/TaskItem";
+import ReportItem from "@/components/ReportItem";
 import {employeeBrowserUndertakingTasks} from "@/api/usercenter";
 import {employeeBrowserFinishedTasks} from "@/api/usercenter";
 import {reactive} from "vue";
@@ -350,7 +358,8 @@ export default {
     Promotion,
     Avatar,
     User,
-    TaskItem
+    TaskItem,
+    ReportItem
   },
   mounted() {
     employeeBrowserUndertakingTasks()

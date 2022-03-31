@@ -170,7 +170,21 @@ export const getThisCooperation = payload => {
  */
 export const scoreReport = payload => {
     const {score,reportId,comment} = payload
-    return axios.post(`${EMPLOYEE_MODULE}/scoreReport`,{score,reportId,comment})
+    return axios.post(`${REPORT_MODULE}/scoreReport`,{score,reportId,comment})
+        .then(res => {
+            return res.data
+        })
+}
+
+
+/**
+ * 查看测试报告评价和评分 GET /api/report/showReportScore
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+ export const showReportScore = payload => {
+    const {reportId} = payload;
+    return axios.get(`${REPORT_MODULE}/showReportScore?reportId=${reportId}`)
         .then(res => {
             return res.data
         })
