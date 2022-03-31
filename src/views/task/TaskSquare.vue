@@ -17,7 +17,7 @@
           v-bind:key="item.taskId"
           @click="check_route(item.taskId)"></task-item>
         </div>
-        <div style="margin: auto;padding-top:5px">
+        <div style="margin: auto">
           <el-pagination
               hide-on-single-page
               v-model:currentPage="currentPage"
@@ -40,6 +40,7 @@
 <script>
 import TaskItem from "@/components/TaskItem";
 import {Upload} from "@element-plus/icons-vue"
+import {ElMessage} from 'element-plus'
 import {browserTasks} from "@/api/square";
 import {visitorBrowserTasks} from "@/api/square";
 import {ref} from "vue"
@@ -68,6 +69,9 @@ export default {
           this.currentTaskList = this.taskList.slice(0,5)
           this.totalPage = this.taskList.length *2;
         }
+        else {
+          ElMessage.error(res.response.message)
+        }
       })
     }
    else {
@@ -77,6 +81,9 @@ export default {
          this.taskList = res.taskList
          this.currentTaskList = this.taskList.slice(0,5)
          this.totalPage = this.taskList.length *2;
+       }
+       else {
+         ElMessage.error(res.response.message)
        }
      })
     }

@@ -45,15 +45,21 @@
         </el-aside>
         <el-main class="main_container">
           <div v-if="key === 3.1">
-                        <report-item class="report_item_container"
-                             v-for="item in reportList"
-                             v-bind:report="item"
-                             v-bind:key="item.reportId"
-                             style="margin-left:50px;margin-top: 5px;width:90%;padding-left: 40px"
-                             @click="check_route(item.reportId)"></report-item>
-            <el-button @click="goReportCooperate(2,4)">去协作</el-button> 
+            <report-item class="task_item_container"
+                         v-for="item in reportList"
+                         v-bind:report="item"
+                         v-bind:key="item.reportId"
+                         style="margin-left:50px;margin-top: 5px;width:90%;padding-left: 40px"
+                         @click="goReportCooperate(item.taskId,item.reportId)"></report-item>
           </div>
-          <div v-if="key === 3.2">我的协作</div>
+          <div v-if="key === 3.2">
+            <report-item class="task_item_container"
+                         v-for="item in reportList"
+                         v-bind:report="item"
+                         v-bind:key="item.reportId"
+                         style="margin-left:50px;margin-top: 5px;width:90%;padding-left: 40px"
+                         @click="goReportInfoCooperation(item.taskId,item.reportId)"></report-item>
+          </div>
          <div v-if="key === 4" >
            <div v-if="change">
            <h5 style="font-family: 幼圆;font-size: x-large;margin-left: 60px">修改个人信息</h5>
@@ -108,9 +114,12 @@
            <div v-else style="display: flex;justify-content: center">
              <el-card class="info_card">
                <template #header>
-                 <el-icon :size="25" color="cadetblue"><User /></el-icon>
-                 <span style="font-size: larger;font-weight: bolder">用户个人信息</span>
-                 <el-button plain type="primary" style="margin-left: 700px" @click="changeInfo">修改</el-button>
+
+                 <div style="flex-direction: row;justify-content: center">
+                   <el-icon :size="25" color="cadetblue"><User /></el-icon>
+                    <span style="font-size: larger;font-weight: bolder;">用户个人信息</span>
+                   <el-button plain type="primary" style="margin-left: 600px" @click="changeInfo">修改</el-button>
+                 </div>
                </template>
                <el-descriptions column="2" style="font-size: large" size="large">
                  <el-descriptions-item label="用户名">{{info_form.username}}</el-descriptions-item>
@@ -126,6 +135,8 @@
                     <el-tag v-if="info_form.devices.includes('android')" type="danger" >Android</el-tag>
                    <el-tag v-if="info_form.devices.includes('ios')" type="warning" style="margin-left: 5px" >IOS</el-tag>
                    <el-tag v-if="info_form.devices.includes('linux')" type="success" style="margin-left: 5px" >Linux</el-tag>
+                   <el-tag v-if="info_form.devices.includes('windows')" type="primary" style="margin-left: 5px" >Windows</el-tag>
+                   <el-tag v-if="info_form.devices.includes('harmonyos')" type="info" style="margin-left: 5px" >HarmonyOS</el-tag>
                  </el-descriptions-item>
                </el-descriptions>
              </el-card>
@@ -136,7 +147,7 @@
                              v-for="item in taskList"
                              v-bind:task="item"
                              v-bind:key="item.taskId"
-                             style="margin-left:50px;margin-top: 5px;width:90%;padding-left: 40px"
+                             style="margin-top: 5px;height: 13.5vh;margin-left: 20px"
                              @click="check_route(item.taskId)"></task-item>
           </div>
         </el-main>
@@ -156,19 +167,19 @@ import TaskItem from "@/components/TaskItem";
 import ReportItem from "@/components/ReportItem";
 import {employeeBrowserUndertakingTasks} from "@/api/usercenter";
 import {employeeBrowserFinishedTasks} from "@/api/usercenter";
+import {getAllCooperation} from "@/api/report";
+import {getCooperationList} from "@/api/report";
 import {reactive} from "vue";
 import {ref} from 'vue'
 import {getProfile} from "@/api/user";
 import {setProfile} from "@/api/user";
 import {ElMessage} from 'element-plus'
-import { getAllCooperation } from '@/api/report'
+//import {getAllCooperation} from '@/api/report'
 
 const info_form = reactive({
   username:'',
   professionalSkill : '',
-  taskFavorList:[
-      ''
-  ],
+  taskFavorList:[],
   devices:[]
 
 })
@@ -202,6 +213,14 @@ const deviceOptions = [
   {
     value: 'linux',
     label: 'Linux'
+  },
+  {
+    value:'windows',
+    label:'Windows'
+  },
+  {
+    value:'harmonyos',
+    label:'HarmonyOS'
   }
 ]
 export default {
@@ -215,6 +234,7 @@ export default {
       isCollapse: false,
       breadcrumbItems: ['正在进行'],
       taskList:[],
+      reportList:[],
       key:1,
       change:false,
       percentage:ref(29),
@@ -240,6 +260,9 @@ export default {
                   {
                     this.taskList = res.undertakingTaskList
                   }
+                  else {
+                    ElMessage.error(res.response.message)
+                  }
                 })
             break;
           case '2':
@@ -251,6 +274,9 @@ export default {
                 if(res.response.code%100 === 0)
                 {
                   this.taskList = res.finishedTaskList
+                }
+                else {
+                  ElMessage.error(res.response.message)
                 }
               })
             break;
@@ -265,10 +291,26 @@ export default {
               
               )
               this.key = 3.1
+              getAllCooperation().then(res => {
+                if(res.response.code %100 === 0){
+                  this.reportList = res.reportList
+                }
+                else {
+                  ElMessage.error(res.response.message)
+                }
+              })
               break
           case '3-2':
             this.breadcrumbItems=['我的协作']
                 this.key = 3.2
+              getCooperationList().then(res => {
+                if(res.response.code %100 === 0){
+                  this.reportList = res.reportList
+                }
+                else {
+                  ElMessage.error(res.response.message)
+                }
+              })
                 break
           case '4':
             this.breadcrumbItems = ['个人信息']
@@ -281,7 +323,7 @@ export default {
                     info_form.taskFavorList = res.taskFavorList
                     info_form.devices = res.device.split(", ")
                     info_form.professionalSkill = res.professionalSkill
-                    this.percentage = res.activeDegree*100
+                    this.percentage = res.activeDegree
                     if(this.percentage<20){
                       this.customColor = "#f56c6c"
                     }
@@ -308,6 +350,8 @@ export default {
                     info_form_change.devices = res.device.split(", ")
                     info_form_change.professionalSkill = res.professionalSkill
                     info_form_change.activeDegree = res.activeDegree
+                  }else {
+                    ElMessage.error(res.response.message)
                   }
                 })
               }
@@ -341,9 +385,14 @@ export default {
                   info_form.taskFavorList = res.taskFavorList
                   info_form.devices = res.device.split(", ")
                   info_form.professionalSkill = res.professionalSkill
+                }
+              else {
+                  ElMessage.error(res.response.message)
                 }})
             }
           })
+        }else{
+          ElMessage.error(res.response.message)
         }
       })
     },
@@ -351,13 +400,22 @@ export default {
       this.$router.push(
           {
             name:"ReportCooperate",
-            params:
+            query:
                 {
                   taskId:taskId,
                   reportId:parentId
                 }
           }
       )
+    },
+    goReportInfoCooperation(taskId,reportId){
+      this.$router.push({
+        name:'ReportInfoCooperation',
+        query:{
+          taskId:taskId,
+          reportId:reportId
+        }
+      })
     }
   },
   components:{
@@ -376,6 +434,9 @@ export default {
       if(res.response.code%100 === 0)
       {
         this.taskList = res.undertakingTaskList
+      }
+      else {
+        ElMessage.error(res.response.message)
       }
     })
   }

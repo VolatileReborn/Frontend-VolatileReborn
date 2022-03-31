@@ -63,6 +63,7 @@
 <script>
 import {employeeTaskDetail} from "@/api/square";
 import {Checked} from "@element-plus/icons-vue"
+import {ElMessage} from 'element-plus'
 import {reactive} from "vue"
 import {publishReport} from "@/api/report";
 import oss from '@/utils/oss'
@@ -164,7 +165,7 @@ export default {
       }
       else
       {
-        console.log(res.response.message)
+        ElMessage.error(res.response.message)
       }
     })
 
@@ -180,12 +181,20 @@ export default {
           .then(res =>{
         if(res.response.code%100 === 0)
         {
-          console.log(res.response.message)
-          this.$router.push("/reportReleaseSucceed")
+          // console.log(res.response.message)
+          // this.$router.push("/reportReleaseSucceed")
+          ElMessage({
+            message:res.response.message,
+            type:'success',
+            duration:1000,
+            onClose:()=>{
+              this.$router.push("/taskInfoFromUser/"+this.taskId)
+            }
+          })
         }
         else
         {
-          console.log(res.response.message)
+          ElMessage.error(res.response.message)
         }
       })
           return true

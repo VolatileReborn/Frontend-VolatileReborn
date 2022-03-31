@@ -1,9 +1,9 @@
 <template>
   <el-container style="height: 90vh">
-    <el-aside width="70%" style="background-color: rgba(220,220,220,0.7);font-size: larger">
+    <el-aside width="70%" style="font-size: larger">
       <report-info-item v-bind:task-report="parentReport" style="width: 90%;height: 85vh"></report-info-item>
     </el-aside>
-    <el-main style="border: 1px solid #d3dce6">
+    <el-main >
     <div class="container">
         <div v-if="isScored === 0">
             <el-card style="height: 82vh">
@@ -27,9 +27,9 @@
 
             </el-form>
             </div>
-              <div v-if="role === '1'">
-                <el-button  v-if="parentReport.isCooperated === 0" type="danger"  @click="goCooperate">去协作</el-button>
-                <el-button  v-if="parentReport.isCooperated === 1" type="primary"  @click="goReportInfoCooperation">我的协作</el-button>
+              <div v-if="role === '1'"  style="display: flex;justify-content: center">
+                <el-button  v-if="isCooperated === 0" type="danger"  @click="goCooperate">去协作</el-button>
+<!--                <el-button  v-if="isCooperated === 1" type="primary"  @click="goReportInfoCooperation">我的协作</el-button>-->
               </div>
              </el-card>
         </div>
@@ -46,9 +46,9 @@
               </div>
               <div style="margin-top: 10px">评论 ： <span style="font-weight: bold">{{show_score_form.comment}}</span></div>
             </div>
-              <div v-if="role === '1'">
-                <el-button  v-if="parentReport.isCooperated === 0" type="danger"  @click="goCooperate">去协作</el-button>
-                <el-button  v-if="parentReport.isCooperated === 1" type="primary"  @click="goReportInfoCooperation">我的协作</el-button>
+              <div v-if="role === '1'" style="display: flex;justify-content: center;margin-top: 10px">
+                <el-button  v-if="isCooperated === 0" type="danger"  @click="goCooperate">去协作</el-button>
+<!--                <el-button  v-if="isCooperated === 1" type="primary"  @click="goReportInfoCooperation">我的协作</el-button>-->
               </div>
              </el-card>
         </div>
@@ -58,14 +58,14 @@
 </template>
 
 <script>
-import {employeeGetReportInfo, getCooperationReport} from "@/api/report";
+import {employeeGetReportInfo} from "@/api/report";
 import {employerGetReportInfo} from "@/api/report";
 import {reactive} from "vue"
 import {scoreReport} from "@/api/report";
 import {showReportScore} from "@/api/report"
+import {wantCooperate} from "@/api/report";
 import ReportInfoItem from "@/components/ReportInfoItem"
 import {ElMessage} from "element-plus";
-
 
 const score_form = reactive({
   comment: '',
@@ -123,8 +123,6 @@ export default {
         defectReproduction:'',
         testEquipmentInfo:'',
         totalScore:3,
-        isCooperated:0,
-        cooperationReportList:[]
       },
       isScored:0,
       isCooperated: 0,
@@ -145,14 +143,10 @@ export default {
             if (res.response.code % 100 === 0) {
               this.parentReport.defectExplain = res.defectExplain
               this.parentReport.defectPictureList = res.defectPictureList
-              this.parentReport.defectPictureList.forEach(item => {
-                this.srcList.push(item.fileURL)
-              })
               this.parentReport.defectReproduction = res.defectReproduction
               this.parentReport.testEquipmentInfo = res.testEquipmentInfo
               this.parentReport.reportName = res.reportName
               this.parentReport.totalScore = res.totalScore
-              this.parentReport.workerId = res.workerId
               this.isScored = res.isScored
               if (this.isScored === 1) {
                 showReportScore({reportId: this.$route.query.reportId})
@@ -179,13 +173,11 @@ export default {
               this.parentReport.defectExplain = res.defectExplain
               this.parentReport.reportName = res.reportName
               this.parentReport.defectPictureList = res.defectPictureList
-              this.parentReport.defectPictureList.forEach(item => {
-                this.srcList.push(item.fileURL)
-              })
               this.parentReport.defectReproduction = res.defectReproduction
               this.parentReport.testEquipmentInfo = res.testEquipmentInfo
               this.parentReport.workerId = res.workerId
               this.parentReport.totalScore = res.totalScore
+              this.isCooperated = res.isCooperated
               this.isScored = res.isScored
               if (this.isScored === 1) {
                 showReportScore({reportId: this.$route.query.reportId})
@@ -202,19 +194,8 @@ export default {
             } else {
               ElMessage.error(res.response.message)
             }
-          })    
+          })
     }
-    getCooperationReport({reportId: this.$route.query.reportId})
-    .then(res => {
-            if (res.response.code % 100 === 0) {
-              
-              this.parentReport.cooperationReportList = res.cooperationReportList
-              
-            } else {
-              ElMessage.error(res.response.message)
-            }
-          })    
-
 
   },
   methods:{
@@ -249,23 +230,38 @@ export default {
       this.$router.back(-1)
     },
     goCooperate(){
-     this.$router.push({
-       name:'ReportCooperate',
-       query:{
-         taskId:this.$route.query.taskId,
-         reportId:this.$route.query.reportId
-       }
-     })
-    },
-    goReportInfoCooperation(){
-      this.$router.push({
-        name:'ReportInfoCooperation',
-        query:{
-          taskId:this.$route.query.taskId,
-          reportId:this.$route.query.reportId
+     wantCooperate({reportId:this.$route.query.reportId})
+      .then(res => {
+        if(res.response.code %100 === 0)
+        {
+          ElMessage.success({
+            message:'参与协作成功，可在个人中心-可协作列表中查看',
+            onClose:() => {
+              this.$router.push({
+                name:'ReportCooperate',
+                query:{
+                  taskId:this.$route.query.taskId,
+                  reportId:this.$route.query.reportId
+                }
+              })
+            }
+          })
+        }
+        else {
+          ElMessage.error(res.response.message)
         }
       })
-    }
+
+    },
+    // goReportInfoCooperation(){
+    //   this.$router.push({
+    //     name:'ReportInfoCooperation',
+    //     query:{
+    //       taskId:this.$route.query.taskId,
+    //       reportId:this.$route.query.reportId
+    //     }
+    //   })
+    // }
   }
 }
 </script>

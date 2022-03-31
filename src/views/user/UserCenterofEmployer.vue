@@ -36,14 +36,12 @@
                      v-for="item in taskList"
                      v-bind:task="item"
                      v-bind:key="item.taskId"
-                     style="margin-left:50px;margin-top: 5px;width:90%;padding-left: 40px"
+                     style="margin-top: 5px;height: 13.5vh;margin-left: 20px"
                      @click="check_route(item.taskId)"></task-item>
           </div>
         </el-main>
       </el-container>
     </el-container>
-
-    
   </div>
 </template>
 
@@ -57,6 +55,7 @@ import {Menu} from "@element-plus/icons-vue"
 import {employerBrowserUndertakingTasks} from "@/api/usercenter";
 import {employerBrowserFinishedTasks} from "@/api/usercenter";
 import TaskItem from "@/components/TaskItem";
+import {ElMessage} from "element-plus";
 export default {
   name: 'user-center',
   data() {
@@ -85,6 +84,9 @@ export default {
                     console.log(res)
                     this.taskList = res.undertakingTaskList
                   }
+                  else {
+                    ElMessage.error(res.response.message)
+                  }
                 })
             break;
           case '4':
@@ -94,6 +96,9 @@ export default {
                 if(res.response.code%100 === 0)
                 {
                   this.taskList = res.finishedTaskList
+                }
+                else {
+                  ElMessage.error(res.response.message)
                 }
               })
             break;
@@ -120,6 +125,10 @@ export default {
         console.log(res.response.message)
         this.taskList = res.undertakingTaskList
         console.log(res.taskList)
+      }
+      else
+      {
+        ElMessage.error(res.response.message)
       }
     })
   }

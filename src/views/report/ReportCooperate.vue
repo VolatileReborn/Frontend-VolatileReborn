@@ -2,33 +2,7 @@
   <el-container style="height: 90vh">
     <el-aside width="40%" style="background-color: rgba(220,220,220,0.7);font-size: larger">
       <el-tag style="position: absolute;left: 10px;font-size: small;margin-top: 10px">协作父报告</el-tag>
-     <!-- <el-row style="justify-content: center;margin-top: 50px">
-       <el-col span="24" style="font-size: larger;font-weight: bolder;font-family: 幼圆">{{parentReport.taskReport}}</el-col>
-     </el-row>
-      <div style="padding:10px">
-      <el-row style="margin-top: 80px;justify-content: center">
-        <el-col span="8" style="color: #409efc">缺陷情况详情：</el-col>
-        <el-col span="16" style="font-weight: bold">{{parentReport.defectExplain}}</el-col>
-      </el-row>
-        <el-row style="margin-top: 50px;justify-content: center">
-        <el-col span="8" style="color: #409efc">缺陷复现步骤：</el-col>
-        <el-col span="16" style="font-weight: bold">{{parentReport.defectReproduction}}</el-col>
-      </el-row>
-        <el-row style="margin-top: 50px;justify-content: center">
-        <el-col span="8" style="color: #409efc">测试设备信息：</el-col>
-        <el-col span="16" style="font-weight: bold">{{parentReport.testEquipmentInfo}}</el-col>
-      </el-row>
-        <el-row style="margin-top: 50px;justify-content: center">
-        <el-col span="8" style="color: #409efc">缺陷应用截图：</el-col>
-          <el-col span="16"><div  style="display:flex;flex-direction: row;margin-top: 5px">
-            <div v-for="item in parentReport.defectPictureList"
-                 v-bind:key="item.fileName" >
-              <el-image :src="item.fileURL"  alt="" style="height: 15vh;margin-left: 5px" :preview-src-list="srcList" :initial-index="0" lazy fit="scale-down"/>
-            </div>
-          </div></el-col>
-      </el-row>
-      </div> -->
-      <report-info-item v-bind:reportInfo="parentReport"></report-info-item>
+      <report-info-item v-bind:task-report="parentReport" style="width:90%;height: 85vh"></report-info-item>
     </el-aside>
     <el-main style="border: 1px solid #d3dce6">
       <el-tag style="position: absolute;font-size: small;margin-top: -10px">协作子报告</el-tag>
@@ -78,12 +52,14 @@ import {reactive} from "vue"
 import {publishCooperation} from "@/api/report";
 import ReportInfoItem from "@/components/ReportInfoItem"
 import oss from '@/utils/oss'
+import {ElMessage} from 'element-plus'
 const report_form = reactive({
   reportName:'',
   defectPictureList:[],
   defectExplain:'',
   defectReproductionStep:'',
-  testEquipmentInformation:''
+  testEquipmentInformation:'',
+  parentReportId:0
 })
 
 const validPics = function (rule,value,callback) {
@@ -154,13 +130,7 @@ export default {
   name: "ReportCooperate",
   data(){
     return {
-      parentReport:{
-        taskReport: '测试报告',
-        defectPictureList:[],
-        defectExplain:'',
-        defectReproduction:'',
-        testEquipmentInfo:''
-      },
+      parentReport:{},
       srcList:[],
       report_form,
       rules,
@@ -172,19 +142,19 @@ export default {
     ReportInfoItem
   },
   mounted() {
-    console.log(this.$route.params)
-      employeeGetReportInfo({taskId:this.$route.params.taskId,reportId:this.$route.params.reportId})
+      employeeGetReportInfo({taskId:this.$route.query.taskId,reportId:this.$route.query.reportId})
     .then(res => {
       if(res.response.code%100 === 0){
-        console.log(res.response.message)
         this.parentReport.defectExplain = res.defectExplain
-        // this.parentReport.taskReport = res.taskReport
+        this.parentReport.reportName = res.reportName
+        this.parentReport.workId = res.workId
+        this.parentReport.totalScore = res.totalScore
         this.parentReport.defectPictureList = res.defectPictureList
-        this.parentReport.defectPictureList.forEach(item => {
-          this.srcList.push(item.fileURL)
-        })
         this.parentReport.defectReproduction = res.defectReproduction
         this.parentReport.testEquipmentInfo = res.testEquipmentInfo
+      }
+      else {
+        ElMessage.error(res.response.message)
       }
     })
   },
@@ -192,7 +162,8 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid =>{
         if (valid){
-           publishCooperation({taskId:this.$route.params.taskId,parentId:this.$route.params.reportId,taskReport:report_form})
+          report_form.parentReportId = this.$route.query.reportId
+           publishCooperation({taskId:this.$route.query.taskId,taskReport:report_form})
               .then(res =>{
                 if(res.response.code%100 === 0)
                 {
@@ -201,7 +172,7 @@ export default {
                 }
                 else
                 {
-                  console.log(res.response.message)
+                  ElMessage.error(res.response.message)
                 }
               })
           return true

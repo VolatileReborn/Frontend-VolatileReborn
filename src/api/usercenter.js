@@ -126,13 +126,29 @@ export const employeeBrowserUndertakingTasks = () => {
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const setRecommendRule = payload => {
-     const {rule} = payload
-    return axios.post(`${ADMIN_MODULE}/setRecommendRule`,{rule})
+     const {emphasized_user_features,
+         desalted_user_features,
+         emphasized_task_features,
+         desalted_task_features} = payload;
+    return axios.post(`${ADMIN_MODULE}/setRecommendRule`,{emphasized_user_features,
+        desalted_user_features,
+        emphasized_task_features,
+        desalted_task_features})
         .then(res=>{
             return res.data
         })
 }
 
+/**
+ * 管理员查看推荐规则 GET /admin/getRecommendRule
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const getRecommendRule = () => {
+    return axios.get(`${ADMIN_MODULE}/getRecommendRule`)
+        .then(res=> {
+            return res.data
+        })
+}
 /**
  * 管理员个人中心获取任务详情
  * @param payload
@@ -141,6 +157,28 @@ export const setRecommendRule = payload => {
 export const adminGetTaskDetail = payload => {
     const {taskId} = payload
     return axios.get(`${ADMIN_MODULE}/browserTaskDetail?taskId=${taskId}`)
+        .then(res => {
+            return res.data
+        })
+}
+/**
+ * 管理员查看相似度算法 GET  /admin/getAlgorithm
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const adminGetAlgorithm = () => {
+    return axios.get(`${ADMIN_MODULE}/getAlgorithm`)
+        .then(res => {
+            return res.data
+        })
+}
+/**
+ * 管理员设置相似度算法 POST /admin/setAlgorithm
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const adminSetAlgorithm = payload => {
+    const {rule} = payload
+    return axios.post(`${ADMIN_MODULE}/setAlgorithm`,{rule})
         .then(res => {
             return res.data
         })

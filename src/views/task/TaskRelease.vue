@@ -60,6 +60,33 @@
             </el-form-item>
           </el-col>
         </el-form-item>
+        <el-form-item style="margin-left: -120px">
+          <el-col :span="8">
+            <el-form-item label="任务难度"  required>
+              <el-slider v-model="task_form.taskDifficulty"  :step="1" style="width: 200px" :min="1" :max="5"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="任务紧急程度"  required>
+              <el-slider v-model="task_form.taskUrgency"  :step="1" style="width: 200px" :min="0" :max="5"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="测试设备需求"  required>
+              <el-select
+                  v-model="task_form.devices"
+                  multiple
+                  style="width: 240px"
+              >
+                <el-option
+                  v-for="item in deviceOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
         <el-form-item label="附件"  prop="executableFileList" >
           <div style="display: flex;flex-direction: column">
             <el-upload
@@ -109,6 +136,7 @@ import {publishTask} from "@/api/task";
 import {reactive} from "vue";
 import oss from "@/utils/oss"
 import {debounce} from "@/utils/utils";
+import {ElMessage} from 'element-plus'
 
 const task_form = reactive({
   taskName: '',
@@ -117,6 +145,9 @@ const task_form = reactive({
   taskEndTime: '',
   workerNumTotal: 1,
   taskType: '',
+  taskDifficulty:1,
+  taskUrgency:0,
+  devices:[],
   executableFileList:[],
   requirementDescriptionFileList:[]
 })
@@ -151,8 +182,8 @@ const rules = reactive({
     },
     {
       min: 3,
-      max: 8,
-      message: '任务名称不少于3个字符，不多于8个字符',
+      max: 15,
+      message: '任务名称不少于3个字符，不多于15个字符',
       trigger: 'blur'
     }
   ],
@@ -208,7 +239,28 @@ const rules = reactive({
     }
   ]
 })
-
+const deviceOptions = [
+  {
+    value:'android',
+    label:'Android'
+  },
+  {
+    value: 'ios',
+    label: 'IOS'
+  },
+  {
+    value: 'linux',
+    label: 'Linux'
+  },
+  {
+    value:'windows',
+    label:'Windows'
+  },
+  {
+    value:'harmonyos',
+    label:'HarmonyOS'
+  }
+]
 export default {
   name: "TaskRelease",
   data() {
@@ -226,6 +278,7 @@ export default {
         }
       ],
       token: window.localStorage.getItem("token"),
+      deviceOptions
     }
   },
   components: {},
@@ -241,16 +294,31 @@ export default {
             "taskEndTime": this.task_form.taskEndTime,
             "taskType": this.task_form.taskType,
             "taskName": this.task_form.taskName,
-            "workerNumTotal":this.task_form.workerNumTotal
+            "workerNumTotal":this.task_form.workerNumTotal,
+            "taskDifficulty":this.task_form.taskDifficulty,
+            "taskUrgency":this.task_form.taskUrgency,
+            "android":this.task_form.devices.includes('android') ,
+            "linux":this.task_form.devices.includes('linux')  ,
+            "ios":this.task_form.devices.includes('ios')  ,
+            "windows":this.task_form.devices.includes('windows') ,
+            "harmonyos":this.task_form.devices.includes('harmonyos')  ,
           }
           publishTask({task: task})
               .then(res => {
                 if (res.response.code%100 === 0) {
-                  console.log(res.response.message)
-                  console.log(res.task)
-                  this.$router.push("/taskReleaseSucceed")
+                  // console.log(res.response.message)
+                  // console.log(res.task)
+                  // this.$router.push("/taskReleaseSucceed")
+                  ElMessage({
+                    message:'任务发布成功',
+                    type:'success',
+                    duration:1000,
+                    onClose:()=>{
+                      this.$router.push('/userCenterofEmployer')
+                    }
+                  })
                 } else {
-                  console.log(res.response.message)
+                  ElMessage.error(res.response.message)
                 }
               })
           return true

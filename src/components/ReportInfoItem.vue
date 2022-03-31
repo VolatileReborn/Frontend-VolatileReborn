@@ -2,9 +2,14 @@
   <el-card :body-style="{padding: '0px'}" class="reportInfo_card">
     <template #header>
         <div style="display: flex;flex-direction: column">
+<<<<<<< HEAD
           <div><span style="font-weight: bolder;font-size: x-large;margin-left: 15px;text-align:center">测试报告</span></div>
           <div style="font-size: medium;color:grey;text-align:center" >测试工人ID: {{taskReport.workerId}}</div>
           <div style="font-size: medium;color:grey;text-align:center" >报告总分: {{taskReport.totalScore}}</div>
+=======
+          <div><span style="font-weight: bolder;font-size: xx-large">{{ this.taskReport.reportName }}</span></div>
+          <div style="font-size: small;color:#9A9A9A" v-if="workerId !== -1">测试工人ID: {{this.workerId}}</div>
+>>>>>>> 98fabf4f3f26948f78288909c171071dd95bc623
         </div>
     </template>
     <el-scrollbar height="400px">  

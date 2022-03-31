@@ -17,7 +17,8 @@ import ReportInfo from "@/views/report/ReportInfo";
 import TaskReleaseSucceed from "@/views/task/TaskReleaseSucceed"
 import TaskFinished from "@/views/user/TaskFinished"
 import ReportCooperate from "@/views/report/ReportCooperate"
-
+import ReportInfoCooperation from "@/views/report/ReportInfoCooperation"
+import MyReportInfo from '@/views/report/MyReportInfo'
 const routerHistory = createWebHashHistory();
 const routes = [
     {
@@ -55,6 +56,16 @@ const routes = [
         path: "/reportInfo",
         name: "ReportInfo",
         component: ReportInfo
+    },
+    {
+        path:'/myReportInfo',
+        name:'MyReportInfo',
+        component: MyReportInfo
+    },
+    {
+        path:'/reportInfoCooperation',
+        name:'ReportInfoCooperation',
+        component: ReportInfoCooperation
     },
     {
         path: "/taskEnrollSucceed",

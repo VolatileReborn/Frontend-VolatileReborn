@@ -8,11 +8,27 @@
   <el-card class="box_card">
     <template #header>
       <div class="card_header">
-        <span style="font-size: larger">{{task.taskName}}</span>
-        <div class="header_tags">
-         <el-tag class="header_tag" type="warning">竞标中</el-tag>
-          <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>
-          <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>
+        <div class="header_left">
+          <span style="font-size: larger">{{task.taskName}}</span>
+          <div class="header_tags">
+            <el-tag class="header_tag" type="warning">进行中</el-tag>
+            <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>
+            <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>
+          </div>
+        </div>
+        <div class="header_right">
+          <div style="font-size: small">紧急程度：<el-rate v-model="task.taskUrgency"
+                   show-text
+                   :texts="['非常宽松','宽松','一般紧急','紧急','非常紧急']"
+                   :colors="['#67c23a','#FF9900','#ff0000']"
+                    disabled/>
+          </div>
+          <div style="font-size: small">任务难度：<el-rate v-model="task.taskDifficulty"
+                                                        show-text
+                                                        :texts="['轻松','容易','一般','较难','困难']"
+                                                        :colors="['#67c23a','#FF9900','#ff0000']"
+                                                        disabled/>
+          </div>
         </div>
       </div>
     </template>
@@ -29,6 +45,29 @@
         <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">需求描述</div>
       </div>
       <div style="margin-top: 10px">任务简介 ： {{task.taskIntroduction}}</div>
+      <div style="margin-top: 10px;display: flex;flex-direction: row">
+        <span style="padding-top: 10px">测试设备需求：</span>
+        <div style="flex-direction: column;justify-content: center" v-if="task.android === true">
+        <el-image class="device_img"  :src="require('../../assets/Android.png')"></el-image>
+          <div>Android</div>
+        </div>
+        <div style="flex-direction: column;justify-content: center" v-if="task.ios === true">
+          <el-image class="device_img"  :src="require('../../assets/iOS.png')"></el-image>
+          <div style="padding-left: 18px">iOS</div>
+        </div>
+        <div style="flex-direction: column;justify-content: center" v-if="task.linux === true">
+          <el-image class="device_img"  :src="require('../../assets/Linux.png')"></el-image>
+          <div style="padding-left: 10px">Linux</div>
+        </div>
+        <div style="flex-direction: column;justify-content: center" v-if="task.windows === true">
+          <el-image class="device_img" style="padding-left: 25px"  :src="require('../../assets/Windows.png')"></el-image>
+          <div style="padding-left: 10px">Windows</div>
+        </div>
+        <div style="flex-direction: column;justify-content: center" v-if="task.harmonyos === true">
+          <el-image class="device_img"   :src="require('../../assets/Harmony.jpg')"></el-image>
+          <div style="padding-left: 25px">鸿蒙</div>
+        </div>
+      </div>
     </div>
     <div v-if="this.role === '1'">
     <el-button v-if="isAble" type="danger" round class="check_btn" size="large" @click="enroll()" >我要报名</el-button>
@@ -38,14 +77,15 @@
   </div>
 </template>
 
-<script>
+<script >
 import {Edit} from "@element-plus/icons-vue"
 import {ElMessage} from "element-plus";
 import {acceptTask} from "@/api/task";
 import {employeeTaskDetail} from "@/api/square";
-import {employerTaskDetail} from "@/api/square";
 import {visitorTaskDetail} from "@/api/square";
 import {parseTime} from "@/utils/utils";
+
+// const UrgencyIcons = [Clock,Clock,Clock]
 
 export default {
   name: "TaskInfoFromSquare",
@@ -53,19 +93,27 @@ export default {
     return {
       taskId: parseInt(this.$route.params.taskId),
       task: {
-        // taskId: 0,
-        // taskName: 'test_task',
-        // taskType: 0,
-        // workerNumTotal: 10,
-        // workerNumLeft: 5,
-        // taskStartTime: '2022-3-1',
-        // taskEndTime: '2022-5-3',
-        // taskState: true,
-        // taskIntroduction: '这是一个测试任务',
+        // android: 1,
+        // ios: 1,
+        // linux: 1,
+        // windows: 1 ,
+        // harmonyos: 1,
+        // taskDifficulty: 1,
+        // taskEndTime: 1651161600000,
+        // taskId: 5,
+        // taskIntroduction: "task 5 introduction",
+        // taskName: "Task 5",
+        // taskStartTime: 1642569600000,
+        // taskState: 0,
+        // taskType: 1,
+        // taskUrgency: 4,
+        // workerNumLeft: 0,
+        // workerNumTotal: 3,
       },
       role:window.localStorage.getItem("role"),
       isSelected: 0,
-      isAble: !this.isSelected
+      isAble: !this.isSelected,
+      // UrgencyIcons
     }
   },
   mounted() {
@@ -79,19 +127,8 @@ export default {
           this.isSelected = res.isSelected
           this.isAble= this.task.taskState === 0 && this.isSelected === 0
         }
-      })
-    }
-    else if(this.role === '0' )
-    {
-      employerTaskDetail({taskId:this.taskId})
-      .then(res => {
-        if(res.response.code%100 === 0)
-        {
-          console.log(res.response.message)
-          this.task = res.task
-        }
         else {
-          console.log(res.response.message)
+          ElMessage.error(res.response.message)
         }
       })
     }
@@ -109,7 +146,7 @@ export default {
     }
   },
   components: {
-    Edit
+    Edit,
   },
   methods: {
     parseTime,
@@ -118,7 +155,14 @@ export default {
       .then(res => {
         console.log(res)
         if(res.response.code%100 === 0){
-          this.$router.push("/taskEnrollSucceed")
+          ElMessage({
+            message:'报名成功！',
+            type:'success',
+            duration:1000,
+            onClose:()=> {
+              this.$router.push("/taskInfoFromUser/"+this.taskId)
+            }
+          })
         }
         else {
             ElMessage.error(res.response.message);
@@ -152,7 +196,17 @@ export default {
   height: 450px;
 }
 .card_header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.header_left{
   margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.header_right{
   display: flex;
   flex-direction: column;
 }
@@ -169,5 +223,9 @@ export default {
   position: absolute;
   right: 90px;
   bottom: 65px;
+}
+.device_img{
+  height:32px;
+  padding-left: 16px;
 }
 </style>
