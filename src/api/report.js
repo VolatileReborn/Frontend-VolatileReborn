@@ -76,6 +76,19 @@ export const employeeGetReportInfo = payload => {
 }
 
 /**
+ * 接包方查看协作报告详情 GET  /employee/cooperationReportDetail
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const employeeGetCooperationInfo = payload => {
+    const {cooperationReportId} = payload;
+    return axios.get(`${EMPLOYEE_MODULE}/cooperationReportDetail?cooperationReportId=${cooperationReportId}`)
+        .then(res => {
+            return res.data
+        })
+}
+
+/**
  * 发包方查看报告详情 GET /employer/reportDetail
  * @param payload
  * @returns {Promise<AxiosResponse<any>>}
@@ -92,7 +105,7 @@ export const employerGetReportInfo = payload => {
  * @returns {Promise<{response: {code: number, message: string}, reportList: [{reportId: number, reportName: string, similarity: number}]}>}
  */
 export const getCooperationList = () => {
-    return axios.get(`${EMPLOYEE_MODULE}/employeeBrowserFinishedCooperation`)
+    return axios.get(`${EMPLOYEE_MODULE}/browserFinishedCooperation`)
         .then(res =>{
             return res.data
         })
@@ -116,7 +129,7 @@ export const getCooperationList = () => {
  * @returns {Promise<{response: {code: number, message: string}, reportList: [{reportId: number, reportName: string, similarity: number}]}>}
  */
 export const getAllCooperation = () =>{
-    return axios.get(`${EMPLOYEE_MODULE}/getAllCooperation`)
+    return axios.get(`${EMPLOYEE_MODULE}/cooperatingList`)
         .then(res => {
             return res.data
         })
@@ -143,25 +156,13 @@ export const getAllCooperation = () =>{
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const publishCooperation = payload => {
-    const {taskId,parentId,taskReport} = payload
-    return axios.post(`${EMPLOYEE_MODULE}/employeeReleaseCooperation`,{parentId,taskReport,taskId})
+    const {taskId,taskReport} = payload
+    return axios.post(`${EMPLOYEE_MODULE}/uploadCooperationReport`,{taskReport,taskId})
         .then(res => {
             return res.data
         })
 }
 
-/**
- * 接包方在报告详情页查看该报告的可写作报告列表 GET /employee/getThisCooperation
- * @param payload
- * @returns {Promise<AxiosResponse<any>>}
- */
-export const getThisCooperation = payload => {
-    const {reportId} =payload
-    return axios.get(`${EMPLOYEE_MODULE}/getThisCooperation`,{reportId})
-        .then(res => {
-            return res.data
-        })
-}
 
 /**
  * 接包方给同任务的报告评分
@@ -185,6 +186,19 @@ export const scoreReport = payload => {
  export const showReportScore = payload => {
     const {reportId} = payload;
     return axios.get(`${REPORT_MODULE}/showReportScore?reportId=${reportId}`)
+        .then(res => {
+            return res.data
+        })
+}
+
+/**
+ * 接包方主动协作报告 PUT /employee/cooperateReport
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const wantCooperate = (payload) =>{
+     const {reportId} = payload
+    return axios.put(`${EMPLOYEE_MODULE}/cooperateReport?reportId=${reportId}`)
         .then(res => {
             return res.data
         })

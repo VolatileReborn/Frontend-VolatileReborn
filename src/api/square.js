@@ -93,37 +93,6 @@ export const employeeTaskDetail = payload =>{
     // })
 }
 
-/**
- * 发包方浏览大厅中的具体任务 GET /square/employerTaskDetail
- * @param payload
- * @returns {Promise<AxiosResponse<any>>}
- */
-export const employerTaskDetail = payload => {
-    const {taskId} = payload;
-    return axios.get(`${SQUARE_MODULE}/employerTaskDetail?taskId=${taskId}`)
-        .then(res => {
-            return res.data
-        })
-    // return Promise.resolve({
-    //     "code":1,
-    //     "msg":"发包方浏览任务",
-    //     "data":{
-    //         "token":token,
-    //         "task":{
-    //             taskId: taskId,
-    //             taskName: 'test_task',
-    //             taskType: 0,
-    //             workerNumTotal: 10,
-    //             workerNumLeft: 5,
-    //             taskStartTime: '2022-3-1',
-    //             taskEndTime: '2022-5-3',
-    //             taskState: true,
-    //             taskIntroduction: '这是一个测试任务',
-    //         }
-    //     }
-    // })
-
-}
 
 /**
  * 未登录游客查看任务广场中的具体任务 GET /square/taskDetail
@@ -134,7 +103,7 @@ export const visitorTaskDetail = payload => {
     const {taskId} = payload
     return axios.get(`${SQUARE_MODULE}/taskDetail?taskId=${taskId}`)
         .then(res => {
-            res.data
+            return res.data
         })
     // return Promise.resolve({
     //         "response":{

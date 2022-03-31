@@ -8,12 +8,27 @@
     <el-card class="box_card">
       <template #header>
         <div class="card_header">
-          <span style="font-size: larger">{{task.taskName}}</span>
-          <div class="header_tags">
-            <el-tag v-if="task.taskState === 0 && task.workerNumLeft > 0" class="header_tag" type="warning">竞标中</el-tag>
-            <el-tag v-if="task.taskState === 1 || task.workerNumLeft === 0" class="header_tag" type="info">竞标结束</el-tag>
-            <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>
-            <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>
+          <div class="header_left">
+            <span style="font-size: larger">{{task.taskName}}</span>
+            <div class="header_tags">
+              <el-tag class="header_tag" type="warning">进行中</el-tag>
+              <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>
+              <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>
+            </div>
+          </div>
+          <div class="header_right">
+            <div style="font-size: small">紧急程度：<el-rate v-model="task.taskUrgency"
+                                                        show-text
+                                                        :texts="['非常宽松','宽松','一般紧急','紧急','非常紧急']"
+                                                        :colors="['#67c23a','#FF9900','#ff0000']"
+                                                        disabled/>
+            </div>
+            <div style="font-size: small">任务难度：<el-rate v-model="task.taskDifficulty"
+                                                        show-text
+                                                        :texts="['轻松','容易','一般','较难','困难']"
+                                                        :colors="['#67c23a','#FF9900','#ff0000']"
+                                                        disabled/>
+            </div>
           </div>
         </div>
       </template>
@@ -29,6 +44,29 @@
           <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">需求描述</div>
         </div>
         <div style="margin-top: 10px">任务简介 ： <span style="font-weight: bold">{{task.taskIntroduction}}</span></div>
+        <div style="margin-top: 10px;display: flex;flex-direction: row">
+          <span style="padding-top: 10px">测试设备需求：</span>
+          <div style="flex-direction: column;justify-content: center" v-if="task.android === true">
+            <el-image class="device_img"  :src="require('../../assets/Android.png')"></el-image>
+            <div>Android</div>
+          </div>
+          <div style="flex-direction: column;justify-content: center" v-if="task.ios === true">
+            <el-image class="device_img"  :src="require('../../assets/iOS.png')"></el-image>
+            <div style="padding-left: 18px">iOS</div>
+          </div>
+          <div style="flex-direction: column;justify-content: center" v-if="task.linux === true">
+            <el-image class="device_img"  :src="require('../../assets/Linux.png')"></el-image>
+            <div style="padding-left: 10px">Linux</div>
+          </div>
+          <div style="flex-direction: column;justify-content: center" v-if="task.windows === true">
+            <el-image class="device_img" style="padding-left: 25px"  :src="require('../../assets/Windows.png')"></el-image>
+            <div style="padding-left: 10px">Windows</div>
+          </div>
+          <div style="flex-direction: column;justify-content: center" v-if="task.harmonyos === true">
+            <el-image class="device_img"   :src="require('../../assets/Harmony.jpg')"></el-image>
+            <div style="padding-left: 25px">鸿蒙</div>
+          </div>
+        </div>
       </div>
       <div class="file_information" >
         <div style="display: flex;flex-direction: row;margin-top:20px">
@@ -51,7 +89,7 @@
       </div>
       <div v-if="role === '1'" style="position: relative;margin-left: 1000px" >
         <el-button  v-if="task.isSubmitted === 0" type="danger"  @click="goRelease">提交报告</el-button>
-        <el-button  v-if="task.isSubmitted === 1" type="primary"  @click="goReportInfo">我的报告</el-button>
+        <el-button  v-if="task.isSubmitted === 1" type="primary"  @click="goMyReportInfo">我的报告</el-button>
       </div>
       </div>
       <el-divider ><el-icon><star-filled /></el-icon></el-divider>
@@ -108,6 +146,7 @@ import {parseTime} from "@/utils/utils";
 import {ref} from "vue"
 import {ElMessage} from "element-plus";
 import * as echarts from 'echarts'
+import axios from "axios";
 
 
 const count = ref(0);
@@ -128,6 +167,13 @@ export default {
         taskStartTime: 0,
         taskEndTime: 0,
         taskState: ref(),
+        taskUrgency:0,
+        taskDifficulty:2,
+        android:false,
+        ios:false,
+        linux:false,
+        windows:false,
+        harmonyos:false,
         taskIntroduction: '',
         requirementDescriptionFileList:[],
         executableFileList:[],
@@ -137,7 +183,7 @@ export default {
         isSubmitted:ref(),
         reportId:0
       },
-      isAble: false,
+      isAble: true,
       role:window.localStorage.getItem("role"),
       exeUrl:'',
       exeName:'',
@@ -205,18 +251,19 @@ export default {
       })
     },
     goReport(reportId){
+      console.log(reportId)
       this.$router.push({
         name:"ReportInfo",
-        params:{
+        query:{
           taskId:this.taskId,
           reportId:reportId
         }
       })
     },
-    goReportInfo(){
+    goMyReportInfo(){
       this.$router.push({
-        name:"ReportInfo",
-        params:{
+        path:"/myReportInfo",
+        query:{
           taskId:this.taskId,
           reportId:this.task.reportId
         }
@@ -232,16 +279,9 @@ export default {
         if(res.status === 0){
           console.log(res.response.message)
           this.$router.push("/taskFinished")
-
-
         }
         else {
-          if(res.response.code === 2)
-          {
             ElMessage.error(res.response.message);
-            console.log(res.response.message)
-          }
-
         }
       })
     }
@@ -261,6 +301,16 @@ export default {
               this.task.taskIntroduction = res.taskIntroduction
               this.task.taskStartTime = res.beginTime
               this.task.taskEndTime = res.endTime
+              this.task.taskUrgency =res.taskUrgency
+              this.task.taskDifficulty = res.taskDifficulty
+              this.task.android = res.android
+              this.task.linux = res.linux
+              this.task.ios = res.ios
+              this.task.windows = res.windows
+              this.task.harmonyos = res.harmonyos
+            }
+            else {
+              ElMessage.error(res.response.message)
             }
           })
     }
@@ -278,11 +328,20 @@ export default {
               this.task.taskIntroduction = res.taskIntroduction
               this.task.taskStartTime = res.beginTime
               this.task.taskEndTime = res.endTime
+              this.task.taskUrgency =res.taskUrgency
+              this.task.taskDifficulty = res.taskDifficulty
+              this.task.android = res.android
+              this.task.linux = res.linux
+              this.task.ios = res.ios
+              this.task.windows = res.windows
+              this.task.harmonyos = res.harmonyos
+            }
+            else {
+              ElMessage.error(res.response.message)
             }
           })
     }
-    if(this.role === '1')
-    {
+    if(this.role === '1') {
       employeeBrowserTaskDetail({taskId:this.taskId})
       .then(res => {
         if(res.response.code%100 === 0)
@@ -299,6 +358,13 @@ export default {
           this.task.taskEndTime = res.taskEndTime
           this.task.isSubmitted = res.isSubmitted
           this.task.reportId = res.reportId
+          this.task.taskUrgency =res.taskUrgency
+          this.task.taskDifficulty = res.taskDifficulty
+          this.task.android = res.android
+          this.task.linux = res.linux
+          this.task.ios = res.ios
+          this.task.windows = res.windows
+          this.task.harmonyos = res.harmonyos
         }
         else
         {
@@ -306,49 +372,74 @@ export default {
         }
       })
     }
-        browserReports({taskId: this.taskId})
-            .then(res => {
-              if (res.response.code % 100 === 0) {
-                this.task.reportList = res.reportList
-                this.isAble = this.task.taskState === 0 && this.role === '0'
-              }
-            })
-        var myChart = echarts.init(document.getElementById("my_graph"),'dark');
-        window.onresize = function () {
-          myChart.resize()// 自适应宽高
-        }
-        var option = {
-          title: {
-            text: '报告相似度关系展示图'
-          },
-          tooltip: {}, // 提示框
-          series: [
-            {
-              type:"graph",
-              layout:"none",
-              roam:true, // 鼠标缩放
-              color:[], // 自定义调色盘
-              data:[],
-              links:[],
-              categories:[],
-              label:{}, // 节点label显示
-              lineStyle:{
-                color:'source',
-                curveness:0.3
-              },
-              emphasis:{
-                focus:'adjacency',
-                lineStyle: {
-                  width:10
-                }
+      browserReports({taskId: this.taskId})
+          .then(res => {
+            if (res.response.code % 100 === 0) {
+              this.task.reportList = res.reportList
+              this.isAble = this.task.taskState === 0
+            }
+            else {
+              ElMessage.error(res.response.message)
+            }
+          })
+      var myChart = echarts.init(document.getElementById("my_graph"));
+      window.onresize = function () {
+        myChart.resize()// 自适应宽高
+      }
+      myChart.showLoading();
+      axios.get('/graph.json').then(graph => {
+        myChart.hideLoading();
+        console.log(graph.data)
+        graph.data.nodes.forEach(node => {
+          node.label = {
+            show:node.symbolSize > 30
+          }
+        })
+      var option = {
+        title: {
+          text: '报告相似度关系展示图'
+        },
+        tooltip: {}, // 提示框
+        legend:[
+          {
+           data:graph.data.categories.map(a=> {
+             return a.name
+               }
+            )
+          }
+        ],
+        animationDuration:1500,
+        animationEasingUpdate:'quinticInOut',
+        series: [
+          {
+            type:"graph",
+            layout:"none",
+            roam:true, // 鼠标缩放
+            color:[], // 自定义调色盘
+            data:graph.data.nodes,
+            links:graph.data.links,
+            categories:graph.data.categories,
+            label:{
+              position:'right',
+              formatter:'{b}'
+            }, // 节点label显示
+            lineStyle:{
+              color:'source',
+              curveness:0.3
+            },
+            emphasis:{
+              focus:'adjacency',
+              lineStyle: {
+                width:10
               }
             }
-          ]
-        };
-        myChart.setOption(option);
-      }
-
-
+          }
+        ]
+      };
+        console.log(option)
+      myChart.setOption(option);
+      })
+    }
 }
 </script>
 
@@ -369,12 +460,26 @@ export default {
   width: 90%;
   margin-top: 10px;
   margin-left: 5%;
+
 }
 .card_header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.header_left{
   margin-left: 5px;
   display: flex;
   flex-direction: column;
-  padding-left: 20px;
+}
+.header_right{
+  display: flex;
+  flex-direction: column;
+}
+.device_img{
+  height:32px;
+  padding-left: 16px;
 }
 .header_tags{
   display: flex;

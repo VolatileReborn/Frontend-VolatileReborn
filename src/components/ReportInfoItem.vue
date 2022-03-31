@@ -2,7 +2,7 @@
   <el-card :body-style="{padding: '0px'}" class="reportInfo_card">
     <template #header>
         <div style="display: flex;flex-direction: column">
-          <div><span style="font-weight: bolder;font-size: xx-large">测试报告</span></div>
+          <div><span style="font-weight: bolder;font-size: xx-large">{{ this.taskReport.reportName }}</span></div>
           <div style="font-size: small;color:#9A9A9A" v-if="workerId !== -1">测试工人ID: {{this.workerId}}</div>
         </div>
     </template>  
