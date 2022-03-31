@@ -112,11 +112,11 @@ export const getCooperationList = () => {
     })*/
 }
 /**
- * 接包方查看所有任务的可协作列表 GET /employee/getAllCooperation
+ * 接包方查看所有任务的可协作列表 GET /api/employee/cooperatingList
  * @returns {Promise<{response: {code: number, message: string}, reportList: [{reportId: number, reportName: string, similarity: number}]}>}
  */
-export const getAllCooperation = () =>{
-    return axios.get(`${EMPLOYEE_MODULE}/getAllCooperation`)
+ export const getAllCooperation = () =>{
+    return axios.get(`${EMPLOYEE_MODULE}/cooperatingList`)
         .then(res => {
             return res.data
         })
@@ -185,6 +185,19 @@ export const scoreReport = payload => {
  export const showReportScore = payload => {
     const {reportId} = payload;
     return axios.get(`${REPORT_MODULE}/showReportScore?reportId=${reportId}`)
+        .then(res => {
+            return res.data
+        })
+}
+
+/**
+ * 在报告详情页查看该报告的协作报告列表 GET /api/report/cooperationReport
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+ export const getCooperationReport = payload => {
+    const {reportId} =payload
+    return axios.get(`${REPORT_MODULE}/cooperationReport?reportId=${reportId}`)
         .then(res => {
             return res.data
         })

@@ -161,6 +161,7 @@ import {ref} from 'vue'
 import {getProfile} from "@/api/user";
 import {setProfile} from "@/api/user";
 import {ElMessage} from 'element-plus'
+import { getAllCooperation } from '@/api/report'
 
 const info_form = reactive({
   username:'',
@@ -255,6 +256,14 @@ export default {
             break;
           case '3-1':
             this.breadcrumbItems=['可协作报告']
+              getAllCooperation().then(res =>{
+                if(res.response.code%100 === 0)
+                {
+                  this.reportList = res.reportList
+                }
+              }
+              
+              )
               this.key = 3.1
               break
           case '3-2':

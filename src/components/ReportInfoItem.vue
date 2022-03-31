@@ -2,54 +2,85 @@
   <el-card :body-style="{padding: '0px'}" class="reportInfo_card">
     <template #header>
         <div style="display: flex;flex-direction: column">
-          <div><span style="font-weight: bolder;font-size: xx-large">测试报告</span></div>
-          <div style="font-size: small;color:#9A9A9A" v-if="workerId !== -1">测试工人ID: {{this.workerId}}</div>
+          <div><span style="font-weight: bolder;font-size: x-large;margin-left: 15px;text-align:center">测试报告</span></div>
+          <div style="font-size: medium;color:grey;text-align:center" >测试工人ID: {{taskReport.workerId}}</div>
+          <div style="font-size: medium;color:grey;text-align:center" >报告总分: {{taskReport.totalScore}}</div>
         </div>
-    </template>  
+    </template>
+    <el-scrollbar height="400px">  
     <div class="need_information">
-        <div style="display: flex;flex-direction: row">
+        <div style="display: flex;flex-direction: row;text-align:center">
           <el-icon color="#409efc" :size="30">
             <edit />
           </el-icon>
-          <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">缺陷情况详情 </div>
+          <div style="font-size: large;margin-top: 20px;font-weight: bolder;margin-left: 5px;text-align:center">缺陷情况详情: </div>
         </div>
-        <div style="margin-top: 10px"> <span >{{taskReport.defectExplain}}</span></div>
+        <div style="margin-top: 10px;text-align:center"> <span >{{taskReport.defectExplain}}</span></div>
       </div>
       <div class="need_information">
-        <div style="display: flex;flex-direction: row;margin-top:20px">
+        <div style="display: flex;flex-direction: row;margin-top:20px;text-align:center">
           <el-icon color="#409efc" :size="30">
             <edit />
           </el-icon>
-          <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">缺陷复现步骤 </div>
+          <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px;text-align:center">缺陷复现步骤: </div>
         </div>
-        <div style="margin-top: 10px"> <span >{{taskReport.defectReproduction}}</span></div>
+        <div style="margin-top: 10px;text-align:center"> <span >{{taskReport.defectReproduction}}</span></div>
       </div>
 
       <div class="need_information">
-        <div style="display: flex;flex-direction: row;margin-top:20px">
+        <div style="display: flex;flex-direction: row;margin-top:20px;text-align:center">
           <el-icon color="#409efc" :size="30">
             <edit />
           </el-icon>
-          <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">测试设备信息</div>
+          <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px;text-align:center">测试设备信息:</div>
         </div>
-        <div style="margin-top: 10px"> <span >{{taskReport.testEquipmentInfo}}</span></div>
+        <div style="margin-top: 10px;text-align:center"> <span >{{taskReport.testEquipmentInfo}}</span></div>
       </div>
 
       <div class="file_information" >
-        <div style="display: flex;flex-direction: row;margin-top:20px">
+        <div style="display: flex;flex-direction: row;margin-top:20px;text-align:center">
           <el-icon color="#409efc" :size="30">
             <folder-checked />
           </el-icon>
-          <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">缺陷应用截图</div>
+          <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px;text-align:center">缺陷应用截图:</div>
         </div>
-          <div  style="display:flex;flex-direction: row;margin-top: 5px">
+          <div  style="display:flex;flex-direction: row;margin-top: 5px;text-align:center">
             <div v-for="item in taskReport.defectPictureList"
                  v-bind:key="item.fileName" >
-              <el-image :src="item.fileURL"  alt="" style="height: 15vh;margin-left: 5px" :preview-src-list="srcList" :initial-index="0" lazy fit="scale-down"/>
+              <el-image :src="item.fileURL"  alt="" style="height: 15vh;margin-left: 5px;text-align:center" :preview-src-list="srcList" :initial-index="0" lazy fit="scale-down"/>
             </div>
           </div>
       </div>
-      <el-divider ><el-icon><star-filled /></el-icon></el-divider>
+      <el-divider ></el-divider>
+      <div class="report_container" >
+        <el-row>
+          <el-col :span="15"><span style="font-weight: bolder;margin-left: 35px">协作报告展示：</span></el-col>
+          <el-col :span="5">
+          </el-col>
+        </el-row>
+        <el-table :data="taskReport.cooperationReportList"
+                  height="250"
+                  style="width:90%;margin-top: 10px;text-align: center;margin-left:20px"
+                  stripe
+                  border
+                  size="large"
+                  highlight-current-row
+                  type-layout="auto">
+          <el-table-column type="index" width="100" align="center" />
+          <el-table-column prop="reportId" label="报告ID"  align="center"/>
+          <el-table-column label="测试工人ID" align="center" >
+            <template #default="scope">
+              <div style="display: flex;align-items: center;justify-content: center">
+                <el-icon><Avatar /></el-icon>
+                <span style="margin-left: 10px;">{{scope.row.workerId}}</span>
+              </div>
+            </template>
+          </el-table-column>
+        
+        </el-table>
+      </div>
+        </el-scrollbar>
+      
   </el-card>
 </template>
 

@@ -100,7 +100,7 @@ import {StarFilled} from "@element-plus/icons-vue"
 import {Avatar} from "@element-plus/icons-vue"
 import {employerBrowserTaskDetail} from "@/api/task";
 import {employeeBrowserTaskDetail} from "@/api/task";
-import  {adminGetTaskDetail} from "@/api/usercenter";
+import {adminGetTaskDetail} from "@/api/usercenter";
 import {browserReports} from "@/api/report";
 import {browserChecked} from "@/api/usercenter";
 import oss from "@/utils/oss"
@@ -207,11 +207,12 @@ export default {
     goReport(reportId){
       this.$router.push({
         name:"ReportInfo",
-        params:{
+        query:{
           taskId:this.taskId,
           reportId:reportId
         }
       })
+      // this.$router.push("/reportInfo/"+reportId)
     },
     goReportInfo(){
       this.$router.push({
