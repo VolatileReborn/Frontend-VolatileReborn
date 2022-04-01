@@ -22,7 +22,7 @@ export default {
         defectReproduction:'',
         testEquipmentInfo:'',
         totalScore:0,
-        reportList:[]
+        reportId:this.reportId
       },
       taskId:this.$route.query.taskId,
       reportId:this.$route.query.reportId,

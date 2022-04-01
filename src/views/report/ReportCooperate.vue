@@ -138,6 +138,7 @@ export default {
         defectExplain:'',
         defectReproductionStep:'',
         testEquipmentInformation:'',
+        reportId:this.$route.query.reportId
       },
       srcList:[],
       report_form,
@@ -146,7 +147,6 @@ export default {
   }
   },
   components:{
-    
     ReportInfoItem
   },
   mounted() {

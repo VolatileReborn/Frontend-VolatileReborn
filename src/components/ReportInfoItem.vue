@@ -4,7 +4,7 @@
         <div style="display: flex;flex-direction: column">
           <div><span style="font-weight: bolder;font-size: x-large;margin-left: 15px;text-align:center">{{ taskReport.reportName }}</span></div>
           <div style="font-size: medium;color:grey;text-align:center" >测试工人ID: {{taskReport.workerId}}</div>
-          <div style="font-size: medium;color:grey;text-align:center" >报告总分: {{taskReport.totalScore}}</div>
+          <div style="font-size: medium;color:grey;text-align:center" v-if="taskReport.totalScore !== -1">综合评分: {{taskReport.totalScore}}</div>
         </div>
     </template>
     <el-scrollbar height="400px">  
@@ -44,7 +44,7 @@
           </el-icon>
           <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px;text-align:center">缺陷应用截图:</div>
         </div>
-          <div  style="display:flex;flex-direction: row;margin-top: 5px;margin-left: 45%">
+          <div  style="display:flex;flex-direction: row;margin-top: 5px;margin-left: 50%">
             <div v-for="item in taskReport.defectPictureList"
                  v-bind:key="item.fileName" >
               <el-image :src="item.fileURL"  alt="" style="height: 15vh;margin-left: 5px;text-align:center" :preview-src-list="srcList" :initial-index="0" lazy fit="scale-down"/>
@@ -52,15 +52,15 @@
           </div>
       </div>
       <el-divider ></el-divider>
-      <div class="report_container" >
+      <div class="report_container" v-if="taskReport.totalScore !== -1" >
         <el-row>
           <el-col :span="15"><span style="font-weight: bolder;margin-left: 35px">协作报告展示：</span></el-col>
           <el-col :span="5">
           </el-col>
         </el-row>
-        <el-table :data="taskReport.cooperationReportList"
+        <el-table :data="cooperationReportList"
                   height="250"
-                  style="width:90%;margin-top: 10px;text-align: center;margin-left:20px"
+                  style="width:90%;margin-top: 10px;text-align: center;margin-left:5%"
                   stripe
                   border
                   size="large"
@@ -76,7 +76,11 @@
               </div>
             </template>
           </el-table-column>
-        
+          <el-table-column label="操作" align="center">
+            <template #default="scope">
+              <el-button size="small" type="primary" @click="goCooperationReport(scope.row.reportId)">查看报告</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
         </el-scrollbar>
@@ -85,22 +89,53 @@
 </template>
 
 <script>
-
+import {Avatar} from '@element-plus/icons-vue'
+import {getThisCooperationList} from "@/api/report";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "ReportInfoItem",
   props: ["taskReport"],
   data(){
     return {
-      srcList:[]
+      srcList:[],
+      cooperationReportList:[],
   }
   },
   mounted() {
-    if(this.taskReport.defectPictureList.length > 0) {
-      this.taskReport.defectPictureList.forEach(item => {
-        this.srcList.push(item.fileURL)
-      })
+    setTimeout(()=>{
+      if(this.taskReport.defectPictureList.length > 0) {
+        this.taskReport.defectPictureList.forEach(item => {
+          this.srcList.push(item.fileURL)
+        })
+      }
+
+    },2000)
+    if(this.taskReport.totalScore !== -1) {
+      getThisCooperationList({reportId: this.$route.query.reportId})
+          .then(res => {
+            if (res.response.code % 100 === 0) {
+              this.cooperationReportList = res.cooperationReportList
+            } else {
+              ElMessage.error(res.response.message)
+            }
+          })
     }
+  },
+  methods:{
+    goCooperationReport(reportId){
+      this.$router.push({
+        name:'ReportInfoCooperation',
+        query:{
+          taskId:this.$route.query.taskId,
+          reportId:this.$route.query.reportId,
+          cooperationReportId:reportId
+        }
+      })
+    },
+  },
+  components:{
+    Avatar
   }
 }
 </script>

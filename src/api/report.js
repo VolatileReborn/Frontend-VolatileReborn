@@ -89,6 +89,19 @@ export const employeeGetCooperationInfo = payload => {
 }
 
 /**
+ * 接包方根据测试报告id查找协作报告列表
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const getThisCooperationList = payload => {
+    const { reportId } = payload
+    return axios.get(`${REPORT_MODULE}/cooperationReport?reportId=${reportId}`)
+        .then(res=> {
+            return res.data
+        })
+}
+
+/**
  * 发包方查看报告详情 GET /employer/reportDetail
  * @param payload
  * @returns {Promise<AxiosResponse<any>>}

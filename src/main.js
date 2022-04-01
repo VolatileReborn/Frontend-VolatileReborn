@@ -6,6 +6,7 @@ import 'element-plus/dist/index.css'
 // import axiosHttp from './api/http'
 // import VueAxios from 'vue-axios'
 import VueParticles from 'vue-particles'
+
 const app = createApp(App);
 app.use(router);
 app.use(ElementPlus);

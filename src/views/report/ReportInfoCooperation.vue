@@ -4,7 +4,7 @@
     <report-info-item v-bind:task-report="parentReport" style="width:90%;height: 83vh;margin-top: 20px;"></report-info-item>
   </el-aside>
   <el-main>
-    <report-info-item v-bind:task-report="report" style="width:90%;height: 83vh;margin-top: 20px;"></report-info-item>
+    <report-info-item v-bind:task-report="report" style="width:90%;height: 82vh;margin-top: 0"></report-info-item>
   </el-main>
 </el-container>
 </template>
@@ -25,6 +25,7 @@ export default {
       report:{},
       taskId:this.$route.query.taskId,
       reportId:this.$route.query.reportId, // 父报告id
+      cooperationReportId:0,
     }
   },
   mounted() {
@@ -35,21 +36,24 @@ export default {
           {
             this.parentReport.defectPictureList = res.defectPictureList
             this.parentReport.reportName = res.taskReport
+            this.parentReport.reportName = res.reportName
             this.parentReport.defectExplain = res.defectExplain
             this.parentReport.defectReproduction = res.defectReproduction
             this.parentReport.testEquipmentInfo = res.testEquipmentInfo
             this.parentReport.workerId = res.workerId
             this.parentReport.totalScore = res.totalScore
-            this.parentReport.sonReportId = res.sonReportId
-            employeeGetCooperationInfo({cooperationReportId:this.parentReport.sonReportId})
+            this.cooperationReportId = this.$route.query.cooperationReportId === undefined ? res.cooperationReportId : this.$route.query.cooperationReportId
+            employeeGetCooperationInfo({cooperationReportId:this.cooperationReportId})
                 .then(res => {
                   if(res.response.code%100 === 0)
                   {
-                    this.parentReport.defectPictureList = res.defectPictureList
-                    this.parentReport.reportName = res.taskReport
-                    this.parentReport.defectExplain = res.defectExplain
-                    this.parentReport.defectReproduction = res.defectReproduction
-                    this.parentReport.testEquipmentInfo = res.testEquipmentInfo
+                    this.report.defectPictureList = res.defectPictureList
+                    this.report.reportName = res.reportName
+                    this.report.workerId = res.workerId
+                    this.report.defectExplain = res.defectExplain
+                    this.report.defectReproduction = res.defectReproduction
+                    this.report.testEquipmentInfo = res.testEquipmentInfo
+                    this.report.totalScore = -1
                   }
                 })
           }else {
