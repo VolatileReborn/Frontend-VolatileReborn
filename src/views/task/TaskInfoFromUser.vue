@@ -108,7 +108,8 @@
                   highlight-current-row
                   type-layout="auto">
           <el-table-column type="index" width="100" align="center" />
-          <el-table-column prop="reportId" label="报告ID"  align="center"/>
+          <el-table-column prop="reportName" label="报告名称"  align="center"/>
+          <el-table-column prop="similarity" label="相似度"  align="center"/>
           <el-table-column label="测试工人ID" align="center" >
             <template #default="scope">
               <div style="display: flex;align-items: center;justify-content: center">

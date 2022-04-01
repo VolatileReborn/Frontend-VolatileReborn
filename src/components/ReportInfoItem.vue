@@ -67,7 +67,7 @@
                   highlight-current-row
                   type-layout="auto">
           <el-table-column type="index" width="100" align="center" />
-          <el-table-column prop="reportId" label="报告ID"  align="center"/>
+          <el-table-column prop="reportName" label="报告名称"  align="center"/>
           <el-table-column label="测试工人ID" align="center" >
             <template #default="scope">
               <div style="display: flex;align-items: center;justify-content: center">
@@ -124,14 +124,19 @@ export default {
   },
   methods:{
     goCooperationReport(reportId){
+      ElMessage.success(reportId)
+      console.log(reportId)
       this.$router.push({
         name:'ReportInfoCooperation',
         query:{
           taskId:this.$route.query.taskId,
           reportId:this.$route.query.reportId,
           cooperationReportId:reportId
+          
         }
+        
       })
+      location.reload()
     },
   },
   components:{

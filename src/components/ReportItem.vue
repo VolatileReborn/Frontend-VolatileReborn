@@ -1,7 +1,7 @@
 <template>
   <el-card :body-style="{padding: '0px'}" class="report_card">
     <el-row style="align-items: center" justify="space-between">
-      <el-col :span="1" >
+      <el-col :span="0.5" >
       <img src="../assets/functional_test.png"  alt=""/>
       </el-col>
       <el-col :span="6" style="width: 650px;">
@@ -13,6 +13,7 @@
       <el-col :span="6" style="">综合评分：
       <el-rate disabled v-model="totalScore"></el-rate></el-col>
       <el-col :span="4">众包工人ID:{{report.workerId}}</el-col>
+      <el-col :span="4">相似度:{{report.similarity}}</el-col>
     </el-row>
   </el-card>
 </template>
