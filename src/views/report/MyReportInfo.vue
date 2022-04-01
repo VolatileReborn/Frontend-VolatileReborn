@@ -35,6 +35,7 @@ export default {
       {
         this.taskReport.defectPictureList = res.defectPictureList
         this.taskReport.reportName = res.reportName
+        this.taskReport.workerId = res.workerId
         this.taskReport.defectExplain = res.defectExplain
         this.taskReport.defectReproduction = res.defectReproduction
         this.taskReport.testEquipmentInfo = res.testEquipmentInfo

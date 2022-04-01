@@ -45,12 +45,13 @@
         </el-aside>
         <el-main class="main_container">
           <div v-if="key === 3.1">
-            <report-item class="task_item_container"
-                         v-for="item in reportList"
-                         v-bind:report="item"
-                         v-bind:key="item.reportId"
-                         style="margin-left:50px;margin-top: 5px;width:90%;padding-left: 40px"
-                         @click="goReportCooperate(item.taskId,item.reportId)"></report-item>
+                <report-item class="task_item_container"
+                             v-for="item in reportList"
+                             v-bind:report="item"
+                             v-bind:key="item.reportId"
+                             style="margin-left:50px;margin-top: 5px;width:90%;padding-left: 40px"
+                             @click="goReportCooperate(item.taskId,item.reportId)"></report-item>
+
           </div>
           <div v-if="key === 3.2">
             <report-item class="task_item_container"
@@ -143,13 +144,28 @@
            </div>
          </div>
           <div v-if="key === 1 || key === 2" >
+            <div v-infinite-scroll="load" class="infinite-list" style="overflow:auto;">
+              <div>
             <task-item class="task_item_container"
-                             v-for="item in taskList"
+                             v-for="item in currentTaskList"
                              v-bind:task="item"
                              v-bind:key="item.taskId"
                              style="margin-top: 5px;height: 13.5vh;margin-left: 20px"
                              @click="check_route(item.taskId)"></task-item>
-          </div>
+              </div>
+              <div style="margin: auto;padding-top:10px">
+                <el-pagination
+                    hide-on-single-page
+                    v-model:currentPage="currentPage"
+                    background
+                    layout="prev,pager,next"
+                    v-model:total="totalPage"
+                    @current-change="handleCurrentChange"
+                >
+                </el-pagination>
+              </div>
+            </div>
+              </div>
         </el-main>
       </el-container>
     </el-container>
@@ -174,8 +190,11 @@ import {ref} from 'vue'
 import {getProfile} from "@/api/user";
 import {setProfile} from "@/api/user";
 import {ElMessage} from 'element-plus'
-//import {getAllCooperation} from '@/api/report'
 
+const count = ref(0);
+const load = () => {
+  count.value += 2
+}
 const info_form = reactive({
   username:'',
   professionalSkill : '',
@@ -234,6 +253,9 @@ export default {
       isCollapse: false,
       breadcrumbItems: ['正在进行'],
       taskList:[],
+      currentTaskList:[],
+      currentPage:ref(1),
+      totalPage:ref(1),
       reportList:[],
       key:1,
       change:false,
@@ -242,6 +264,10 @@ export default {
     }
   },
   methods: {
+    load,
+    handleCurrentChange(){
+      this.currentTaskList = this.taskList.slice((this.currentPage-1)*5,this.currentPage*5)
+    },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -259,6 +285,8 @@ export default {
                   if(res.response.code%100 === 0)
                   {
                     this.taskList = res.undertakingTaskList
+                    this.currentTaskList = this.taskList.slice(0,5)
+                    this.totalPage = this.taskList.length *2;
                   }
                   else {
                     ElMessage.error(res.response.message)
@@ -274,6 +302,8 @@ export default {
                 if(res.response.code%100 === 0)
                 {
                   this.taskList = res.finishedTaskList
+                  this.currentTaskList = this.taskList.slice(0,5)
+                  this.totalPage = this.taskList.length *2;
                 }
                 else {
                   ElMessage.error(res.response.message)
@@ -291,14 +321,6 @@ export default {
               
               )
               this.key = 3.1
-              getAllCooperation().then(res => {
-                if(res.response.code %100 === 0){
-                  this.reportList = res.reportList
-                }
-                else {
-                  ElMessage.error(res.response.message)
-                }
-              })
               break
           case '3-2':
             this.breadcrumbItems=['我的协作']
@@ -434,6 +456,8 @@ export default {
       if(res.response.code%100 === 0)
       {
         this.taskList = res.undertakingTaskList
+        this.currentTaskList = this.taskList.slice(0,5)
+        this.totalPage = this.taskList.length *2;
       }
       else {
         ElMessage.error(res.response.message)
@@ -486,5 +510,13 @@ export default {
 }
 .info_card{
   width:80%
+}
+.infinite-list{
+  height: 83vh;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
 }
 </style>

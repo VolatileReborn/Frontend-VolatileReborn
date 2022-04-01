@@ -130,7 +130,15 @@ export default {
   name: "ReportCooperate",
   data(){
     return {
-      parentReport:{},
+      parentReport:{
+        reportName:'',
+        workId:0,
+        totalScore:0,
+        defectPictureList:[],
+        defectExplain:'',
+        defectReproductionStep:'',
+        testEquipmentInformation:'',
+      },
       srcList:[],
       report_form,
       rules,
@@ -147,7 +155,7 @@ export default {
       if(res.response.code%100 === 0){
         this.parentReport.defectExplain = res.defectExplain
         this.parentReport.reportName = res.reportName
-        this.parentReport.workId = res.workId
+        this.parentReport.workerId = res.workerId
         this.parentReport.totalScore = res.totalScore
         this.parentReport.defectPictureList = res.defectPictureList
         this.parentReport.defectReproduction = res.defectReproduction

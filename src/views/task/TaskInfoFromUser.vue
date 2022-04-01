@@ -83,7 +83,7 @@
           <el-button type="text" @click="downloadDoc">二、点击下载测试需求描述文件</el-button>
 <!--            </a>-->
             <div v-if="this.role === '0'">
-              <el-button v-if="isAble" type="danger" round style="margin-left: 600px" size="large" @click="finish()" >结束任务</el-button>
+              <el-button v-if="task.taskState === 0" type="danger" round style="margin-left: 600px" size="large" @click="finish()" >结束任务</el-button>
             </div>
           </div>
       </div>
@@ -277,9 +277,15 @@ export default {
       browserChecked({taskId:this.taskId})
       .then(res => {
         console.log(res)
-        if(res.status === 0){
-          console.log(res.response.message)
-          this.$router.push("/taskFinished")
+        if(res.response.code%100 === 0){
+          ElMessage.success({
+            message:res.response.message,
+            type:'success',
+            duration:1000,
+            onClose:()=>{
+              location.reload()
+            }
+          })
         }
         else {
             ElMessage.error(res.response.message);

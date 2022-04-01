@@ -103,7 +103,7 @@ export const employeeBrowserUndertakingTasks = () => {
  */
  export const browserChecked = payload => {
     const {taskId} = payload;
-    return axios.put(`${EMPLOYER_MODULE}/browserChecked`,{taskId})
+    return axios.put(`${EMPLOYER_MODULE}/browserChecked?taskId=${taskId}`)
         .then(res => {
             return res.data
         })

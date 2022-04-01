@@ -2,14 +2,9 @@
   <el-card :body-style="{padding: '0px'}" class="reportInfo_card">
     <template #header>
         <div style="display: flex;flex-direction: column">
-<<<<<<< HEAD
-          <div><span style="font-weight: bolder;font-size: x-large;margin-left: 15px;text-align:center">测试报告</span></div>
+          <div><span style="font-weight: bolder;font-size: x-large;margin-left: 15px;text-align:center">{{ taskReport.reportName }}</span></div>
           <div style="font-size: medium;color:grey;text-align:center" >测试工人ID: {{taskReport.workerId}}</div>
           <div style="font-size: medium;color:grey;text-align:center" >报告总分: {{taskReport.totalScore}}</div>
-=======
-          <div><span style="font-weight: bolder;font-size: xx-large">{{ this.taskReport.reportName }}</span></div>
-          <div style="font-size: small;color:#9A9A9A" v-if="workerId !== -1">测试工人ID: {{this.workerId}}</div>
->>>>>>> 98fabf4f3f26948f78288909c171071dd95bc623
         </div>
     </template>
     <el-scrollbar height="400px">  
@@ -49,7 +44,7 @@
           </el-icon>
           <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px;text-align:center">缺陷应用截图:</div>
         </div>
-          <div  style="display:flex;flex-direction: row;margin-top: 5px;text-align:center">
+          <div  style="display:flex;flex-direction: row;margin-top: 5px;margin-left: 45%">
             <div v-for="item in taskReport.defectPictureList"
                  v-bind:key="item.fileName" >
               <el-image :src="item.fileURL"  alt="" style="height: 15vh;margin-left: 5px;text-align:center" :preview-src-list="srcList" :initial-index="0" lazy fit="scale-down"/>
@@ -95,7 +90,18 @@
 export default {
   name: "ReportInfoItem",
   props: ["taskReport"],
-  
+  data(){
+    return {
+      srcList:[]
+  }
+  },
+  mounted() {
+    if(this.taskReport.defectPictureList.length > 0) {
+      this.taskReport.defectPictureList.forEach(item => {
+        this.srcList.push(item.fileURL)
+      })
+    }
+  }
 }
 </script>
 
