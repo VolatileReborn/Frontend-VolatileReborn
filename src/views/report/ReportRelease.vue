@@ -188,7 +188,9 @@ export default {
             type:'success',
             duration:1000,
             onClose:()=>{
-              this.$router.push("/taskInfoFromUser/"+this.taskId)
+              this.$router.push("/taskInfoFromUser/"+this.taskId).then(()=> {
+                location.reload()
+              })
             }
           })
         }

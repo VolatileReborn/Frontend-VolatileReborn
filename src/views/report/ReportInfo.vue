@@ -130,7 +130,9 @@ export default {
       show_score_form,
       rules,
       role:window.localStorage.getItem("role"),
-      srcList:[]
+      srcList:[],
+      reportId:this.$route.query.reportId,
+      taskId:this.$route.query.taskId
     }
   },
   components:{
@@ -237,12 +239,13 @@ export default {
         {
           ElMessage.success({
             message:'参与协作成功，可在个人中心-可协作列表中查看',
+            duration:1000,
             onClose:() => {
               this.$router.push({
                 name:'ReportCooperate',
                 query:{
-                  taskId:this.$route.query.taskId,
-                  reportId:this.$route.query.reportId
+                  taskId:this.taskId,
+                  reportId:this.reportId
                 }
               })
             }

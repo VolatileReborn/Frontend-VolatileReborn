@@ -95,12 +95,12 @@
       <el-divider ><el-icon><star-filled /></el-icon></el-divider>
       <div class="report_container" >
         <el-row>
-          <el-col :span="15"><span style="font-weight: bolder">报告展示</span></el-col>
+          <el-col :span="15"><span style="font-weight: bolder">报告展示</span><span style="font-size: small;font-weight: lighter">（下滑显示更多）</span> </el-col>
           <el-col :span="5">
           </el-col>
         </el-row>
         <el-table :data="task.reportList"
-                  height="250"
+                  height="400"
                   style="width:100%;margin-top: 10px;text-align: center"
                   stripe
                   border

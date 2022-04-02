@@ -381,7 +381,9 @@ export default {
         console.log(key, keyPath);
       },
     check_route(taskId){
-      this.$router.push("/taskInfoFromUser/"+taskId)
+      this.$router.push("/taskInfoFromUser/"+taskId).then(()=>{
+        location.reload()
+      })
     },
     changeInfo(){
       this.change = ! this.change;
