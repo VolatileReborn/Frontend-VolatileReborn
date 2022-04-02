@@ -124,6 +124,7 @@
             </template>
           </el-table-column>
         </el-table>
+        <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
       <div class="relation_container" id="my_graph">
       </div>
         <div class="relation_container" id="my_tree"></div>
@@ -506,7 +507,9 @@ export default {
 
           }
         })
-    this.getData()
+    setTimeout(()=>{
+      this.getData()
+    },1000)
   },
 }
 </script>
