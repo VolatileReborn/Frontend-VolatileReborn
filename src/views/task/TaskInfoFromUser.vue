@@ -503,9 +503,10 @@ export default {
           if (res.response.code % 100 === 0) {
             this.task.reportList = res.reportList
             this.isAble = this.task.taskState === 0
-            this.getData()
+
           }
         })
+    this.getData()
   },
 }
 </script>
