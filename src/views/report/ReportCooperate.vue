@@ -150,14 +150,6 @@ export default {
     ReportInfoItem
   },
   mounted() {
-    this.report_form = reactive({
-      reportName:'',
-      defectPictureList:[],
-      defectExplain:'',
-      defectReproductionStep:'',
-      testEquipmentInformation:'',
-      parentReportId:0
-    })
       employeeGetReportInfo({taskId:this.$route.query.taskId,reportId:this.$route.query.reportId})
     .then(res => {
       if(res.response.code%100 === 0){
@@ -183,8 +175,21 @@ export default {
               .then(res =>{
                 if(res.response.code%100 === 0)
                 {
-                  console.log(res.response.message)
-                  this.$router.push("/reportReleaseSucceed")
+                  ElMessage.success({
+                    message:'协作报告提交成功',
+                    type:'success',
+                    duration:1000,
+                    onClose:()=>{
+                      this.$router.push({
+                        name:'ReportInfoCooperation',
+                        query:{
+                          taskId:this.$route.query.taskId,
+                          reportId:this.$route.query.reportId
+                        }
+
+                      })
+                    }
+                  })
                 }
                 else
                 {

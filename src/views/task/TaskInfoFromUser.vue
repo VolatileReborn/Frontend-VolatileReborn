@@ -296,7 +296,6 @@ export default {
         type:'get',
         async:true,
         url:`http://124.222.135.47:8000/api/report/getSimilarityGraph?taskId=${this.taskId}`,
-        // url:'/testData.json',
         success:function(res) {
           if(res)
           {

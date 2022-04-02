@@ -51,7 +51,7 @@
             </div>
           </div>
       </div>
-      <el-divider ></el-divider>
+      <el-divider v-if="taskReport.totalScore !== -1"></el-divider>
       <div class="report_container" v-if="taskReport.totalScore !== -1" >
         <el-row>
           <el-col :span="15"><span style="font-weight: bolder;margin-left: 35px">协作报告展示：</span></el-col>
@@ -124,19 +124,17 @@ export default {
   },
   methods:{
     goCooperationReport(reportId){
-      ElMessage.success(reportId)
-      console.log(reportId)
       this.$router.push({
         name:'ReportInfoCooperation',
         query:{
           taskId:this.$route.query.taskId,
           reportId:this.$route.query.reportId,
           cooperationReportId:reportId
-          
         }
-        
+      }).then(() => {
+        location.reload()
       })
-      location.reload()
+
     },
   },
   components:{
