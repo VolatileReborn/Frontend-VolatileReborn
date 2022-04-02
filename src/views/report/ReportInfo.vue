@@ -147,7 +147,7 @@ export default {
               this.parentReport.testEquipmentInfo = res.testEquipmentInfo
               this.parentReport.reportName = res.reportName
               this.parentReport.totalScore = res.totalScore
-              this.parentReport.workId = res.workerId
+              this.parentReport.workerId = res.workerId
               this.isScored = res.isScored
               if (this.isScored === 1) {
                 showReportScore({reportId: this.$route.query.reportId})

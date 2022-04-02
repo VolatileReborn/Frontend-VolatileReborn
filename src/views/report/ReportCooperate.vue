@@ -150,6 +150,14 @@ export default {
     ReportInfoItem
   },
   mounted() {
+    this.report_form = reactive({
+      reportName:'',
+      defectPictureList:[],
+      defectExplain:'',
+      defectReproductionStep:'',
+      testEquipmentInformation:'',
+      parentReportId:0
+    })
       employeeGetReportInfo({taskId:this.$route.query.taskId,reportId:this.$route.query.reportId})
     .then(res => {
       if(res.response.code%100 === 0){

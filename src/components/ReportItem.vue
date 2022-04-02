@@ -13,7 +13,7 @@
       <el-col :span="6" style="">综合评分：
       <el-rate disabled v-model="totalScore"></el-rate></el-col>
       <el-col :span="4">众包工人ID:{{report.workerId}}</el-col>
-      <el-col :span="4">相似度:{{report.similarity}}</el-col>
+      <el-col :span="4">相似度:{{report.similarity}}%</el-col>
     </el-row>
   </el-card>
 </template>
