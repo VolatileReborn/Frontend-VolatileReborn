@@ -39,7 +39,7 @@ node("slave_ali") {
     stage('build with npm') {
 
 //         sh 'npm config set registry http://registry.cnpmjs.org'
-        sh 'npm install'
+        sh 'npm install --registry=https://registry.npm.taobao.org'
         sh 'npm run build'
         echo "build finish on ${vm_ip}"
     }
