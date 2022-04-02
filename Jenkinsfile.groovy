@@ -56,25 +56,25 @@ node("slave1") {
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
-    stage("login to dockerhub"){
-        withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_KEY', passwordVariable: 'password', usernameVariable: 'username')]) {
-            sh 'docker login -u $username -p $password'
-        }
-    }
+//     stage("login to dockerhub"){
+//         withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_KEY', passwordVariable: 'password', usernameVariable: 'username')]) {
+//             sh 'docker login -u $username -p $password'
+//         }
+//     }
 
     stage("push to dockerhub"){
-        echo "begin push to dockerhub"
-        sh "docker image tag ${IMAGE_NAME_WITH_TAG} lyklove/${IMAGE_NAME_WITH_TAG}"
-        sh "docker image push lyklove/${IMAGE_NAME_WITH_TAG}"
+//         echo "begin push to dockerhub"
+        sh "docker image tag ${IMAGE_NAME_WITH_TAG} ${IMAGE_TO_RUN}"
+//         sh "docker image push lyklove/${IMAGE_NAME_WITH_TAG}"
     }
     stage("clean previous image and container"){
         sh "docker container rm -f ${CONTAINER_NAME}"
-        sh "docker image rm ${IMAGE_NAME_WITH_TAG}"
-        sh "docker image rm ${IMAGE_TO_RUN}"
+//         sh "docker image rm ${IMAGE_NAME_WITH_TAG}"
+//         sh "docker image rm ${IMAGE_TO_RUN}"
     }
-    stage( "pull image" ){
-        sh "docker pull  lyklove/${IMAGE_NAME_WITH_TAG}"
-    }
+//     stage( "pull image" ){
+//         sh "docker pull  lyklove/${IMAGE_NAME_WITH_TAG}"
+//     }
     stage("run container") {
         sh "docker image ls"
         sh "docker container run --name ${CONTAINER_NAME} --net=host -d  ${IMAGE_TO_RUN}"
