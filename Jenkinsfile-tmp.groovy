@@ -82,5 +82,6 @@ node("slave_ali") {
     stage("signal gitlab: deployed"){
         updateGitlabCommitStatus name: 'deployed', state: 'success'
     }
+}
 
 
