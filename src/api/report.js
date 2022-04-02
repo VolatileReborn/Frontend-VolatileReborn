@@ -113,6 +113,15 @@ export const employerGetReportInfo = payload => {
             return res.data
         })
 }
+
+export const employerGetCooperationInfo = payload => {
+    const {cooperationReportId} = payload
+    return axios.get(`${EMPLOYER_MODULE}/CooperationReportDetail?cooperationReportId=${cooperationReportId}`)
+        .then(res => {
+            return res.data
+        })
+}
+
 /**
  * 接包方查看已经协作的报告列表 GET /employee/employeeBrowserFinishedCooperation
  * @returns {Promise<{response: {code: number, message: string}, reportList: [{reportId: number, reportName: string, similarity: number}]}>}
