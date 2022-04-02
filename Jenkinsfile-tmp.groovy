@@ -75,7 +75,7 @@ node("slave_ali") {
 //     stage( "pull image" ){
 //         sh "docker pull  lyklove/${IMAGE_NAME_WITH_TAG}"
 //     }
-    stage("run container") {
+    stage("run container volatile_frontend") {
         sh "docker image ls"
         sh "docker container run --name ${CONTAINER_NAME} --net=host -d  ${IMAGE_TO_RUN}"
     }
