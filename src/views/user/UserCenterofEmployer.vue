@@ -1,6 +1,8 @@
 <template>
+  <transition name="fade">
+    <loading-item v-if="isLoading" />
+  </transition>
   <div class="user-center">
-   
     <el-container>
 <!--      <el-header></el-header>-->
       <el-container>
@@ -45,9 +47,6 @@
   </div>
 </template>
 
-
-
-
 <script>
 import {Location} from "@element-plus/icons-vue"
 import {Management} from "@element-plus/icons-vue"
@@ -56,6 +55,7 @@ import {employerBrowserUndertakingTasks} from "@/api/usercenter";
 import {employerBrowserFinishedTasks} from "@/api/usercenter";
 import TaskItem from "@/components/TaskItem";
 import {ElMessage} from "element-plus";
+import LoadingItem from "@/components/Loading"
 export default {
   name: 'user-center',
   data() {
@@ -63,7 +63,8 @@ export default {
       username: '',
       isCollapse: false,
       breadcrumbItems: ['正在进行'],
-      taskList:[]
+      taskList:[],
+      isLoading:true
     }
   },
   methods: {
@@ -107,13 +108,15 @@ export default {
         console.log(key, keyPath);
       },
     check_route(taskId){
-        this.$router.push("/taskInfoFromUser/"+taskId)   .then(()=>{
-          location.reload()
-        })
+        this.$router.push("/taskInfoFromUser/"+taskId)
+        //     .then(()=>{
+        //   location.reload()
+        // })
     }
     
   },
   components: {
+    LoadingItem,
     Menu,
     Location,
     Management,
@@ -124,9 +127,10 @@ export default {
     .then(res => {
       if(res.response.code%100 === 0)
       {
-        console.log(res.response.message)
+
         this.taskList = res.undertakingTaskList
-        console.log(res.taskList)
+        this.isLoading = false
+
       }
       else
       {

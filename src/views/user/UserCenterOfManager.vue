@@ -1,4 +1,7 @@
 <template>
+  <transition name="fade">
+    <loading-item v-if="isLoading" />
+  </transition>
   <div class="user-center">
     <el-container>
       <el-container>
@@ -172,6 +175,8 @@ import TaskItem from "@/components/TaskItem";
 import {reactive} from "vue"
 import {ref} from "vue"
 import {ElMessage} from "element-plus";
+import LoadingItem from "@/components/Loading"
+
 const count = ref(0);
 const load = () => {
   count.value += 2
@@ -287,7 +292,8 @@ export default {
       recommendFormRules,
       algorithm,
       algorithmOptions,
-      changeablePeriod
+      changeablePeriod,
+      isLoading:true
     }
   },
   methods: {
@@ -353,9 +359,10 @@ export default {
       console.log(key, keyPath);
     },
     check_route(taskId){
-      this.$router.push("/taskInfoFromUser/"+taskId).then(()=>{
-        location.reload()
-      })
+      this.$router.push("/taskInfoFromUser/"+taskId)
+      //     .then(()=>{
+      //   location.reload()
+      // })
     },
     handleCurrentChange(){
       this.currentTaskList = this.taskList.slice((this.currentPage-1)*5,this.currentPage*5)
@@ -413,6 +420,7 @@ export default {
     }
   },
   components: {
+    LoadingItem,
     Location,
     Menu,
     Management,
@@ -425,6 +433,7 @@ export default {
         this.taskList = res.taskList
         this.currentTaskList = this.taskList.slice(0,5)
         this.totalPage = this.taskList.length *2;
+        this.isLoading = false
       }
       else {
         ElMessage.error(res.response.message)

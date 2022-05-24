@@ -1,4 +1,7 @@
 <template>
+  <transition name="fade">
+    <loading-item v-if="isLoading"/>
+  </transition>
   <el-divider></el-divider>
 <!--  <el-pagination-->
 <!--  v-model:currentPage="currentPage"-->
@@ -44,6 +47,8 @@ import {ElMessage} from 'element-plus'
 import {browserTasks} from "@/api/square";
 import {visitorBrowserTasks} from "@/api/square";
 import {ref} from "vue"
+import LoadingItem from "@/components/Loading"
+
 const count = ref(0);
 const load = () => {
   count.value += 2
@@ -56,7 +61,8 @@ export default {
       currentTaskList:[],
       role:window.localStorage.getItem("role"),
       currentPage:ref(1),
-      totalPage:ref(1)
+      totalPage:ref(1),
+      isLoading:true
     }
   },
   mounted(){
@@ -68,6 +74,7 @@ export default {
           this.taskList = res.taskList
           this.currentTaskList = this.taskList.slice(0,5)
           this.totalPage = this.taskList.length *2;
+          this.isLoading = false
         }
         else {
           ElMessage.error(res.response.message)
@@ -81,6 +88,7 @@ export default {
          this.taskList = res.taskList
          this.currentTaskList = this.taskList.slice(0,5)
          this.totalPage = this.taskList.length *2;
+         this.isLoading = false
        }
        else {
          ElMessage.error(res.response.message)
@@ -89,6 +97,7 @@ export default {
     }
   },
   components: {
+    LoadingItem,
     TaskItem,
     Upload
   },

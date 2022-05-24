@@ -7,31 +7,6 @@
   <div class="container" v-infinite-scroll="load" style="overflow: auto">
     <el-card class="box_card">
       <template #header>
-<!--        <div class="card_header">-->
-<!--          <div class="header_left">-->
-<!--            <span style="font-size: larger">{{task.taskName}}</span>-->
-<!--            <div class="header_tags">-->
-<!--              <el-tag v-if="task.taskState === 0" class="header_tag" type="warning">进行中</el-tag>-->
-<!--              <el-tag v-if="task.taskState === 1" class="header_tag" type="info">已结束</el-tag>-->
-<!--              <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>-->
-<!--              <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="header_right">-->
-<!--            <div style="font-size: small">紧急程度：<el-rate v-model="task.taskUrgency"-->
-<!--                                                        show-text-->
-<!--                                                        :texts="['非常宽松','宽松','一般紧急','紧急','非常紧急']"-->
-<!--                                                        :colors="['#67c23a','#FF9900','#ff0000']"-->
-<!--                                                        disabled/>-->
-<!--            </div>-->
-<!--            <div style="font-size: small">任务难度：<el-rate v-model="task.taskDifficulty"-->
-<!--                                                        show-text-->
-<!--                                                        :texts="['轻松','容易','一般','较难','困难']"-->
-<!--                                                        :colors="['#67c23a','#FF9900','#ff0000']"-->
-<!--                                                        disabled/>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
         <div class="card_header">
           <div class="header_left">
             <img v-if="task.taskType === 0" src="../../assets/functional_test.png" class="task_pic"/>
@@ -203,11 +178,17 @@ import {ElMessage} from "element-plus";
 import * as echarts from 'echarts'
 import $ from 'jquery'
 import router from "@/router";
+// import {ElLoading} from "element-plus"
 
 const count = ref(0);
 const load = () => {
   count.value += 2
 }
+// const loading = ElLoading.service({
+//   lock:true,
+//   text:'数据加载中...',
+//   background:'rgba(0,0,0,0.7)'
+// })
 export default {
   name: "TaskInfoFromUser",
   data() {
@@ -603,7 +584,8 @@ export default {
         })
     setTimeout(()=>{
       this.getData()
-    },1000)
+
+    },2000)
   },
 
 }

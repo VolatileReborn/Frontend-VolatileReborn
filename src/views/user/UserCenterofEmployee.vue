@@ -1,4 +1,7 @@
 <template>
+  <transition name="fade">
+    <loading-item v-if="isLoading"></loading-item>
+  </transition>
   <div class="user-center">
     <el-container>
       <el-container>
@@ -190,6 +193,7 @@ import {ref} from 'vue'
 import {getProfile} from "@/api/user";
 import {setProfile} from "@/api/user";
 import {ElMessage} from 'element-plus'
+import LoadingItem from "@/components/Loading"
 
 const count = ref(0);
 const load = () => {
@@ -261,6 +265,7 @@ export default {
       change:false,
       percentage:ref(29),
       customColor:"#f56c6c",
+      isLoading:true
     }
   },
   methods: {
@@ -382,9 +387,9 @@ export default {
       },
     check_route(taskId){
       this.$router.push("/taskInfoFromUser/"+taskId)
-          .then(()=>{
-        location.reload()
-      })
+      //     .then(()=>{
+      //   location.reload()
+      // })
     },
     changeInfo(){
       this.change = ! this.change;
@@ -444,6 +449,7 @@ export default {
     }
   },
   components:{
+    LoadingItem,
     Menu,
     Location,
     Management,
@@ -461,6 +467,7 @@ export default {
         this.taskList = res.undertakingTaskList
         this.currentTaskList = this.taskList.slice(0,5)
         this.totalPage = this.taskList.length *2;
+        this.isLoading = false
       }
       else {
         ElMessage.error(res.response.message)

@@ -91,12 +91,20 @@ template{
 /*  overflow-y: scroll;*/
 /*  -webkit-overflow-scrolling: touch;*/
 /*}*/
-.v-enter-active,
-.v-leave-active{
-  transition: opacity 0.5s ease;
-}
-.v-enter-from,
-.v-leave-to{
+/*.v-enter-active,*/
+/*.v-leave-active{*/
+/*  transition: opacity 0.5s ease;*/
+/*}*/
+/*.v-enter-from,*/
+/*.v-leave-to{*/
+/*  opacity: 0;*/
+/*}*/
+.fade-enter,
+.fade-leave-active{
   opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active{
+  transition: opacity 0.5s;
 }
 </style>
