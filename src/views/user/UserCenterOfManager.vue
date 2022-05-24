@@ -143,6 +143,11 @@
               </el-select>
               <el-button @click="submitAlgorithm" style="margin-left: 20px;">修改</el-button>
             </div>
+            <div style="margin-left:60px;margin-top:25px;display: flex;flex-direction: row;">
+              <div style="margin-right: 10px;">工人报告修改限时（天）</div>
+                <el-input-number v-model="changeablePeriod.period" :min="1" :max="60" :step="1"/>
+              <el-button @click="submitPeriod" style="margin-left: 20px;">修改</el-button>
+            </div>
           </div>
         </el-main>
       </el-container>
@@ -161,6 +166,8 @@ import {setRecommendRule} from "@/api/usercenter";
 import {getRecommendRule} from "@/api/usercenter";
 import {adminGetAlgorithm} from "@/api/usercenter";
 import {adminSetAlgorithm} from "@/api/usercenter";
+import {adminGetPeriod} from "@/api/usercenter";
+import {adminSetPeriod} from "@/api/usercenter";
 import TaskItem from "@/components/TaskItem";
 import {reactive} from "vue"
 import {ref} from "vue"
@@ -259,6 +266,9 @@ const algorithmOptions = [
     label:'BM25'
   }
 ]
+const changeablePeriod = reactive({
+  period:0
+})
 export default {
   name: 'UserCenterOfManager',
   data() {
@@ -276,7 +286,8 @@ export default {
       userFeatures,
       recommendFormRules,
       algorithm,
-      algorithmOptions
+      algorithmOptions,
+      changeablePeriod
     }
   },
   methods: {
@@ -328,8 +339,16 @@ export default {
               ElMessage.error(res.response.message)
             }
           })
+            adminGetPeriod().then(res => {
+              if(res.response.code %100 === 0){
+                changeablePeriod.period = res.changeablePeriod
+              }
+              else
+              {
+                ElMessage.error(res.response.message)
+              }
+            })
           break;
-
       }
       console.log(key, keyPath);
     },
@@ -338,7 +357,6 @@ export default {
         location.reload()
       })
     },
-
     handleCurrentChange(){
       this.currentTaskList = this.taskList.slice((this.currentPage-1)*5,this.currentPage*5)
     },
@@ -379,6 +397,19 @@ export default {
           }
         })
       }
+    },
+    submitPeriod(){
+      adminSetPeriod({changeablePeriod:changeablePeriod.period})
+      .then(res=>{
+        if(res.response.code %100 === 0)
+        {
+          ElMessage.success(res.response.message)
+        }
+        else
+        {
+          ElMessage.error(res.response.message)
+        }
+      })
     }
   },
   components: {

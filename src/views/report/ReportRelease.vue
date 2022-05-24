@@ -51,7 +51,8 @@
           </el-upload>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit('basicInfo')">提交</el-button>
+          <el-button type="primary" @click="onSubmit('basicInfo')" v-if="this.$route.query.reportId === undefined">提交</el-button>
+          <el-button type="primary" @click="onChange('basicInfo')" v-else>修改</el-button>
           <el-button @click="cancelSubmit">取消</el-button>
         </el-form-item>
       </el-form>
@@ -62,10 +63,12 @@
 
 <script>
 import {employeeTaskDetail} from "@/api/square";
+import {employeeGetReportInfo} from "@/api/report";
 import {Checked} from "@element-plus/icons-vue"
 import {ElMessage} from 'element-plus'
 import {reactive} from "vue"
 import {publishReport} from "@/api/report";
+import {changeReport} from "@/api/report";
 import oss from '@/utils/oss'
 
 const report_form = reactive({
@@ -89,6 +92,12 @@ const rules = reactive({
       required:true,
       message:'请填写报告名称',
       trigger:'blur'
+    },
+    {
+      min:5,
+      max:10,
+      message: '报告名称不得少于5个字符，不得多于10个字符',
+      trigger: 'blur'
     }
   ],
   defectExplain:[
@@ -146,7 +155,7 @@ export default {
       report_form,
       rules,
       task:{},
-      taskId:this.$route.params.taskId,
+      taskId:this.$route.query.taskId,
       fileList:[],
     }
   },
@@ -168,6 +177,22 @@ export default {
         ElMessage.error(res.response.message)
       }
     })
+    if(this.$route.query.reportId!==undefined)
+    {
+      employeeGetReportInfo({taskId:this.taskId,reportId:this.$route.query.reportId})
+      .then(res => {
+        if(res.response.code % 100 === 0){
+          report_form.reportName = res.reportName
+          // report_form.defectPictureList= res.defectPictureList
+          report_form.defectReproductionStep= res.defectReproduction
+          report_form.defectExplain= res.defectExplain
+          report_form.testEquipmentInformation= res.testEquipmentInfo
+        }
+        else {
+          ElMessage.error(res.response.message)
+        }
+      })
+    }
 
   },
   components:{
@@ -199,6 +224,39 @@ export default {
           ElMessage.error(res.response.message)
         }
       })
+          return true
+        }else{
+          alert("必填项不能为空")
+          return false
+        }
+      })
+
+    },
+    onChange(formName) {
+      this.$refs[formName].validate(valid =>{
+        if (valid){
+          changeReport({testReport: report_form,taskId:this.taskId,reportId:this.$route.query.reportID})
+              .then(res =>{
+                if(res.response.code%100 === 0)
+                {
+                  // console.log(res.response.message)
+                  // this.$router.push("/reportReleaseSucceed")
+                  ElMessage({
+                    message:res.response.message,
+                    type:'success',
+                    duration:1000,
+                    onClose:()=>{
+                      this.$router.push("/taskInfoFromUser/"+this.taskId).then(()=> {
+                        location.reload()
+                      })
+                    }
+                  })
+                }
+                else
+                {
+                  ElMessage.error(res.response.message)
+                }
+              })
           return true
         }else{
           alert("必填项不能为空")

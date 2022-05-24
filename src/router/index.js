@@ -83,7 +83,7 @@ const routes = [
         component: TaskRelease
     },
     {
-        path: "/reportRelease/:taskId",
+        path: "/reportRelease",
         name: "ReportRelease",
         component: ReportRelease
     },

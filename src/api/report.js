@@ -114,6 +114,11 @@ export const employerGetReportInfo = payload => {
         })
 }
 
+/**
+ * 发包方查看协作报告详情 GET /employer/CooperationReportDetail
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 export const employerGetCooperationInfo = payload => {
     const {cooperationReportId} = payload
     return axios.get(`${EMPLOYER_MODULE}/CooperationReportDetail?cooperationReportId=${cooperationReportId}`)
@@ -199,6 +204,18 @@ export const scoreReport = payload => {
         })
 }
 
+/**
+ * 接包方修改自己已经提交的任务
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const changeReport = payload => {
+    const {taskId,taskReport,reportId} = payload
+    return axios.post(`${EMPLOYEE_MODULE}/changeReport`,{taskId,taskReport,reportId})
+        .then(res => {
+            return res.data
+        })
+}
 
 /**
  * 查看测试报告评价和评分 GET /api/report/showReportScore
@@ -222,6 +239,19 @@ export const wantCooperate = (payload) =>{
      const {reportId} = payload
     return axios.put(`${EMPLOYEE_MODULE}/cooperateReport?reportId=${reportId}`)
         .then(res => {
+            return res.data
+        })
+}
+
+/**
+ * 接包方查看该任务自己提交的报告列表
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const getAllMyReport = payload => {
+    const {taskId} = payload
+    return axios.get(`${EMPLOYEE_MODULE}/getAllMyReport?taskId=${taskId}`)
+        .then(res=> {
             return res.data
         })
 }

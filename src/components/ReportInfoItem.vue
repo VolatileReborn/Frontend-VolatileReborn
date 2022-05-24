@@ -2,7 +2,7 @@
   <el-card :body-style="{padding: '0px'}" class="reportInfo_card">
     <template #header>
         <div style="display: flex;flex-direction: column">
-          <div><span style="font-weight: bolder;font-size: x-large;margin-left: 15px;text-align:center">{{ taskReport.reportName }}</span></div>
+          <div><span style="font-weight: bolder;font-size: x-large;justify-content: center">{{ taskReport.reportName }}</span></div>
           <div style="font-size: medium;color:grey;text-align:center" >测试工人ID: {{taskReport.workerId}}</div>
           <div style="font-size: medium;color:grey;text-align:center" v-if="taskReport.totalScore !== -1">综合评分: {{taskReport.totalScore}}</div>
         </div>
@@ -44,7 +44,7 @@
           </el-icon>
           <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px;text-align:center">缺陷应用截图:</div>
         </div>
-          <div  style="display:flex;flex-direction: row;margin-top: 5px;margin-left: 50%">
+          <div  style="display:flex;flex-direction: row;margin-top: 5px;justify-content:center">
             <div v-for="item in taskReport.defectPictureList"
                  v-bind:key="item.fileName" >
               <el-image :src="item.fileURL"  alt="" style="height: 15vh;margin-left: 5px;text-align:center" :preview-src-list="srcList" :initial-index="0" lazy fit="scale-down"/>

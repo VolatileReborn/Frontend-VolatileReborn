@@ -7,128 +7,179 @@
   <div class="container" v-infinite-scroll="load" style="overflow: auto">
     <el-card class="box_card">
       <template #header>
+<!--        <div class="card_header">-->
+<!--          <div class="header_left">-->
+<!--            <span style="font-size: larger">{{task.taskName}}</span>-->
+<!--            <div class="header_tags">-->
+<!--              <el-tag v-if="task.taskState === 0" class="header_tag" type="warning">进行中</el-tag>-->
+<!--              <el-tag v-if="task.taskState === 1" class="header_tag" type="info">已结束</el-tag>-->
+<!--              <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>-->
+<!--              <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="header_right">-->
+<!--            <div style="font-size: small">紧急程度：<el-rate v-model="task.taskUrgency"-->
+<!--                                                        show-text-->
+<!--                                                        :texts="['非常宽松','宽松','一般紧急','紧急','非常紧急']"-->
+<!--                                                        :colors="['#67c23a','#FF9900','#ff0000']"-->
+<!--                                                        disabled/>-->
+<!--            </div>-->
+<!--            <div style="font-size: small">任务难度：<el-rate v-model="task.taskDifficulty"-->
+<!--                                                        show-text-->
+<!--                                                        :texts="['轻松','容易','一般','较难','困难']"-->
+<!--                                                        :colors="['#67c23a','#FF9900','#ff0000']"-->
+<!--                                                        disabled/>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="card_header">
           <div class="header_left">
-            <span style="font-size: larger">{{task.taskName}}</span>
-            <div class="header_tags">
-              <el-tag class="header_tag" type="warning">进行中</el-tag>
-              <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>
-              <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>
-            </div>
+            <img v-if="task.taskType === 0" src="../../assets/functional_test.png" class="task_pic"/>
+            <img v-if="task.taskType === 1" src="../../assets/performance_test.png" class="task_pic" />
           </div>
           <div class="header_right">
-            <div style="font-size: small">紧急程度：<el-rate v-model="task.taskUrgency"
+            <div style="display:flex;flex-direction: row">
+            <div>
+              <div class="task_name">{{task.taskName}}</div>
+              <div class="header_tags">
+                <el-tag v-if="task.taskState === 0" class="header_tag" type="warning">进行中</el-tag>
+                <el-tag v-if="task.taskState === 1" class="header_tag" type="info">已结束</el-tag>
+                <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>
+                <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>
+              </div>
+            </div>
+            <div style="margin-left: 20vw;width: 40vw;position: relative;">
+              <div style="font-size: small">紧急程度：<el-rate v-model="task.taskUrgency"
                                                         show-text
                                                         :texts="['非常宽松','宽松','一般紧急','紧急','非常紧急']"
                                                         :colors="['#67c23a','#FF9900','#ff0000']"
-                                                        disabled/>
-            </div>
-            <div style="font-size: small">任务难度：<el-rate v-model="task.taskDifficulty"
+                                                        disabled/></div>
+              <div style="font-size: small">任务难度：<el-rate v-model="task.taskDifficulty"
                                                         show-text
                                                         :texts="['轻松','容易','一般','较难','困难']"
                                                         :colors="['#67c23a','#FF9900','#ff0000']"
-                                                        disabled/>
+                                                        disabled/></div>
             </div>
+            </div>
+            <div style="margin-top:10px"><el-icon><Clock /></el-icon>  发布日期 ： {{ parseTime(task.taskStartTime)}}</div>
+            <div style="margin-top: 5px"><el-icon><Clock /></el-icon>  结束日期 ： {{parseTime(task.taskEndTime)}}</div>
+            <div style="margin-top: 10px"><el-icon><User /></el-icon>  参与人员 ： 剩余 <span style="font-weight: bold;color:#409efc ">{{task.workerNumLeft}}</span>  人  <el-divider direction="vertical" ></el-divider>  总需  <span style="font-weight: bold;color:#409efc ">{{task.workerNumTotal}}</span> 人</div>
+            <div v-if="role === '1'" style="position: relative;margin-left:600px;display:flex;flex-direction: row" >
+              <el-button  type="danger" @click="goRelease" v-if="task.taskState === 0">提交报告</el-button>
+              <el-button  v-if="task.isSubmitted === 1" type="primary"  style="margin-left: 10px" @click="showAllMyReport">我的报告</el-button>
+            </div>
+            <div v-if="this.role === '0'">
+              <el-button v-if="task.taskState === 0" type="danger" round style="position: relative;margin-left: 600px" size="large" @click="finish()" >结束任务</el-button>
+            </div>
+            <el-dialog v-model="reportsVisible" title="我的报告列表">
+              <el-table :data="reports"
+                        stripe
+                        highlight-current-row
+                        type-layout="auto">
+                <el-table-column type="index" width="100" align="center" />
+                <el-table-column prop="reportName" label="报告名称"  align="center"/>
+                <el-table-column prop="similarity" label="相似度(%)"  align="center"/>
+                <el-table-column label="操作" align="center">
+                  <template #default="scope">
+                    <el-button size="small" type="primary" @click="goMyReportInfo(scope.row.reportId)">查看报告</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-dialog>
           </div>
         </div>
       </template>
-      <div class="information">
-        <div>发布日期 ： {{ parseTime(task.taskStartTime)}}</div>
-        <div style="margin-top: 5px">结束日期 ： {{parseTime(task.taskEndTime)}}</div>
-        <div style="margin-top: 5px">参与人员 ： 剩余 <span style="font-weight: bold;color:#409efc ">{{task.workerNumLeft}}</span>  人  <el-divider direction="vertical" ></el-divider>  总需  <span style="font-weight: bold;color:#409efc ">{{task.workerNumTotal}}</span> 人</div>
-      <div class="need_information">
-        <div style="display: flex;flex-direction: row;margin-top:20px">
-          <el-icon color="#409efc" :size="30">
-            <edit />
-          </el-icon>
-          <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">需求描述</div>
-        </div>
-        <div style="margin-top: 10px">任务简介 ： <span style="font-weight: bold">{{task.taskIntroduction}}</span></div>
-        <div style="margin-top: 10px;display: flex;flex-direction: row">
-          <span style="padding-top: 10px">测试设备需求：</span>
-          <div style="flex-direction: column;justify-content: center" v-if="task.android === true">
-            <el-image class="device_img"  :src="require('../../assets/Android.png')"></el-image>
-            <div>Android</div>
-          </div>
-          <div style="flex-direction: column;justify-content: center" v-if="task.ios === true">
-            <el-image class="device_img"  :src="require('../../assets/iOS.png')"></el-image>
-            <div style="padding-left: 18px">iOS</div>
-          </div>
-          <div style="flex-direction: column;justify-content: center" v-if="task.linux === true">
-            <el-image class="device_img"  :src="require('../../assets/Linux.png')"></el-image>
-            <div style="padding-left: 10px">Linux</div>
-          </div>
-          <div style="flex-direction: column;justify-content: center" v-if="task.windows === true">
-            <el-image class="device_img" style="padding-left: 25px"  :src="require('../../assets/Windows.png')"></el-image>
-            <div style="padding-left: 10px">Windows</div>
-          </div>
-          <div style="flex-direction: column;justify-content: center" v-if="task.harmonyos === true">
-            <el-image class="device_img"   :src="require('../../assets/Harmony.jpg')"></el-image>
-            <div style="padding-left: 25px">鸿蒙</div>
-          </div>
-        </div>
-      </div>
-      <div class="file_information" >
-        <div style="display: flex;flex-direction: row;margin-top:20px">
-          <el-icon color="#409efc" :size="30">
-            <folder-checked />
-          </el-icon>
-          <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">附件下载</div>
-        </div>
-          <div style="display: flex;flex-direction: row">
-<!--          <a :href="exeUrl" download="待测应用可执行文件">-->
-            <el-button type="text" @click="downloadExe">一、点击下载待测应用可执行文件</el-button>
-<!--          </a>-->
-<!--            <a :href="docUrl" download="测试需求描述文件" style="margin-left: 10px">-->
-          <el-button type="text" @click="downloadDoc">二、点击下载测试需求描述文件</el-button>
-<!--            </a>-->
-            <div v-if="this.role === '0'">
-              <el-button v-if="task.taskState === 0" type="danger" round style="margin-left: 600px" size="large" @click="finish()" >结束任务</el-button>
+      <el-tabs type="border-card">
+        <el-tab-pane label="任务信息">
+          <div class="information">
+            <div class="need_information">
+              <div style="display: flex;flex-direction: row;margin-top:20px">
+                <el-icon color="#409efc" :size="30">
+                  <edit />
+                </el-icon>
+                <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">需求描述</div>
+              </div>
+              <div style="margin-top: 10px">任务简介 ： <span style="font-weight: bold">{{task.taskIntroduction}}</span></div>
+              <div style="margin-top: 10px;display: flex;flex-direction: row">
+                <span style="padding-top: 10px">测试设备需求：</span>
+                <div style="flex-direction: column;justify-content: center" v-if="task.android === true">
+                  <el-image class="device_img"  :src="require('../../assets/Android.png')"></el-image>
+                  <div>Android</div>
+                </div>
+                <div style="flex-direction: column;justify-content: center" v-if="task.ios === true">
+                  <el-image class="device_img"  :src="require('../../assets/iOS.png')"></el-image>
+                  <div style="padding-left: 18px">iOS</div>
+                </div>
+                <div style="flex-direction: column;justify-content: center" v-if="task.linux === true">
+                  <el-image class="device_img"  :src="require('../../assets/Linux.png')"></el-image>
+                  <div style="padding-left: 10px">Linux</div>
+                </div>
+                <div style="flex-direction: column;justify-content: center" v-if="task.windows === true">
+                  <el-image class="device_img" style="padding-left: 25px"  :src="require('../../assets/Windows.png')"></el-image>
+                  <div style="padding-left: 10px">Windows</div>
+                </div>
+                <div style="flex-direction: column;justify-content: center" v-if="task.harmonyos === true">
+                  <el-image class="device_img"   :src="require('../../assets/Harmony.jpg')"></el-image>
+                  <div style="padding-left: 25px">鸿蒙</div>
+                </div>
+              </div>
+            </div>
+            <el-divider />
+            <div class="file_information" >
+              <div style="display: flex;flex-direction: row;margin-top:20px">
+                <el-icon color="#409efc" :size="30">
+                  <folder-checked />
+                </el-icon>
+                <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px">附件下载</div>
+              </div>
+              <div style="display: flex;flex-direction: column">
+                <el-button class="download_btn"  @click="downloadExe">下载待测应用可执行文件<img class="file_pic" src="../../assets/exe.png" /></el-button>
+                <el-button class="download_btn" style="margin-left: 0" type="primary"  @click="downloadDoc">下载测试需求描述文件<img class="file_pic" src="../../assets/md.png" /></el-button>
+              </div>
             </div>
           </div>
-      </div>
-      <div v-if="role === '1'" style="position: relative;margin-left: 1000px" >
-        <el-button  v-if="task.isSubmitted === 0" type="danger"  @click="goRelease">提交报告</el-button>
-        <el-button  v-if="task.isSubmitted === 1" type="primary"  @click="goMyReportInfo">我的报告</el-button>
-      </div>
-      </div>
-      <el-divider ><el-icon><star-filled /></el-icon></el-divider>
-      <div class="report_container" >
-        <el-row>
-          <el-col :span="15"><span style="font-weight: bolder">报告展示</span><span style="font-size: small;font-weight: lighter">（下滑显示更多）</span> </el-col>
-          <el-col :span="5">
-          </el-col>
-        </el-row>
-        <el-table :data="task.reportList"
-                  height="400"
-                  style="width:100%;margin-top: 10px;text-align: center"
-                  stripe
-                  border
-                  size="large"
-                  highlight-current-row
-                  type-layout="auto">
-          <el-table-column type="index" width="100" align="center" />
-          <el-table-column prop="reportName" label="报告名称"  align="center"/>
-          <el-table-column prop="similarity" label="相似度(%)"  align="center"/>
-          <el-table-column label="测试工人ID" align="center" >
-            <template #default="scope">
-              <div style="display: flex;align-items: center;justify-content: center">
-                <el-icon><Avatar /></el-icon>
-                <span style="margin-left: 10px;">{{scope.row.workerId}}</span>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" align="center">
-            <template #default="scope">
-            <el-button size="small" type="primary" @click="goReport(scope.row.reportId)">查看报告</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
-      <div class="relation_container" id="my_graph">
-      </div>
-        <div class="relation_container" id="my_tree"></div>
-      </div>
+        </el-tab-pane>
+        <el-tab-pane label="报告列表">
+          <div style="font-weight: lighter;font-size: small;margin-top: 10px">下拉列表查看更多</div>
+          <el-table :data="task.reportList"
+                    height="400"
+                    style="width:100%;margin-top: 10px;text-align: center"
+                    stripe
+                    border
+                    size="large"
+                    highlight-current-row
+                    type-layout="auto">
+            <el-table-column type="index" width="100" align="center" />
+            <el-table-column prop="reportName" label="报告名称"  align="center"/>
+            <el-table-column prop="similarity" label="相似度(%)"  align="center"/>
+            <el-table-column label="测试工人ID" align="center" >
+              <template #default="scope">
+                <div style="display: flex;align-items: center;justify-content: center">
+                  <el-icon><Avatar /></el-icon>
+                  <span style="margin-left: 10px;">{{scope.row.workerId}}</span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+              <template #default="scope">
+                <el-button size="small" type="primary" @click="goReport(scope.row.reportId)">查看报告</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="报告相似度关系图">
+          <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
+          <div class="relation_container" id="my_graph"></div>
+        </el-tab-pane>
+        <el-tab-pane label="报告协作树状图">
+          <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
+          <div class="relation_container" id="my_tree"></div>
+        </el-tab-pane>
+        <el-tab-pane label="报告聚合散点图">
+          <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
+          散点图
+        </el-tab-pane>
+      </el-tabs>
     </el-card>
   </div>
 </template>
@@ -136,20 +187,22 @@
 <script>
 import {FolderChecked} from "@element-plus/icons-vue"
 import {Edit} from "@element-plus/icons-vue"
-import {StarFilled} from "@element-plus/icons-vue"
 import {Avatar} from "@element-plus/icons-vue"
+import {Clock} from "@element-plus/icons-vue"
+import {User} from "@element-plus/icons-vue"
 import {employerBrowserTaskDetail} from "@/api/task";
 import {employeeBrowserTaskDetail} from "@/api/task";
 import {adminGetTaskDetail} from "@/api/usercenter";
 import {browserReports} from "@/api/report";
 import {browserChecked} from "@/api/usercenter";
+import {getAllMyReport} from "@/api/report";
 import oss from "@/utils/oss"
 import {parseTime} from "@/utils/utils";
 import {ref} from "vue"
 import {ElMessage} from "element-plus";
 import * as echarts from 'echarts'
 import $ from 'jquery'
-
+import router from "@/router";
 
 const count = ref(0);
 const load = () => {
@@ -163,12 +216,12 @@ export default {
       task: {
         taskId: this.taskId,
         taskName: '',
-        taskType: 0,
+        taskType: ref(),
         workerNumTotal: 0,
         workerNumLeft: 0,
         taskStartTime: 0,
         taskEndTime: 0,
-        taskState: ref(),
+        taskState: ref(1),
         taskUrgency:0,
         taskDifficulty:2,
         android:false,
@@ -191,13 +244,19 @@ export default {
       exeName:'',
       docUrl:'',
       docName:'',
+      reportsVisible:false,
+      reports:[
+        // {reportName:'测试报告1',similarity:80,reportId:3},
+        // {reportName: '测试报告2',similarity:80,reportId:6}
+      ]
     }
   },
   components: {
     FolderChecked,
     Edit,
-    StarFilled,
-    Avatar
+    Avatar,
+    Clock,
+    User
   },
   methods: {
     load,
@@ -261,17 +320,22 @@ export default {
         }
       })
     },
-    goMyReportInfo(){
+    goMyReportInfo(reportId){
       this.$router.push({
         path:"/myReportInfo",
         query:{
           taskId:this.taskId,
-          reportId:this.task.reportId
+          reportId:reportId
         }
       })
     },
     goRelease(){
-      this.$router.push("/reportRelease/"+this.taskId)
+      this.$router.push({
+        path:"/reportRelease/",
+        query: {
+          taskId:this.taskId
+        }
+    })
     },
     finish(){
       browserChecked({taskId:this.taskId})
@@ -293,10 +357,12 @@ export default {
       })
     },
     getData(){
+      var taskId = this.taskId
       $.ajax({
         type:'get',
         async:true,
         url:`http://124.222.135.47:8000/api/report/getSimilarityGraph?taskId=${this.taskId}`,
+        // url:`/testData.json`,
         success:function(res) {
           if(res)
           {
@@ -316,7 +382,8 @@ export default {
                 }
               ],
               title: {
-                text: '报告相似度关系展示图'
+                text: '报告相似度关系展示图',
+                top:'bottom',
               },
               tooltip: {
                 show: {
@@ -358,6 +425,16 @@ export default {
               ]
             };
             myChart.setOption(option);
+            myChart.on('click',function (params) {
+              //console.log(params.data.tooltip.formatter)
+              router.push({
+                name:"ReportInfo",
+                query:{
+                  taskId:taskId,
+                  reportId:params.data.tooltip.formatter
+                }
+              })
+            })
           }
         }
       })
@@ -375,7 +452,8 @@ export default {
             myChart.setOption(
                 ({
                   title: {
-                    text: '报告协作关系展示图'
+                    text: '报告协作关系展示图',
+                    top:'bottom',
                   },
                   tooltip: {
                     trigger: 'item',
@@ -417,6 +495,19 @@ export default {
             );
           }}})
     },
+    showAllMyReport(){
+      this.reportsVisible = true
+      getAllMyReport({taskId:this.taskId})
+      .then(res => {
+        if(res.response.code %100 === 0)
+        {
+          this.reports = res.reportList
+        }
+        else {
+          ElMessage.error(res.response.message)
+        }
+      })
+    }
   },
   mounted() {
     if (this.role === '0') {
@@ -426,6 +517,7 @@ export default {
               console.log(res.response.message)
               this.task.workerNumTotal = res.workerNumTotal
               this.task.taskState = res.taskState
+              this.task.taskType = res.taskType
               this.task.workerNumLeft = res.workerNumLeft
               this.task.requirementDescriptionFileList = res.requirementDescriptionFileList
               this.task.executableFileList = res.executableFileList
@@ -452,6 +544,7 @@ export default {
               console.log(res.response.message)
               this.task.workerNumTotal = res.workerNumTotal
               this.task.taskState = res.taskState
+              this.task.taskType = res.taskType
               this.task.workerNumLeft = res.workerNumLeft
               this.task.requirementDescriptionFileList = res.requirementDescriptionFileList
               this.task.executableFileList = res.executableFileList
@@ -478,6 +571,7 @@ export default {
               console.log(res.response.message)
               this.task.workerNumTotal = res.workerNumTotal
               this.task.taskState = res.taskState
+              this.task.taskType = res.taskType
               this.task.workerNumLeft = res.workerNumLeft
               this.task.requirementDescriptionFileList = res.requirementDescriptionFileList
               this.task.executableFileList = res.executableFileList
@@ -498,19 +592,20 @@ export default {
               ElMessage.error(res.response.message)
             }
           })
+
     }
     browserReports({taskId: this.taskId})
         .then(res => {
           if (res.response.code % 100 === 0) {
             this.task.reportList = res.reportList
             this.isAble = this.task.taskState === 0
-
           }
         })
     setTimeout(()=>{
       this.getData()
     },1000)
   },
+
 }
 </script>
 
@@ -539,6 +634,11 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+.task_pic{
+  height:30vh;
+  width:30vh;
+  margin-left: 5vw;
+}
 .header_left{
   margin-left: 5px;
   display: flex;
@@ -547,6 +647,14 @@ export default {
 .header_right{
   display: flex;
   flex-direction: column;
+  margin-right: 20px;
+  width:800px;
+
+}
+.task_name{
+  font-weight:bolder;
+  font-size:x-large;
+  font-family:幼圆;
 }
 .device_img{
   height:32px;
@@ -562,9 +670,17 @@ export default {
   flex-direction: column;
   padding-left: 20px;
 }
+.file_pic{
+  height:5vh;
+  margin-left: 5px;
+}
+.download_btn{
+  margin-top:10px;
+  width: 20vw;
+}
 .relation_container{
   margin-top: 10px;
-  width:90vw;
+  width:83vw;
   height:400px;
 }
 </style>

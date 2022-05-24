@@ -183,3 +183,27 @@ export const adminSetAlgorithm = payload => {
             return res.data
         })
 }
+
+/**
+ * 管理员查看众包工人报告可修改时间限制
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const adminGetPeriod = () => {
+    return axios.get(`${ADMIN_MODULE}/getChangeablePeriod`)
+        .then(res => {
+            return res.data
+        })
+}
+
+/**
+ * 管理员设置众包工人报告可修改时间限制
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const adminSetPeriod = payload => {
+    const { changeablePeriod } = payload
+    return axios.post(`${ADMIN_MODULE}/setChangeablePeriod`,{changeablePeriod})
+        .then(res => {
+            return res.data
+        })
+}

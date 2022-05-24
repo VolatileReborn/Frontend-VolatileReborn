@@ -1,6 +1,8 @@
 <template>
 <el-container>
     <report-info-item v-bind:task-report="taskReport" style="width:90%;height: 83vh;margin-top: 20px;"></report-info-item>
+<!--    <el-button class="change-btn" type="success" plain v-if="taskReport.isChangeable === 1">修改报告</el-button>-->
+    <el-button class="change-btn" type="success" plain @click="goChange">修改报告</el-button>
 </el-container>
 </template>
 
@@ -22,7 +24,8 @@ export default {
         defectReproduction:'',
         testEquipmentInfo:'',
         totalScore:0,
-        reportId:this.reportId
+        reportId:this.reportId,
+        isChangeable:0
       },
       taskId:this.$route.query.taskId,
       reportId:this.$route.query.reportId,
@@ -40,6 +43,7 @@ export default {
         this.taskReport.defectReproduction = res.defectReproduction
         this.taskReport.testEquipmentInfo = res.testEquipmentInfo
         this.taskReport.totalScore = res.totalScore
+        this.taskReport.isChangeable = res.isChangeable
       }
       else {
         ElMessage.error(res.response.message)
@@ -48,10 +52,23 @@ export default {
 
   },
   methods:{
-
+    goChange(){
+      this.$router.push({
+        name:'ReportRelease',
+        query:{
+          taskId:this.taskId,
+          reportId:this.reportId
+        }
+      })
+    }
   }
 }
 </script>
 
 <style scoped>
+.change-btn{
+  position: absolute;
+  top:150px;
+  right:200px;
+}
 </style>
