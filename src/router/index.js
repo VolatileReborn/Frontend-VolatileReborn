@@ -12,7 +12,6 @@ import UserCenterofEmployee from "@/views/user/UserCenterofEmployee"
 import UserCenterofEmployer from "@/views/user/UserCenterofEmployer"
 import UserCenterOfManager from "@/views/user/UserCenterOfManager";
 import ReportInfo from "@/views/report/ReportInfo";
-
 import ReportCooperate from "@/views/report/ReportCooperate"
 import ReportInfoCooperation from "@/views/report/ReportInfoCooperation"
 import MyReportInfo from '@/views/report/MyReportInfo'

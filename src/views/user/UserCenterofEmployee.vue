@@ -265,7 +265,8 @@ export default {
       change:false,
       percentage:ref(29),
       customColor:"#f56c6c",
-      isLoading:true
+      isLoading:true,
+      role:window.localStorage.getItem("role")
     }
   },
   methods: {
@@ -460,19 +461,25 @@ export default {
     ReportItem
   },
   mounted() {
-    employeeBrowserUndertakingTasks()
-    .then(res => {
-      if(res.response.code%100 === 0)
-      {
-        this.taskList = res.undertakingTaskList
-        this.currentTaskList = this.taskList.slice(0,5)
-        this.totalPage = this.taskList.length *2;
-        this.isLoading = false
-      }
-      else {
-        ElMessage.error(res.response.message)
-      }
-    })
+    if(this.role === undefined || this.role !== "1")
+    {
+      this.isLoading = false
+      ElMessage.info("请重新登陆")
+      this.$router.push("/login")
+    }
+    else {
+      employeeBrowserUndertakingTasks()
+          .then(res => {
+            if (res.response.code % 100 === 0) {
+              this.taskList = res.undertakingTaskList
+              this.currentTaskList = this.taskList.slice(0, 5)
+              this.totalPage = this.taskList.length * 2;
+              this.isLoading = false
+            } else {
+              ElMessage.error(res.response.message)
+            }
+          })
+    }
   }
 
 }

@@ -293,7 +293,8 @@ export default {
       algorithm,
       algorithmOptions,
       changeablePeriod,
-      isLoading:true
+      isLoading:true,
+      role:window.localStorage.getItem("role")
     }
   },
   methods: {
@@ -427,18 +428,24 @@ export default {
     TaskItem
   },
   mounted() {
-    adminBrowserAllTasks().then(res =>{
-      if(res.response.code%100 === 0)
-      {
-        this.taskList = res.taskList
-        this.currentTaskList = this.taskList.slice(0,5)
-        this.totalPage = this.taskList.length *2;
-        this.isLoading = false
-      }
-      else {
-        ElMessage.error(res.response.message)
-      }
-    })
+    if(this.role === undefined || this.role !== "2")
+    {
+      this.isLoading = false
+      ElMessage.info("请重新登陆")
+      this.$router.push("/login")
+    }
+    else {
+      adminBrowserAllTasks().then(res => {
+        if (res.response.code % 100 === 0) {
+          this.taskList = res.taskList
+          this.currentTaskList = this.taskList.slice(0, 5)
+          this.totalPage = this.taskList.length * 2;
+          this.isLoading = false
+        } else {
+          ElMessage.error(res.response.message)
+        }
+      })
+    }
   }
 
 }

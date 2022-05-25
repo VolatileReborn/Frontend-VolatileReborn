@@ -64,7 +64,8 @@ export default {
       isCollapse: false,
       breadcrumbItems: ['正在进行'],
       taskList:[],
-      isLoading:true
+      isLoading:true,
+      role:window.localStorage.getItem("role")
     }
   },
   methods: {
@@ -123,20 +124,23 @@ export default {
     TaskItem
   },
   mounted() {
+    if(this.role === undefined || this.role !== "0")
+    {
+      this.isLoading = false
+      ElMessage.info("请重新登陆")
+      this.$router.push("/login")
+    }
+    else {
       employerBrowserUndertakingTasks()
-    .then(res => {
-      if(res.response.code%100 === 0)
-      {
-
-        this.taskList = res.undertakingTaskList
-        this.isLoading = false
-
-      }
-      else
-      {
-        ElMessage.error(res.response.message)
-      }
-    })
+          .then(res => {
+            if (res.response.code % 100 === 0) {
+              this.taskList = res.undertakingTaskList
+              this.isLoading = false
+            } else {
+              ElMessage.error(res.response.message)
+            }
+          })
+    }
   }
 
 }

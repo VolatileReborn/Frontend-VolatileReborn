@@ -64,8 +64,8 @@
           </div>
         </div>
       </template>
-      <el-tabs type="border-card">
-        <el-tab-pane label="任务信息">
+      <el-tabs type="border-card" v-model="activeName" @tab-click="handleChangeTab">
+        <el-tab-pane label="任务信息" name="info">
           <div class="information">
             <div class="need_information">
               <div style="display: flex;flex-direction: row;margin-top:20px">
@@ -114,7 +114,7 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="报告列表">
+        <el-tab-pane label="报告列表" name="list" >
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">下拉列表查看更多</div>
           <el-table :data="task.reportList"
                     height="400"
@@ -142,17 +142,17 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="报告相似度关系图">
+        <el-tab-pane label="报告相似度关系图" name="graph" lazy="true">
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
           <div class="relation_container" id="my_graph"></div>
         </el-tab-pane>
-        <el-tab-pane label="报告协作树状图">
+        <el-tab-pane label="报告协作树状图" name="tree" lazy="true">
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
           <div class="relation_container" id="my_tree"></div>
         </el-tab-pane>
-        <el-tab-pane label="报告聚合散点图">
+        <el-tab-pane label="报告聚合散点图" name="scatter" lazy="true">
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
-          散点图
+          <div class="relation_container" style="display: flex;justify-content: center" id="my_scatter"></div>
         </el-tab-pane>
       </el-tabs>
     </el-card>
@@ -176,6 +176,7 @@ import {parseTime} from "@/utils/utils";
 import {ref} from "vue"
 import {ElMessage} from "element-plus";
 import * as echarts from 'echarts'
+import ecStat from 'echarts-stat'
 import $ from 'jquery'
 import router from "@/router";
 // import {ElLoading} from "element-plus"
@@ -229,7 +230,8 @@ export default {
       reports:[
         // {reportName:'测试报告1',similarity:80,reportId:3},
         // {reportName: '测试报告2',similarity:80,reportId:6}
-      ]
+      ],
+      activeName:"info"
     }
   },
   components: {
@@ -337,144 +339,245 @@ export default {
         }
       })
     },
-    getData(){
+    handleChangeTab(tab,event){
       var taskId = this.taskId
-      $.ajax({
-        type:'get',
-        async:true,
-        url:`http://124.222.135.47:8000/api/report/getSimilarityGraph?taskId=${this.taskId}`,
-        // url:`/testData.json`,
-        success:function(res) {
-          if(res)
-          {
-            var myChart = echarts.init(document.getElementById("my_graph"));
-            res.nodes.forEach(function ( node) {
-              node.label = {
-                show : node.symbolSize > 5
-              }
-            })
-            let option = {
-              legend: [
-                {
-                  data: res.categories.map(a => {
-                        return a.name
-                      }
-                  )
-                }
-              ],
-              title: {
-                text: '报告相似度关系展示图',
-                top:'bottom',
-              },
-              tooltip: {
-                show: {
-                  node:true,
-                  link:false
-                }
-              }, // 提示框
-              animationDuration: 1500,
-              animationEasingUpdate: 'quinticInOut',
-              series: [
-                {
-                  type: "graph",
-                  layout: "force",
-                  roam: true, // 鼠标缩放
-                  zoom:4,
-                  color: [], // 自定义调色盘
-                  data: res.nodes,
-                  links: res.links,
-                  categories: res.categories,
-                  label: {
-                    position: 'right',
-                    formatter: '{c}'
-                  }, // 节点label显示
-                  edgeLabel:{
-                    show:true
-                  },
-                  lineStyle: {
-                    color: 'source',
-                    curveness: 0.2, // 曲度
-                    opacity:0.5
-                  },
-                  emphasis: {
-                    focus: 'adjacency',
-                    lineStyle: {
-                      width: 10
-                    }
+      var name = tab.props.name
+      console.log(event)
+      switch (name) {
+        case "graph":
+          $.ajax({
+            type:'get',
+            async:true,
+            url:`http://124.222.135.47:8000/api/report/getSimilarityGraph?taskId=${this.taskId}`,
+            // url:`/testData.json`,
+            success:function(res) {
+              if(res)
+              {
+                var myChart = echarts.init(document.getElementById("my_graph"));
+                res.nodes.forEach(function ( node) {
+                  node.label = {
+                    show : node.symbolSize > 5
                   }
-                }
-              ]
-            };
-            myChart.setOption(option);
-            myChart.on('click',function (params) {
-              //console.log(params.data.tooltip.formatter)
-              router.push({
-                name:"ReportInfo",
-                query:{
-                  taskId:taskId,
-                  reportId:params.data.tooltip.formatter
-                }
-              })
-            })
-          }
-        }
-      })
-      $.ajax({
-        type:'get',
-        async:true,
-        url:`http://124.222.135.47:8000/api/report/getCooperationTree?taskId=${this.taskId}`,
-        success:function(res) {
-          if(res)
-          {
-            var myChart = echarts.init(document.getElementById("my_tree"));
-            res.children.forEach(function (datum, index) {
-              index % 2 === 0 && (datum.collapsed = true);
-            });
-            myChart.setOption(
-                ({
+                })
+                let option = {
+                  legend: [
+                    {
+                      data: res.categories.map(a => {
+                            return a.name
+                          }
+                      )
+                    }
+                  ],
                   title: {
-                    text: '报告协作关系展示图',
+                    text: '报告相似度关系展示图',
                     top:'bottom',
                   },
                   tooltip: {
-                    trigger: 'item',
-                    triggerOn: 'mousemove'
-                  },
+                    show: {
+                      node:true,
+                      link:false
+                    }
+                  }, // 提示框
+                  animationDuration: 1500,
+                  animationEasingUpdate: 'quinticInOut',
                   series: [
                     {
-                      type: 'tree',
-                      data: [res],
-                      top: '1%',
-                      left: '7%',
-                      bottom: '1%',
-                      right: '20%',
-                      symbolSize: 7,
+                      type: "graph",
+                      layout: "force",
+                      roam: true, // 鼠标缩放
+                      zoom:4,
+                      color: [], // 自定义调色盘
+                      data: res.nodes,
+                      links: res.links,
+                      categories: res.categories,
                       label: {
-                        position: 'left',
-                        verticalAlign: 'middle',
-                        align: 'right',
-                        fontSize: 9,
-                        formatter:'{c}'
+                        position: 'right',
+                        formatter: '{c}'
+                      }, // 节点label显示
+                      edgeLabel:{
+                        show:true
                       },
-                      leaves: {
-                        label: {
-                          position: 'right',
-                          verticalAlign: 'middle',
-                          align: 'left',
-                          formatter:'{c}'
-                        }
+                      lineStyle: {
+                        color: 'source',
+                        curveness: 0.2, // 曲度
+                        opacity:0.5
                       },
                       emphasis: {
-                        focus: 'descendant'
-                      },
-                      expandAndCollapse: true,
-                      animationDuration: 550,
-                      animationDurationUpdate: 750
+                        focus: 'adjacency',
+                        lineStyle: {
+                          width: 10
+                        }
+                      }
                     }
                   ]
+                };
+                myChart.setOption(option);
+                myChart.on('click',function (params) {
+                  //console.log(params.data.tooltip.formatter)
+                  router.push({
+                    name:"ReportInfo",
+                    query:{
+                      taskId:taskId,
+                      reportId:params.data.tooltip.formatter
+                    }
+                  })
                 })
-            );
-          }}})
+              }
+            }
+          })
+              break;
+        case "tree":
+          $.ajax({
+            type:'get',
+            async:true,
+            url:`http://124.222.135.47:8000/api/report/getCooperationTree?taskId=${this.taskId}`,
+            success:function(res) {
+              if(res)
+              {
+                var myChart = echarts.init(document.getElementById("my_tree"));
+                res.children.forEach(function (datum, index) {
+                  index % 2 === 0 && (datum.collapsed = true);
+                });
+                myChart.setOption(
+                    ({
+                      title: {
+                        text: '报告协作关系展示图',
+                        top:'bottom',
+                      },
+                      tooltip: {
+                        trigger: 'item',
+                        triggerOn: 'mousemove'
+                      },
+                      series: [
+                        {
+                          type: 'tree',
+                          data: [res],
+                          top: '1%',
+                          left: '7%',
+                          bottom: '1%',
+                          right: '20%',
+                          symbolSize: 7,
+                          label: {
+                            position: 'left',
+                            verticalAlign: 'middle',
+                            align: 'right',
+                            fontSize: 9,
+                            formatter:'{c}'
+                          },
+                          leaves: {
+                            label: {
+                              position: 'right',
+                              verticalAlign: 'middle',
+                              align: 'left',
+                              formatter:'{c}'
+                            }
+                          },
+                          emphasis: {
+                            focus: 'descendant'
+                          },
+                          expandAndCollapse: true,
+                          animationDuration: 550,
+                          animationDurationUpdate: 750
+                        }
+                      ]
+                    })
+                );
+              }}})
+              break;
+        case "scatter":
+          $.ajax({
+            type:'get',
+            async:true,
+            url:`http://124.222.135.47:8000/api/report/getClusterScatter?taskId=${this.taskId}`,
+            success:function(res) {
+              if(res)
+              {
+                var myChart = echarts.init(document.getElementById("my_scatter"));
+                echarts.registerTransform(ecStat.transform.clustering);
+                var CLUSTER_COUNT = res.clusterCount
+                var COLOR_ALL = [
+                  '#37A2DA',
+                  '#e06343',
+                  '#37a354',
+                  '#b55dba',
+                  '#b5bd48',
+                  '#8378EA',
+                  '#96BFFF'
+                ];
+                var pieces = []
+                for(var i = 0 ; i < CLUSTER_COUNT ; i++)
+                {
+                  pieces.push({
+                    value: i,
+                    label: 'cluster' + i,
+                    color: COLOR_ALL[i]
+                  })
+                }
+                let option = {
+                  title: {
+                    text: '报告聚合散点图',
+                    top:'bottom',
+                  },
+                  animationDuration: 1500,
+                  animationEasingUpdate: 'quinticInOut',
+                  dataset: [
+                    {
+                      source: res.data
+                    },
+                    {
+                      transform: {
+                        type: 'ecStat:clustering',
+                        config:{
+                          clusterCount: CLUSTER_COUNT,
+                          dimensions:[2],
+                          outputType: 'single',
+                          outputClusterIndexDimension: 4
+                        }
+                      }
+                    }
+                  ],
+                  tooltip:{
+                    position: 'top'
+                  },
+                  visualMap:{
+                    type: 'piecewise',
+                    top: 'middle',
+                    min: 0,
+                    max: CLUSTER_COUNT,
+                    left: 10,
+                    splitNumber: CLUSTER_COUNT,
+                    dimension: 2, // 哪个维度映射到视觉元素，即簇的颜色
+                    pieces: pieces
+                  },
+                  grid:{
+                    left: 120
+                  },
+                  xAxis:{},
+                  yAxis:{},
+                  series:{
+                    type:'scatter',
+                    encode:{tooltip:[0,1]},
+                    symbolSize: 15,
+                    itemStyle:{borderColor:'#555'},
+                    datasetIndex:1
+                  }
+                };
+                myChart.setOption(option);
+                myChart.on('click',function (params) {
+                  console.log(params.data[3])
+                  router.push({
+                    name:"ReportInfo",
+                    query:{
+                      taskId:taskId,
+                      reportId:params.data[3]
+                    }
+                  })
+                })
+              }
+            }
+          })
+              break;
+      }
     },
     showAllMyReport(){
       this.reportsVisible = true
@@ -582,10 +685,9 @@ export default {
             this.isAble = this.task.taskState === 0
           }
         })
-    setTimeout(()=>{
-      this.getData()
-
-    },2000)
+    // setTimeout(()=>{
+    //   this.getData()
+    // },1000)
   },
 
 }
