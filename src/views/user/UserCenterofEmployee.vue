@@ -101,7 +101,10 @@
                          v-for="item in deviceOptions"
                          :key="item.value"
                          :label="item.label"
-                         :value="item.value" />
+                         :value="item.value" >
+                          <span style="float: left">{{ item.label }}</span>
+                          <el-image style="float:right; height:30px" :src="require('/src/assets/'+item.label+'.png')" />
+                         </el-option>
                    </el-select>
                  </el-form-item>
                </el-col>
@@ -231,19 +234,11 @@ const deviceOptions = [
   },
   {
     value: 'ios',
-    label: 'IOS'
+    label: 'iOS'
   },
   {
     value: 'linux',
     label: 'Linux'
-  },
-  {
-    value:'windows',
-    label:'Windows'
-  },
-  {
-    value:'harmonyos',
-    label:'HarmonyOS'
   }
 ]
 export default {

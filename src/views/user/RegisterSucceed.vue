@@ -10,7 +10,8 @@
       <div style="font-weight: bolder;font-size:xx-large">你好，欢迎加入众包世界 </div>
     </template>
     <template #extra>
-      <el-button type="primary" plain size="large" @click="direct_route('/login')">立即登录</el-button>
+      <el-button v-if="this.role === '1'" type="primary" plain size="large" @click="direct_route('/fillProfile')">立即完善个人资料</el-button>
+      <el-button v-if="this.role === '0'" type="primary" plain size="large" @click="direct_route('/login')">立即登录</el-button>
     </template>
   </el-result>
 </template>
@@ -20,13 +21,15 @@ export default {
   name: "RegisterSucceed",
   data(){
     return{
+      role:this.$route.query.role
     }
   },
   methods: {
     direct_route(link){
       this.$router.push(link);
     }
-  }
+  },
+  
 }
 </script>
 

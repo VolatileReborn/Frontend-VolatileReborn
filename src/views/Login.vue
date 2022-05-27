@@ -109,6 +109,7 @@ export default{
 				ElMessage.error('手机号必须为11位数字！')
 			}  
 			else {
+				
             register({
               phone_number: this.form.phonenumber,
               password: Encrypt(this.form.userpwd),
@@ -120,9 +121,22 @@ export default{
                     // console.log(res.msg)
                     // console.log(res.data)
                     console.log(res.response)
-                    this.$router.push("/registerSucceed")
+					if(this.form.role===1){
+						login(
+							{
+								phone_number: this.form.phonenumber,
+								password: Encrypt(this.form.userpwd)
+							}
+						).then(res=>{
+							window.localStorage.setItem("token",res.token)
+							window.localStorage.setItem("nickname",res.nickname)
+							window.localStorage.setItem("role",res.role)
+							this.reload()
+							}
+						)
+					}
+					setTimeout(()=>{this.$router.push("/registerSucceed?role="+this.form.role)},1000)
                   } else {
-                    console.log(res.response.message)
                     ElMessage.error(res.response.message)
                   }
                 });
