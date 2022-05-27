@@ -67,7 +67,7 @@
       <div class="advantage_container" style="margin-left: 0">
         <div>
           <el-image :src="this.pics[0].path" class="advantage_icon"/>
-          <div class="advantage_info">项目管理便捷</div>
+          <div class="advantage_info">项目便捷管理</div>
         </div>
       </div>
       <div class="advantage_container">
@@ -93,7 +93,7 @@
   <div class="contact_container">
     <div class="contact_item">
       <div style="color: gray;font-size: small">快速开始</div>
-      <div style="color:white;margin-top: 10px" @click="this.$router.push('/login')">登录注册</div>
+      <div style="color:white;margin-top: 10px" @click="goLogin">登录注册</div>
       <div style="color:white;margin-top: 10px" @click="this.$router.push('/taskSquare')">在线任务</div>
     </div>
     <div class="contact_item">
@@ -115,6 +115,7 @@ import {Check} from "@element-plus/icons-vue"
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
+  inject:['reload'],
   data (){
     return {
       pics:[
@@ -129,6 +130,13 @@ export default {
   },
   components:{
     Check
+  },
+  methods:{
+    goLogin() {
+      window.localStorage.clear();
+      this.$router.push("/login")
+      this.reload()
+    }
   }
 }
 </script>
@@ -264,6 +272,6 @@ template{
   text-align: left;
 }
 .el-divider{
-  height: 15vh
+  height: 20vh
 }
 </style>

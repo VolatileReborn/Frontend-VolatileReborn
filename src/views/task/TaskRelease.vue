@@ -251,15 +251,16 @@ const deviceOptions = [
   {
     value: 'linux',
     label: 'Linux'
-  },
-  {
-    value:'windows',
-    label:'Windows'
-  },
-  {
-    value:'harmonyos',
-    label:'HarmonyOS'
   }
+  // ,
+  // {
+  //   value:'windows',
+  //   label:'Windows'
+  // },
+  // {
+  //   value:'harmonyos',
+  //   label:'HarmonyOS'
+  // }
 ]
 export default {
   name: "TaskRelease",

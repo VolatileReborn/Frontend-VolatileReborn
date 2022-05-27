@@ -412,7 +412,7 @@ export default {
       .then(res=>{
         if(res.response.code %100 === 0)
         {
-          ElMessage.success(res.response.message)
+          ElMessage.success("修改成功")
         }
         else
         {

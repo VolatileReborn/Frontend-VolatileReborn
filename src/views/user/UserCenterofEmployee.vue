@@ -121,7 +121,6 @@
            <div v-else style="display: flex;justify-content: center">
              <el-card class="info_card">
                <template #header>
-
                  <div style="flex-direction: row;justify-content: center">
                    <el-icon :size="25" color="cadetblue"><User /></el-icon>
                     <span style="font-size: larger;font-weight: bolder;">用户个人信息</span>
@@ -142,8 +141,8 @@
                     <el-tag v-if="info_form.devices.includes('android')" type="danger" >Android</el-tag>
                    <el-tag v-if="info_form.devices.includes('ios')" type="warning" style="margin-left: 5px" >IOS</el-tag>
                    <el-tag v-if="info_form.devices.includes('linux')" type="success" style="margin-left: 5px" >Linux</el-tag>
-                   <el-tag v-if="info_form.devices.includes('windows')" type="primary" style="margin-left: 5px" >Windows</el-tag>
-                   <el-tag v-if="info_form.devices.includes('harmonyos')" type="info" style="margin-left: 5px" >HarmonyOS</el-tag>
+<!--                   <el-tag v-if="info_form.devices.includes('windows')" type="primary" style="margin-left: 5px" >Windows</el-tag>-->
+<!--                   <el-tag v-if="info_form.devices.includes('harmonyos')" type="info" style="margin-left: 5px" >HarmonyOS</el-tag>-->
                  </el-descriptions-item>
                </el-descriptions>
              </el-card>
@@ -240,6 +239,15 @@ const deviceOptions = [
     value: 'linux',
     label: 'Linux'
   }
+  // ,
+  // {
+  //   value:'windows',
+  //   label:'Windows'
+  // },
+  // {
+  //   value:'harmonyos',
+  //   label:'HarmonyOS'
+  // }
 ]
 export default {
   name: 'user-center',

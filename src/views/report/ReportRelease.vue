@@ -94,9 +94,9 @@ const rules = reactive({
       trigger:'blur'
     },
     {
-      min:5,
+      min:2,
       max:10,
-      message: '报告名称不得少于5个字符，不得多于10个字符',
+      message: '报告名称不得少于2个字符，不得多于10个字符',
       trigger: 'blur'
     }
   ],
@@ -108,8 +108,8 @@ const rules = reactive({
     },
     {
       min:5,
-      max:100,
-      message: '缺陷情况说明不得少于5个字符，不得多于100个字符',
+      max:200,
+      message: '缺陷情况说明不得少于5个字符，不得多于200个字符',
       trigger: 'blur'
     }
   ],
@@ -133,9 +133,9 @@ const rules = reactive({
       trigger:'blur'
     },
     {
-      min:5,
+      min:1,
       max:20,
-      message: '测试设备信息不得少于5个字符，不得多于20个字符',
+      message: '测试设备信息不得少于1个字符，不得多于20个字符',
       trigger:'blur'
     }
   ],
@@ -235,7 +235,8 @@ export default {
     onChange(formName) {
       this.$refs[formName].validate(valid =>{
         if (valid){
-          changeReport({testReport: report_form,taskId:this.taskId,reportId:this.$route.query.reportID})
+          console.log(report_form)
+          changeReport({taskReport:report_form,taskId:this.taskId,reportId:this.$route.query.reportId})
               .then(res =>{
                 if(res.response.code%100 === 0)
                 {
