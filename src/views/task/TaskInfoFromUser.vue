@@ -1,4 +1,7 @@
 <template>
+  <transition name="fade">
+    <loading-item v-if="isLoading"/>
+  </transition>
   <el-divider></el-divider>
   <el-breadcrumb separator="/"  class="breadcrumb">
     <el-breadcrumb-item @click="go_route"><strong>个人中心</strong></el-breadcrumb-item>
@@ -179,6 +182,7 @@ import * as echarts from 'echarts'
 import ecStat from 'echarts-stat'
 import $ from 'jquery'
 import router from "@/router";
+import LoadingItem from "@/components/Loading"
 // import {ElLoading} from "element-plus"
 
 const count = ref(0);
@@ -231,7 +235,8 @@ export default {
         // {reportName:'测试报告1',similarity:80,reportId:3},
         // {reportName: '测试报告2',similarity:80,reportId:6}
       ],
-      activeName:"info"
+      activeName:"info",
+      isLoading: true
     }
   },
   components: {
@@ -239,7 +244,8 @@ export default {
     Edit,
     Avatar,
     Clock,
-    User
+    User,
+    LoadingItem
   },
   methods: {
     load,
@@ -616,6 +622,7 @@ export default {
               this.task.ios = res.ios
               this.task.windows = res.windows
               this.task.harmonyos = res.harmonyos
+              this.isLoading = false
             } else {
               ElMessage.error(res.response.message)
             }
@@ -628,7 +635,7 @@ export default {
               console.log(res.response.message)
               this.task.workerNumTotal = res.workerNumTotal
               this.task.taskState = res.taskState
-              this.task.taskType = res.taskType
+              this.task.taskType = res.type
               this.task.workerNumLeft = res.workerNumLeft
               this.task.requirementDescriptionFileList = res.requirementDescriptionFileList
               this.task.executableFileList = res.executableFileList
@@ -643,6 +650,7 @@ export default {
               this.task.ios = res.ios
               this.task.windows = res.windows
               this.task.harmonyos = res.harmonyos
+              this.isLoading = false
             } else {
               ElMessage.error(res.response.message)
             }
@@ -672,6 +680,7 @@ export default {
               this.task.ios = res.ios
               this.task.windows = res.windows
               this.task.harmonyos = res.harmonyos
+              this.isLoading = false
             } else {
               ElMessage.error(res.response.message)
             }
@@ -688,6 +697,7 @@ export default {
     // setTimeout(()=>{
     //   this.getData()
     // },1000)
+    setTimeout(()=>{this.isLoading=false},2000)
   },
 
 }

@@ -248,6 +248,7 @@ const deviceOptions = [
 ]
 export default {
   name: 'user-center',
+  inject:['reload'],
   data() {
     return {
       info_form,
@@ -476,10 +477,26 @@ export default {
               this.totalPage = this.taskList.length * 2;
               this.isLoading = false
             } else {
-              ElMessage.error(res.response.message)
+              if(res.response.code === 1)
+              {
+                ElMessage({
+                  type:"error",
+                  message:res.response.message,
+                  onClose:()=>{
+                    window.localStorage.clear();
+                    this.$router.push("/login")
+                    this.reload()
+                  }
+                })
+              }
+              else
+              {
+                ElMessage.error(res.response.message)
+              }
             }
           })
     }
+    setTimeout(()=>{this.isLoading=false},2000)
   }
 
 }

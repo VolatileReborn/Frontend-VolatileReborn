@@ -1,4 +1,7 @@
 <template>
+  <transition name="fade">
+    <loading-item v-if="isLoading"/>
+  </transition>
   <el-divider></el-divider>
   <el-breadcrumb separator="/"  class="breadcrumb">
     <el-breadcrumb-item :to="{path: '/TaskSquare'}">任务广场</el-breadcrumb-item>
@@ -84,6 +87,7 @@ import {acceptTask} from "@/api/task";
 import {employeeTaskDetail} from "@/api/square";
 import {visitorTaskDetail} from "@/api/square";
 import {parseTime} from "@/utils/utils";
+import LoadingItem from "@/components/Loading"
 
 // const UrgencyIcons = [Clock,Clock,Clock]
 
@@ -113,6 +117,7 @@ export default {
       role:window.localStorage.getItem("role"),
       isSelected: 0,
       isAble: !this.isSelected,
+      isLoading:true
       // UrgencyIcons
     }
   },
@@ -126,6 +131,7 @@ export default {
           this.task = res.task
           this.isSelected = res.isSelected
           this.isAble= this.task.taskState === 0 && this.isSelected === 0
+          this.isLoading = false
         }
         else {
           ElMessage.error(res.response.message)
@@ -138,15 +144,18 @@ export default {
         if(res.response.code%100 === 0)
         {
           this.task = res.task
+          this.isLoading = false
         }
         else {
           ElMessage.error(res.response.message)
         }
       })
     }
+    setTimeout(()=>{this.isLoading=false},2000)
   },
   components: {
     Edit,
+    LoadingItem
   },
   methods: {
     parseTime,

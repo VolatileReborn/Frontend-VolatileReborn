@@ -95,6 +95,7 @@ export default {
        }
      })
     }
+   setTimeout(()=>{this.isLoading=false},2000)
   },
   components: {
     LoadingItem,
