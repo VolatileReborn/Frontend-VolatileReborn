@@ -540,6 +540,7 @@ export default {
           },1)
           break;
         case "scatter":
+          document.getElementById("my_graph").removeAttribute('_echarts_instance_')
           setTimeout(()=> {
             var myChart = echarts.init(document.getElementById("my_scatter"));
             myChart.showLoading()
