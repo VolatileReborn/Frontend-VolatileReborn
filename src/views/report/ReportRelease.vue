@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex;justify-content: center;text-align: center">
-  <el-card style="width: 70%;padding-left: 50px">
+  <el-card style="width: 70%;padding-left: 50px" v-loading="isLoading"  element-loading-text="报告相似度计算中...">
     <template #header>
       <span style="font-weight: bolder;font-size:x-large">测试报告提交</span>
     </template>
@@ -108,8 +108,8 @@ const rules = reactive({
     },
     {
       min:5,
-      max:200,
-      message: '缺陷情况说明不得少于5个字符，不得多于200个字符',
+      max:500,
+      message: '缺陷情况说明不得少于5个字符，不得多于500个字符',
       trigger: 'blur'
     }
   ],
@@ -121,8 +121,8 @@ const rules = reactive({
     },
     {
       min:5,
-      max:100,
-      message: '缺陷复现步骤不得少于5个字符，不得多于100个字符',
+      max:500,
+      message: '缺陷复现步骤不得少于5个字符，不得多于500个字符',
       trigger:'blur'
     }
   ],
@@ -157,6 +157,7 @@ export default {
       task:{},
       taskId:this.$route.query.taskId,
       fileList:[],
+      isLoading: false
     }
   },
   mounted() {
@@ -179,19 +180,19 @@ export default {
     })
     if(this.$route.query.reportId!==undefined)
     {
-      employeeGetReportInfo({taskId:this.taskId,reportId:this.$route.query.reportId})
-      .then(res => {
-        if(res.response.code % 100 === 0){
-          report_form.reportName = res.reportName
-          // report_form.defectPictureList= res.defectPictureList
-          report_form.defectReproductionStep= res.defectReproduction
-          report_form.defectExplain= res.defectExplain
-          report_form.testEquipmentInformation= res.testEquipmentInfo
-        }
-        else {
-          ElMessage.error(res.response.message)
-        }
-      })
+      setTimeout(()=>{employeeGetReportInfo({taskId:this.taskId,reportId:this.$route.query.reportId})
+          .then(res => {
+            if(res.response.code % 100 === 0){
+              report_form.reportName = res.reportName
+              // report_form.defectPictureList= res.defectPictureList
+              report_form.defectReproductionStep= res.defectReproduction
+              report_form.defectExplain= res.defectExplain
+              report_form.testEquipmentInformation= res.testEquipmentInfo
+            }
+            else {
+              ElMessage.error(res.response.message)
+            }
+          })},10)
     }
 
   },
@@ -202,12 +203,15 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid =>{
         if (valid){
+          this.isLoading = true
           publishReport({testReport: report_form,taskId:this.taskId})
           .then(res =>{
+            this.isLoading = false
         if(res.response.code%100 === 0)
         {
           // console.log(res.response.message)
           // this.$router.push("/reportReleaseSucceed")
+
           ElMessage({
             message:res.response.message,
             type:'success',
@@ -235,11 +239,14 @@ export default {
     onChange(formName) {
       this.$refs[formName].validate(valid =>{
         if (valid){
+          this.isLoading = true
           console.log(report_form)
           changeReport({taskReport:report_form,taskId:this.taskId,reportId:this.$route.query.reportId})
               .then(res =>{
+                this.isLoading = false
                 if(res.response.code%100 === 0)
                 {
+
                   // console.log(res.response.message)
                   // this.$router.push("/reportReleaseSucceed")
                   ElMessage({
@@ -255,6 +262,7 @@ export default {
                 }
                 else
                 {
+
                   ElMessage.error(res.response.message)
                 }
               })

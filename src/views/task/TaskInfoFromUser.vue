@@ -17,7 +17,7 @@
           </div>
           <div class="header_right">
             <div style="display:flex;flex-direction: row">
-            <div>
+            <div style="margin-top:20px">
               <div class="task_name">{{task.taskName}}</div>
               <div class="header_tags">
                 <el-tag v-if="task.taskState === 0" class="header_tag" type="warning">进行中</el-tag>
@@ -53,6 +53,7 @@
               <el-table :data="reports"
                         stripe
                         highlight-current-row
+                        height="200"
                         type-layout="auto">
                 <el-table-column type="index" width="100" align="center" />
                 <el-table-column prop="reportName" label="报告名称"  align="center"/>
@@ -112,7 +113,7 @@
               </div>
               <div style="display: flex;flex-direction: column">
                 <el-button class="download_btn"  @click="downloadExe">下载待测应用可执行文件<img class="file_pic" src="../../assets/exe.png" /></el-button>
-                <el-button class="download_btn" style="margin-left: 0" type="primary"  @click="downloadDoc">下载测试需求描述文件<img class="file_pic" src="../../assets/md.png" /></el-button>
+                <el-button class="download_btn" style="margin-left: 0" type="primary"  @click="downloadDoc">下载测试需求描述文件<img class="file_pic" style="margin-left:12px" src="../../assets/md.png" /></el-button>
               </div>
             </div>
           </div>
@@ -152,7 +153,7 @@
         </el-tab-pane>
         <el-tab-pane label="报告协作树状图" name="tree" lazy="true">
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
-          <div class="relation_container" id="my_tree"></div>
+          <div class="relation_container" style="margin-left:10px" id="my_tree"></div>
         </el-tab-pane>
         <el-tab-pane label="报告聚合散点图" name="scatter" lazy="true">
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
@@ -376,7 +377,10 @@ export default {
                         data: res.categories.map(a => {
                               return a.name
                             }
-                        )
+                        ),
+                        orient:'vertical',
+                        right:0,
+                        type:"scroll"
                       }
                     ],
                     title: {
@@ -433,6 +437,37 @@ export default {
                           reportId: params.data.toolTip.formatter
                         }
                       })
+                    }
+                else{
+                  var cooperationId = params.data.toolTip.formatter
+                      var cooperaName = params.data.name
+                      var reportName = 0
+                      var parentId = 0
+                      res.links.forEach(item => {
+                        if(item.source === cooperaName && item.target!==null)
+                        {
+                          reportName = item.target
+                        }
+                        if(item.target === cooperaName && item.source !== null)
+                        {
+                          reportName = item.source
+                        }
+                      })
+
+                      res.nodes.forEach(item => {
+                        if(item.name === reportName)
+                        {
+                          parentId = item.toolTip.formatter
+                        }
+                      })
+                    router.push({
+                      name:"ReportInfoCooperation",
+                      query:{
+                        taskId:taskId,
+                        reportId: parentId,
+                        cooperationReportId:cooperationId
+                      }
+                    })
                     }
                   })
                 }
@@ -771,12 +806,13 @@ export default {
   flex-direction: column;
   margin-right: 20px;
   width:800px;
-
 }
 .task_name{
   font-weight:bolder;
   font-size:x-large;
   font-family:幼圆;
+  width: 20vw;
+  /*background-color: #42b983;*/
 }
 .device_img{
   height:32px;

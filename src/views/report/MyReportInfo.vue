@@ -2,7 +2,7 @@
 <el-container>
     <report-info-item v-bind:task-report="taskReport" style="width:90%;height: 83vh;margin-top: 20px;"></report-info-item>
 <!--    <el-button class="change-btn" type="success" plain v-if="taskReport.isChangeable === 1">修改报告</el-button>-->
-    <el-button class="change-btn" type="success" plain @click="goChange">修改报告</el-button>
+    <el-button class="change-btn" type="success" plain @click="goChange" v-if="taskReport.isChangeable === 1">修改报告</el-button>
 </el-container>
 </template>
 

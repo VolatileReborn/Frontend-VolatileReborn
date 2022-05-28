@@ -50,17 +50,17 @@
 <!--            </div>-->
 <!--        </div>-->
       <div style="width: 100%;">
-        <el-descriptions :column="1" size="large" border style="width: 90%;margin-left: 5%;margin-top:10px" >
-          <el-descriptions-item label="缺陷情况详情" >
-            {{taskReport.defectExplain}}
+        <el-descriptions :column="1" size="large" border style="width: 100%;margin-top:10px;" >
+          <el-descriptions-item label="缺陷情况详情" width="10vw" label-align="center">
+            <div style="width: 40vw;">{{taskReport.defectExplain}}</div>
           </el-descriptions-item>
-          <el-descriptions-item label="缺陷复现步骤">
+          <el-descriptions-item label="缺陷复现步骤" label-align="center">
             {{taskReport.defectReproduction}}
           </el-descriptions-item>
-          <el-descriptions-item label="测试设备信息">
+          <el-descriptions-item label="测试设备信息" label-align="center">
             {{taskReport.testEquipmentInfo}}
           </el-descriptions-item>
-          <el-descriptions-item label="缺陷应用截图">
+          <el-descriptions-item label="缺陷应用截图" label-align="center">
             <div  style="display:flex;flex-direction: row;margin-top: 5px;justify-content:center">
               <div v-for="item in taskReport.defectPictureList"
                    v-bind:key="item.fileName" >
@@ -168,5 +168,4 @@ export default {
   margin-top: 10px;
   margin-left: 5%;
 }
-
 </style>
