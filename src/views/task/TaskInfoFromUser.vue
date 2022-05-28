@@ -147,15 +147,15 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="报告相似度关系图" name="graph" lazy="true">
+        <el-tab-pane label="报告相似度关系图" name="graph" >
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
           <div class="relation_container" id="my_graph"></div>
         </el-tab-pane>
-        <el-tab-pane label="报告协作树状图" name="tree" lazy="true">
+        <el-tab-pane label="报告协作树状图" name="tree" >
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
           <div class="relation_container" style="margin-left:10px" id="my_tree"></div>
         </el-tab-pane>
-        <el-tab-pane label="报告聚合散点图" name="scatter" lazy="true">
+        <el-tab-pane label="报告聚合散点图" name="scatter" >
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
           <div class="relation_container" style="display: flex;justify-content: center" id="my_scatter"></div>
         </el-tab-pane>
@@ -356,6 +356,7 @@ export default {
         case "graph":
           setTimeout(()=> {
             var myChart = echarts.init(document.getElementById("my_graph"))
+            myChart.clear()
             myChart.showLoading()
             $.ajax({
               type:'get',
