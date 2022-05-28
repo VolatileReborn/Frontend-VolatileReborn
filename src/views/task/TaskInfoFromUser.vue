@@ -354,9 +354,9 @@ export default {
       console.log(event)
       switch (name) {
         case "graph":
+          document.getElementById("my_graph").removeAttribute('_echarts_instance_')
           setTimeout(()=> {
             var myChart = echarts.init(document.getElementById("my_graph"))
-            myChart.clear()
             myChart.showLoading()
             $.ajax({
               type:'get',
