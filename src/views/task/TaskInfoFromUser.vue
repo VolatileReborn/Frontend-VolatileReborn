@@ -17,27 +17,27 @@
           </div>
           <div class="header_right">
             <div style="display:flex;flex-direction: row">
-            <div style="margin-top:20px">
-              <div class="task_name">{{task.taskName}}</div>
-              <div class="header_tags">
-                <el-tag v-if="task.taskState === 0" class="header_tag" type="warning">进行中</el-tag>
-                <el-tag v-if="task.taskState === 1" class="header_tag" type="info">已结束</el-tag>
-                <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>
-                <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>
+              <div style="margin-top:20px">
+                <div class="task_name">{{task.taskName}}</div>
+                <div class="header_tags">
+                  <el-tag v-if="task.taskState === 0" class="header_tag" type="warning">进行中</el-tag>
+                  <el-tag v-if="task.taskState === 1" class="header_tag" type="info">已结束</el-tag>
+                  <el-tag v-if="task.taskType === 0" style="margin-left: 10px">功能测试</el-tag>
+                  <el-tag v-if="task.taskType === 1" style="margin-left: 10px" type="success">性能测试</el-tag>
+                </div>
               </div>
-            </div>
-            <div style="margin-left: 20vw;width: 40vw;position: relative;">
-              <div style="font-size: small">紧急程度：<el-rate v-model="task.taskUrgency"
-                                                        show-text
-                                                        :texts="['非常宽松','宽松','一般紧急','紧急','非常紧急']"
-                                                        :colors="['#67c23a','#FF9900','#ff0000']"
-                                                        disabled/></div>
-              <div style="font-size: small">任务难度：<el-rate v-model="task.taskDifficulty"
-                                                        show-text
-                                                        :texts="['轻松','容易','一般','较难','困难']"
-                                                        :colors="['#67c23a','#FF9900','#ff0000']"
-                                                        disabled/></div>
-            </div>
+              <div style="margin-left: 20vw;width: 40vw;position: relative;">
+                <div style="font-size: small">紧急程度：<el-rate v-model="task.taskUrgency"
+                                                            show-text
+                                                            :texts="['非常宽松','宽松','一般紧急','紧急','非常紧急']"
+                                                            :colors="['#67c23a','#FF9900','#ff0000']"
+                                                            disabled/></div>
+                <div style="font-size: small">任务难度：<el-rate v-model="task.taskDifficulty"
+                                                            show-text
+                                                            :texts="['轻松','容易','一般','较难','困难']"
+                                                            :colors="['#67c23a','#FF9900','#ff0000']"
+                                                            disabled/></div>
+              </div>
             </div>
             <div style="margin-top:10px"><el-icon><Clock /></el-icon>  发布日期 ： {{ parseTime(task.taskStartTime)}}</div>
             <div style="margin-top: 5px"><el-icon><Clock /></el-icon>  结束日期 ： {{parseTime(task.taskEndTime)}}</div>
@@ -289,17 +289,17 @@ export default {
     downloadDoc(){
       this.task.requirementDescriptionFileList.forEach(item => {
         oss.ossGetDownloadUrl(item.fileURL.substr(49))
-        .then( res => {
-          const url = res.downloadURL
-          const iframe = document.createElement("iframe")
-          iframe.style.display = "none"
-          iframe.style.height=0
-          iframe.src=url
-          document.body.appendChild(iframe)
-          setTimeout(() => {
-            iframe.remove()
-          },1000)
-        })
+            .then( res => {
+              const url = res.downloadURL
+              const iframe = document.createElement("iframe")
+              iframe.style.display = "none"
+              iframe.style.height=0
+              iframe.src=url
+              document.body.appendChild(iframe)
+              setTimeout(() => {
+                iframe.remove()
+              },1000)
+            })
       })
     },
     goReport(reportId){
@@ -327,26 +327,26 @@ export default {
         query: {
           taskId:this.taskId
         }
-    })
+      })
     },
     finish(){
       browserChecked({taskId:this.taskId})
-      .then(res => {
-        console.log(res)
-        if(res.response.code%100 === 0){
-          ElMessage.success({
-            message:res.response.message,
-            type:'success',
-            duration:1000,
-            onClose:()=>{
-              location.reload()
+          .then(res => {
+            console.log(res)
+            if(res.response.code%100 === 0){
+              ElMessage.success({
+                message:res.response.message,
+                type:'success',
+                duration:1000,
+                onClose:()=>{
+                  location.reload()
+                }
+              })
+            }
+            else {
+              ElMessage.error(res.response.message);
             }
           })
-        }
-        else {
-            ElMessage.error(res.response.message);
-        }
-      })
     },
     handleChangeTab(tab,event){
       var taskId = this.taskId
@@ -357,6 +357,7 @@ export default {
           document.getElementById("my_graph").removeAttribute('_echarts_instance_')
           setTimeout(()=> {
             var myChart = echarts.init(document.getElementById("my_graph"))
+
             myChart.showLoading()
             $.ajax({
               type:'get',
@@ -439,8 +440,8 @@ export default {
                         }
                       })
                     }
-                else{
-                  var cooperationId = params.data.toolTip.formatter
+                    else{
+                      var cooperationId = params.data.toolTip.formatter
                       var cooperaName = params.data.name
                       var reportName = 0
                       var parentId = 0
@@ -461,21 +462,21 @@ export default {
                           parentId = item.toolTip.formatter
                         }
                       })
-                    router.push({
-                      name:"ReportInfoCooperation",
-                      query:{
-                        taskId:taskId,
-                        reportId: parentId,
-                        cooperationReportId:cooperationId
-                      }
-                    })
+                      router.push({
+                        name:"ReportInfoCooperation",
+                        query:{
+                          taskId:taskId,
+                          reportId: parentId,
+                          cooperationReportId:cooperationId
+                        }
+                      })
                     }
                   })
                 }
               }
             })
           },1)
-              break;
+          break;
         case "tree":
           setTimeout(()=>{
             var myChart = echarts.init(document.getElementById("my_tree"));
@@ -537,7 +538,7 @@ export default {
                   );
                 }}})
           },1)
-              break;
+          break;
         case "scatter":
           setTimeout(()=> {
             var myChart = echarts.init(document.getElementById("my_scatter"));
@@ -645,21 +646,21 @@ export default {
             })
           },1)
 
-              break;
+          break;
       }
     },
     showAllMyReport(){
       this.reportsVisible = true
       getAllMyReport({taskId:this.taskId})
-      .then(res => {
-        if(res.response.code %100 === 0)
-        {
-          this.reports = res.reportList
-        }
-        else {
-          ElMessage.error(res.response.message)
-        }
-      })
+          .then(res => {
+            if(res.response.code %100 === 0)
+            {
+              this.reports = res.reportList
+            }
+            else {
+              ElMessage.error(res.response.message)
+            }
+          })
     }
   },
   mounted() {
