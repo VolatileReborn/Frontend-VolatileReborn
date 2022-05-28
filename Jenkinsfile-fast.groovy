@@ -1,4 +1,4 @@
-node("slave_ali") {
+node("slave_ldl") {
     def workspace = pwd()
 
     def git_branch = 'master'
@@ -15,6 +15,7 @@ node("slave_ali") {
     def IMAGE_NAME_WITH_TAG = 'volatile_frontend:latest'
     def IMAGE_TO_RUN = 'lyklove/volatile_frontend:latest'
     def CONTAINER_NAME = 'volatile_frontend'
+    def SERVICE_NAME = 'volatile_frontend_svc'
 
     stage('clone from gitlab into slave\'s workspace') {
         echo "workspace: ${workspace}"
@@ -38,6 +39,8 @@ node("slave_ali") {
     stage('build with npm') {
 
 //         sh 'npm config set registry http://registry.cnpmjs.org'
+        sh ''
+        sh 'npm install -g @vue/cli'
         sh 'npm install vue@next'
         sh 'npm install --registry=https://registry.npm.taobao.org'
         sh 'npm list vue'
@@ -68,7 +71,7 @@ node("slave_ali") {
         sh "docker image tag ${IMAGE_NAME_WITH_TAG} ${IMAGE_TO_RUN}"
 //         sh "docker image push lyklove/${IMAGE_NAME_WITH_TAG}"
     }
-    stage("clean previous image and container"){
+    stage("clean previous image and container. Deprecated: 该功能不需要了，因为现在是Docker Service "){
         sh "docker container rm -f ${CONTAINER_NAME}"
 //         sh "docker image rm ${IMAGE_NAME_WITH_TAG}"
 //         sh "docker image rm ${IMAGE_TO_RUN}"
@@ -76,10 +79,14 @@ node("slave_ali") {
 //     stage( "pull image" ){
 //         sh "docker pull  lyklove/${IMAGE_NAME_WITH_TAG}"
 //     }
-    stage("run container volatile_frontend") {
-        sh "docker image ls"
-        sh "docker container run --name ${CONTAINER_NAME} --net=host -d  ${IMAGE_TO_RUN}"
+//    stage("run container volatile_frontend") {
+//        sh "docker image ls"
+//        sh "docker container run --name ${CONTAINER_NAME} --net=host -d  ${IMAGE_TO_RUN}"
+//    }
+    stage("update service by built image"){
+        sh "docker service update --image ${IMAGE_TO_RUN} --update-parallelism 2  --update-delay 2s ${SERVICE_NAME}"
     }
+
     stage("signal gitlab: deployed"){
         updateGitlabCommitStatus name: 'deployed', state: 'success'
     }
