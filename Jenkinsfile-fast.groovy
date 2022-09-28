@@ -50,7 +50,7 @@ node("slave1") {
         // sh 'npm install -g @vue/cli'
         // sh 'npm install vue@next'
         // sh 'npm install --registry=https://registry.npm.taobao.org'
-        sh 'sudo npm install'
+        sh 'npm install'
         sh 'npm list vue'
         sh 'npm run build'
         echo "build finish on ${vm_ip}"
