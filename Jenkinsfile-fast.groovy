@@ -44,17 +44,17 @@ node("slave1") {
         sh 'npm -v'
         sh 'vue -V'
     }
-    stage('build with npm') {
+    
+//     stage('build with npm') {
 
-//         sh 'npm config set registry http://registry.cnpmjs.org'
-        // sh 'npm install -g @vue/cli'
-        // sh 'npm install vue@next'
-        // sh 'npm install --registry=https://registry.npm.taobao.org'
-        sh 'npm install'
-        sh 'npm list vue'
-        sh 'npm run build'
-        echo "build finish on ${vm_ip}"
-    }
+// //         sh 'npm config set registry http://registry.cnpmjs.org'
+//         // sh 'npm install -g @vue/cli'
+//         // sh 'npm install vue@next'
+//         sh 'npm install --registry=https://registry.npm.taobao.org' //必须加代理, 不然很慢
+//         sh 'npm list vue'
+//         sh 'npm run build'
+//         echo "build finish on ${vm_ip}"
+//     }
 
 //@DEBUG
 //     stage('npm run serve'){
@@ -65,7 +65,7 @@ node("slave1") {
 
 
     stage("build docker image"){
-        sh "docker build -t ${ORIGINAL_IMAGE_NAME} --no-cache ."
+        sh "docker build -t ${ORIGINAL_IMAGE_NAME}  ."
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
