@@ -13,17 +13,17 @@ node("slave1") {
     def __vm_project_place = "/usr/local/src"
     def __vm_target_place = "/usr/local/src/target/"
 
-    def __PROJECT_NAME = 'VolatileReborn'
-    def __PROJECT_TYPE = 'Frontend'
+    def __PROJECT_NAME = 'volatile_reborn'
+    def __PROJECT_TYPE = 'frontend'
     def __DOCKERHUB_ACCOUNT = 'lyklove'
     def __IMAGE_TAG = 'latest'
 
-    def ORIGINAL_IMAGE_NAME = __PROJECT_TYPE + '_' + __PROJECT_NAME //Frontend_VolatileReborn
-    def IMAGE_NAME_WITH_INITIAL_TAG = ORIGINAL_IMAGE_NAME + ':' + __IMAGE_TAG //Frontend_VolatileReborn:latest
-    def IMAGE_FULL_NAME = __DOCKERHUB_ACCOUNT + '/' + IMAGE_NAME_WITH_INITIAL_TAG // lyklove/volatile_frontend:latest'
+    def ORIGINAL_IMAGE_NAME = __PROJECT_TYPE + '_' + __PROJECT_NAME //frontend_volatile_reborn
+    def IMAGE_NAME_WITH_INITIAL_TAG = ORIGINAL_IMAGE_NAME + ':' + __IMAGE_TAG //frontend_volatile_reborn:latest
+    def IMAGE_FULL_NAME = __DOCKERHUB_ACCOUNT + '/' + IMAGE_NAME_WITH_INITIAL_TAG // lyklove/frontend_volatile_reborn:latest
 
-    def CONTAINER_NAME = ORIGINAL_IMAGE_NAME //Frontend_VolatileReborn
-    def SERVICE_NAME = CONTAINER_NAME + '_svc' //Frontend_VolatileReborn_svc
+    def CONTAINER_NAME = ORIGINAL_IMAGE_NAME //frontend_volatile_reborn
+    def SERVICE_NAME = CONTAINER_NAME + '_svc' //frontend_volatile_reborn_svc
 
     stage('clone from github into slave\'s workspace. Using branch: ' + "master") {
         echo "workspace: ${workspace}"
@@ -44,7 +44,7 @@ node("slave1") {
         sh 'npm -v'
         sh 'vue -V'
     }
-    
+
 //     stage('build with npm') {
 
 // //         sh 'npm config set registry http://registry.cnpmjs.org'
