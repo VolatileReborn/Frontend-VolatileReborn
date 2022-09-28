@@ -92,7 +92,7 @@ node("slave1") {
     //     sh "docker container rm -f ${CONTAINER_NAME}"
 //         sh "docker image rm ${IMAGE_NAME_WITH_TAG}"
 //         sh "docker image rm ${IMAGE_TO_RUN}"
-    }
+    // }
 //     stage( "pull image" ){
 //         sh "docker pull  lyklove/${IMAGE_NAME_WITH_TAG}"
 //     }
