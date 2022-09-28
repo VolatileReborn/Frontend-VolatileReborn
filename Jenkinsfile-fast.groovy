@@ -23,7 +23,7 @@ node("slave1") {
     def IMAGE_FULL_NAME = __DOCKERHUB_ACCOUNT + '/' + IMAGE_NAME_WITH_INITIAL_TAG // lyklove/volatile_frontend:latest'
 
     def CONTAINER_NAME = ORIGINAL_IMAGE_NAME //Frontend_VolatileReborn
-    def SERVICE_NAME = Frontend_VolatileReborn + '_svc' //Frontend_VolatileReborn_svc
+    def SERVICE_NAME = CONTAINER_NAME + '_svc' //Frontend_VolatileReborn_svc
 
     stage('clone from github into slave\'s workspace. Using branch: ' + ${git_branch}) {
         echo "workspace: ${workspace}"
