@@ -20,7 +20,7 @@ node("slave1") {
 
     def ORIGINAL_IMAGE_NAME = __PROJECT_TYPE + '_' + __PROJECT_NAME //Frontend_VolatileReborn
     def IMAGE_NAME_WITH_INITIAL_TAG = ORIGINAL_IMAGE_NAME + ':' + __IMAGE_TAG //Frontend_VolatileReborn:latest
-    def IMAGE_FULL_NAME = __DOCKERHUB_ACCOUNT + '/' + IMAGE_NAME_WITH_TAG // lyklove/volatile_frontend:latest'
+    def IMAGE_FULL_NAME = __DOCKERHUB_ACCOUNT + '/' + IMAGE_NAME_WITH_INITIAL_TAG // lyklove/volatile_frontend:latest'
 
     def CONTAINER_NAME = IMAGE_NAME //Frontend_VolatileReborn
     def SERVICE_NAME = Frontend_VolatileReborn + '_svc' //Frontend_VolatileReborn_svc
