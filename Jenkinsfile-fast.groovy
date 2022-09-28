@@ -18,6 +18,9 @@ node("slave1") {
     def __DOCKERHUB_ACCOUNT = 'lyklove'
     def __IMAGE_TAG = 'latest'
 
+    def PUBLIC_PORT = '81'
+    def CONTAINER_PORT = '80' // 80 for VUE
+
     def ORIGINAL_IMAGE_NAME = __PROJECT_TYPE + '_' + __PROJECT_NAME //frontend_volatile_reborn
     def IMAGE_NAME_WITH_INITIAL_TAG = ORIGINAL_IMAGE_NAME + ':' + __IMAGE_TAG //frontend_volatile_reborn:latest
     def IMAGE_FULL_NAME = __DOCKERHUB_ACCOUNT + '/' + IMAGE_NAME_WITH_INITIAL_TAG // lyklove/frontend_volatile_reborn:latest
@@ -70,7 +73,7 @@ node("slave1") {
     }
 
     stage("run docker container"){
-        sh "docker container run -it  -p 81:80 --rm --name ${CONTAINER_NAME}  ${IMAGE_NAME_WITH_INITIAL_TAG}"
+        sh "docker container run -it  -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name ${CONTAINER_NAME}  ${IMAGE_NAME_WITH_INITIAL_TAG}"
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
