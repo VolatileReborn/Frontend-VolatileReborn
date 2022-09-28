@@ -70,7 +70,7 @@ node("slave1") {
     }
 
     stage("run docker container"){
-        sh "docker container run -it  -p 8080:80 --rm --name ${CONTAINER_NAME}  ${IMAGE_NAME_WITH_INITIAL_TAG}"
+        sh "docker container run -it  -p 81:80 --rm --name ${CONTAINER_NAME}  ${IMAGE_NAME_WITH_INITIAL_TAG}"
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
