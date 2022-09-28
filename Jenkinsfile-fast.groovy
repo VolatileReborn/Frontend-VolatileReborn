@@ -25,7 +25,7 @@ node("slave1") {
     def CONTAINER_NAME = ORIGINAL_IMAGE_NAME //Frontend_VolatileReborn
     def SERVICE_NAME = CONTAINER_NAME + '_svc' //Frontend_VolatileReborn_svc
 
-    stage('clone from github into slave\'s workspace. Using branch: ' + ${git_branch}) {
+    stage('clone from github into slave\'s workspace. Using branch: ' + "master") {
         echo "workspace: ${workspace}"
         git branch: "${git_branch}", url: "${git_repository}"
     }
@@ -83,7 +83,7 @@ node("slave1") {
 //         sh "docker image push lyklove/${IMAGE_NAME_WITH_TAG}"
     }
 
-    stage("clean previous image and container. Deprecated: 该功能不需要了，因为现在是Docker Service "){
+    stage("clean previous image and container. Deprecated: 该功能不需要了, 因为现在是Docker Service "){
         sh "docker container rm -f ${CONTAINER_NAME}"
 //         sh "docker image rm ${IMAGE_NAME_WITH_TAG}"
 //         sh "docker image rm ${IMAGE_TO_RUN}"
