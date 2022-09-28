@@ -69,22 +69,27 @@ node("slave1") {
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
+    stage("run docker container"){
+        sh "docker container run -it -p -p 8080:80 --rm ${CONTAINER_NAME}  ${IMAGE_NAME_WITH_INITIAL_TAG}"
+//         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
+    }
+
 //     stage("login to dockerhub"){
 //         withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_KEY', passwordVariable: 'password', usernameVariable: 'username')]) {
 //             sh 'docker login -u $username -p $password'
 //         }
 //     }
-    stage("tag image"){
-        sh "docker image tag ${IMAGE_NAME_WITH_INITIAL_TAG} ${IMAGE_FULL_NAME}"
-    }
+//     stage("tag image"){
+//         sh "docker image tag ${IMAGE_NAME_WITH_INITIAL_TAG} ${IMAGE_FULL_NAME}"
+//     }
 
-    stage("push to dockerhub"){
-//         echo "begin push to dockerhub"
-//         sh "docker image push lyklove/${IMAGE_NAME_WITH_TAG}"
-    }
+//     stage("push to dockerhub"){
+// //         echo "begin push to dockerhub"
+// //         sh "docker image push lyklove/${IMAGE_NAME_WITH_TAG}"
+//     }
 
-    stage("clean previous image and container. Deprecated: 该功能不需要了, 因为现在是Docker Service "){
-        sh "docker container rm -f ${CONTAINER_NAME}"
+    // stage("clean previous image and container. Deprecated: 该功能不需要了, 因为现在是Docker Service "){
+    //     sh "docker container rm -f ${CONTAINER_NAME}"
 //         sh "docker image rm ${IMAGE_NAME_WITH_TAG}"
 //         sh "docker image rm ${IMAGE_TO_RUN}"
     }
