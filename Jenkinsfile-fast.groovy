@@ -47,10 +47,10 @@ node("slave1") {
     stage('build with npm') {
 
 //         sh 'npm config set registry http://registry.cnpmjs.org'
-        sh ''
-        sh 'npm install -g @vue/cli'
-        sh 'npm install vue@next'
-        sh 'npm install --registry=https://registry.npm.taobao.org'
+        // sh 'npm install -g @vue/cli'
+        // sh 'npm install vue@next'
+        // sh 'npm install --registry=https://registry.npm.taobao.org'
+        sh 'sudo npm install'
         sh 'npm list vue'
         sh 'npm run build'
         echo "build finish on ${vm_ip}"
