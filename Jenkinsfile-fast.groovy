@@ -72,7 +72,7 @@ node("slave1") {
     stage("build docker image"){
         def DOCKERFILE_PATH = './Dockerfile.node-alpine'
         
-        sh "docker build -t ${IMAGE_FULL_NAME}  -f dockerfile.node-alpine ${DOCKERFILE_PATH} . "
+        sh "docker build -t ${IMAGE_FULL_NAME}  -f  ${DOCKERFILE_PATH} ."
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
