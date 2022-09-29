@@ -74,7 +74,7 @@ node("slave1") {
     }
 
     stage("run docker container"){
-        sh "docker container run -it  -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name ${CONTAINER_NAME}  ${IMAGE_NAME_WITH_INITIAL_TAG}"
+        sh "docker container run  -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name ${CONTAINER_NAME}  ${IMAGE_NAME_WITH_INITIAL_TAG}"
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
@@ -111,7 +111,9 @@ node("slave1") {
 
     // //Gitlab
     // stage("signal github: deployed"){
-    //     updateGitlabCommitStatus name: 'deployed', state: 'success'
+    //     echo 'Notify GitLab'
+    //     updateGitlabCommitStatus name: 'build', state: 'pending'
+    //     updateGitlabCommitStatus name: 'build', state: 'success'
     // }
 }
 
