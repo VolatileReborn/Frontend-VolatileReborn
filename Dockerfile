@@ -1,13 +1,22 @@
 # build stage
+<<<<<<< HEAD
 # FROM node:14.20.1-slim  as build-stage
 FROM node:14.16.0-alpine3.13 AS build-stage
+=======
+FROM node:14.16.0-alpine3.13 as build-stage
+>>>>>>> 30b9c7a4f45684bbff86f85bba7e7d5dccf85a3f
 LABEL maintainer="LYK-love"
+
 WORKDIR /app
 COPY package*.json ./
+<<<<<<< HEAD
 RUN node -v && npm -v \
     && npm config set registry http://r.cnpmjs.org/ \
     && npm install 
 
+=======
+RUN npm install && vue --version
+>>>>>>> 30b9c7a4f45684bbff86f85bba7e7d5dccf85a3f
 
 COPY . .
 RUN npm run build
