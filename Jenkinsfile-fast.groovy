@@ -70,6 +70,7 @@ node("slave1") {
 
 
     stage("build docker image"){
+        //使用node-alpine
         def DOCKERFILE_PATH = './Dockerfile.node-alpine'
         
         sh "docker build -t ${IMAGE_FULL_NAME}  -f  ${DOCKERFILE_PATH} ."
