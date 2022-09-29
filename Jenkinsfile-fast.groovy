@@ -42,11 +42,12 @@ node("slave1") {
         sh "ls -al"
 
     }
-    stage('get version info'){
-        sh 'node -v'
-        sh 'npm -v'
-        sh 'vue -V'
-    }
+    //@Deprecated
+    // stage('get version info'){
+    //     sh 'node -v'
+    //     sh 'npm -v'
+    //     sh 'vue -V'
+    // }
 
 //     stage('build with npm') {
 
@@ -108,9 +109,10 @@ node("slave1") {
     //     sh "docker service update --image ${IMAGE_TO_RUN} --update-parallelism 2  --update-delay 2s ${SERVICE_NAME}"
     // }
 
-    stage("signal github: deployed"){
-        updateGitlabCommitStatus name: 'deployed', state: 'success'
-    }
+    // //Gitlab
+    // stage("signal github: deployed"){
+    //     updateGitlabCommitStatus name: 'deployed', state: 'success'
+    // }
 }
 
 
