@@ -18,6 +18,7 @@ node("slave1") {
     def __DOCKERHUB_ACCOUNT = 'lyklove'
     def __IMAGE_TAG = 'latest'
 
+    def DOCKERHUB_USERNAME = 'lyklove'
     def PUBLIC_PORT = '81'
     def CONTAINER_PORT = '80' // 80 for VUE
 
@@ -69,12 +70,14 @@ node("slave1") {
 
 
     stage("build docker image"){
-        sh "docker build -t ${ORIGINAL_IMAGE_NAME}  ."
+        def DOCKERFILE_PATH = './Dockerfile.node-alpine'
+        
+        sh "docker build -t ${IMAGE_FULL_NAME}  -f dockerfile.node-alpine ${DOCKERFILE_PATH} . "
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
     stage("run docker container"){
-        sh "docker container run  -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name ${CONTAINER_NAME}  ${IMAGE_NAME_WITH_INITIAL_TAG}"
+        sh "docker container run  -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name ${CONTAINER_NAME}  ${IMAGE_FULL_NAME}"
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
