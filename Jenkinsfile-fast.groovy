@@ -36,12 +36,12 @@ node("slave1") {
 
     stage('cd to build context') {
         echo "the context now is:"
-        sh "ls -al"
+        // sh "ls -al"
         sh "cd ${workspace}"
         echo "cd to build context, now the context is:"
-        sh "ls -al"
-
+        // sh "ls -al"
     }
+    
     //@Deprecated
     // stage('get version info'){
     //     sh 'node -v'
