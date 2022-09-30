@@ -16,7 +16,7 @@ node("slave1") {
     def __PROJECT_NAME = 'volatile_reborn'
     def __PROJECT_TYPE = 'frontend'
     def __DOCKERHUB_ACCOUNT = 'lyklove'
-    def __IMAGE_TAG = 'latest'
+    def __IMAGE_TAG = 'latest-linux'
 
     def PUBLIC_PORT = '81'
     def CONTAINER_PORT = '80' // 80 for VUE
@@ -79,22 +79,29 @@ node("slave1") {
     stage("run docker container"){
         // 一定要加-d, 否则docker run就会一直运行, 导致jenkins构建无法结束
         sh "docker container run  -d -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name   ${CONTAINER_NAME}  ${IMAGE_FULL_NAME}"
-//         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
-//     stage("login to dockerhub"){
-//         withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_KEY', passwordVariable: 'password', usernameVariable: 'username')]) {
-//             sh 'docker login -u $username -p $password'
-//         }
-//     }
+    //虽然会很卡, 但是docker swarm必须要求使用registry的镜像, 所以必须push到dockerhub
+    stage("login to dockerhub and push"){
+        withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_KEY', passwordVariable: 'password', usernameVariable: 'username')]) {
+            sh 'docker login -u $username -p $password'
+        }
+        sh "docker image push ${IMAGE_FULL_NAME}"
+    }
+
+
+    //docker service
+    stage("update service by built image"){
+        sh "docker service update --image ${IMAGE_FULL_NAME} --update-parallelism 2  --update-delay 2s ${SERVICE_NAME}"
+    }
+
+
+
 //     stage("tag image"){
 //         sh "docker image tag ${IMAGE_NAME_WITH_INITIAL_TAG} ${IMAGE_FULL_NAME}"
 //     }
 
-//     stage("push to dockerhub"){
-// //         echo "begin push to dockerhub"
-// //         sh "docker image push lyklove/${IMAGE_NAME_WITH_TAG}"
-//     }
+
 
     // stage("clean previous image and container. Deprecated: 该功能不需要了, 因为现在是Docker Service "){
     //     sh "docker container rm -f ${CONTAINER_NAME}"
