@@ -15,10 +15,10 @@ npm install && npm run build && npm run serve
 Or you can use Docker:
 ```
 docker build -t lyklove/frontend_volatile_reborn:lates -f ./Dockerfile.node-alpine .
-docker run -d -p 81:80 --rm --name Frontend_VolatileReborn lyklove/frontend_volatile_reborn:latest
+docker run -d -p 80:80 --rm --name Frontend_VolatileReborn lyklove/frontend_volatile_reborn:latest
 ```
 
-then visit http://localhost:81/#/
+then visit http://localhost:80/#/
 
 ## dependencies
 不一定是项目中正在用的版本, 但是下面的依赖经过测试, 一定能用
