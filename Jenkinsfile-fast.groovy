@@ -91,6 +91,7 @@ node("slave1") {
 
 
     //docker service
+    //需要先在服务器上手动创建该service
     stage("update service by built image"){
         sh "docker service update --image ${IMAGE_FULL_NAME} --update-parallelism 2  --update-delay 2s ${SERVICE_NAME}"
     }
