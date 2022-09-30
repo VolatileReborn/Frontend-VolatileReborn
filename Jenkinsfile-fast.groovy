@@ -78,7 +78,7 @@ node("slave1") {
 
     stage("run docker container"){
         // 一定要加-d, 否则docker run就会一直运行, 导致jenkins构建无法结束
-        sh "docker container run  -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name  -d ${CONTAINER_NAME}  ${IMAGE_FULL_NAME}"
+        sh "docker container run  -d -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name   ${CONTAINER_NAME}  ${IMAGE_FULL_NAME}"
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
