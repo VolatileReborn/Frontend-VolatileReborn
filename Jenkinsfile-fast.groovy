@@ -76,10 +76,11 @@ node("slave1") {
 //         sh "imageId=`docker images | grep #{IMAGE_NAME} | awk '{print $3}'`"
     }
 
-    stage("run docker container"){
-        // 一定要加-d, 否则docker run就会一直运行, 导致jenkins构建无法结束
-        sh "docker container run  -d -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name   ${CONTAINER_NAME}  ${IMAGE_FULL_NAME}"
-    }
+    //using Swarm, no need to docker run
+    // stage("run docker container"){
+    //     // 一定要加-d, 否则docker run就会一直运行, 导致jenkins构建无法结束
+    //     sh "docker container run  -d -p ${PUBLIC_PORT}:${CONTAINER_PORT} --rm --name   ${CONTAINER_NAME}  ${IMAGE_FULL_NAME}"
+    // }
 
     //虽然会很卡, 但是docker swarm必须要求使用registry的镜像, 所以必须push到dockerhub
     stage("login to dockerhub and push"){
