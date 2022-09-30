@@ -16,6 +16,7 @@ import ReportCooperate from "@/views/report/ReportCooperate"
 import ReportInfoCooperation from "@/views/report/ReportInfoCooperation"
 import MyReportInfo from '@/views/report/MyReportInfo'
 import FillProfile from '@/views/user/FillProfile.vue'
+import Status from '@/views/status/Status.vue'
 
 const routerHistory = createWebHashHistory();
 const routes = [
@@ -104,7 +105,12 @@ const routes = [
         path:"/fillProfile",
         name:"FillProfile",
         component: FillProfile
-    }
+    },
+    {
+        path:"/status",
+        name:"Status",
+        component: Status
+    },
 ];
 const router = createRouter({
     history: routerHistory,

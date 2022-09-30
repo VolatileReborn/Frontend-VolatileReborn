@@ -29,6 +29,9 @@
       </div>
     </div>
     <div v-if="nickname !== null" class="check_in_container">
+      <div  v-if="this.role === '2'">
+        <el-button type="primary" @click="direct_router('/status')" plain class="check_in_item">查看状态信息</el-button>
+      </div>
       <div  >
         <el-button type="primary" @click="direct_router('/userInfo')" plain class="check_in_item">个人中心</el-button>
       </div>
