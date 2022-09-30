@@ -63,15 +63,16 @@ export const login = payload => {
             return res.data;
         })
     // return Promise.resolve({
-    //     "code":1,
+    //     "response":{
+    //         code:100
+    //     },
     //     "msg": "登录成功",
-    //     "data":{
-    //         "phoneNumber": phoneNumber,
+    //         "phoneNumber": phone_number,
     //         "password":password,
     //         "nickname":"test",
-    //         "role":0
-    //     }
-    //
+    //         "role":2,
+    //         "token":123
+    
     // })
 }
 
