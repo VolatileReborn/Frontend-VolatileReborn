@@ -58,21 +58,21 @@ export const register = payload => {
  */
 export const login = payload => {
     const {phone_number,password} = payload;
-    // return axios.get(`${USER_MODULE}/login?phone_number=${phone_number}&password=${password}`)
-    //     .then(res => {
-    //         return res.data;
-    //     })
-    return Promise.resolve({
-        "response":{
-            code:100
-        },
-        "msg": "登录成功",
-        "phoneNumber": phone_number,
-        "password":password,
-        "nickname":"test",
-        "role":2,
-        "token":123
-    })
+    return axios.get(`${USER_MODULE}/login?phone_number=${phone_number}&password=${password}`)
+        .then(res => {
+            return res.data;
+        })
+    // return Promise.resolve({
+    //     "response":{
+    //         code:100
+    //     },
+    //     "msg": "登录成功",
+    //     "phoneNumber": phone_number,
+    //     "password":password,
+    //     "nickname":"test",
+    //     "role":2,
+    //     "token":123
+    // })
 }
 
 /**
