@@ -25,7 +25,7 @@
 </div>
 </template>
 <script>
-// import { getgetDeviceStatus } from '../../api/status'
+import { getgetDeviceStatus } from '../../api/status'
 export default {
     data() {
         return {
@@ -38,9 +38,9 @@ export default {
         }
     },
     mounted() {
-        // getgetDeviceStatus().then(res => {
-        //     console.log(res)
-        // })
+        getgetDeviceStatus().then(res => {
+            console.log(res)
+        })
     }
 }
 </script>
