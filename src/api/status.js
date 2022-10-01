@@ -32,8 +32,9 @@ axios.defaults.transformResponse = [
  * @param {pageNum, pageSize} args 
  * @returns 
  */
-export const getgetEmployeeStatus = args => {
-    return axios.get(`${STAKEHOLDER_MODULE}/employee`,args).then(
+export const getEmployeeStatus = args => {
+    const {pageNum, pageSize} = args
+    return axios.get(`${STAKEHOLDER_MODULE}/employee?pageNum=${pageNum}&pageSize=${pageSize}`).then(
         res => {
             return res.data
         }
@@ -46,8 +47,9 @@ export const getgetEmployeeStatus = args => {
  * @param {pageNum, pageSize} args 
  * @returns 
  */
- export const getgetEmployerStatus = args => {
-    return axios.get(`${STAKEHOLDER_MODULE}/employer`,args).then(
+ export const getEmployerStatus = args => {
+    const {pageNum, pageSize} = args
+    return axios.get(`${STAKEHOLDER_MODULE}/employer?pageNum=${pageNum}&pageSize=${pageSize}`).then(
         res => {
             return res.data
         }
@@ -60,8 +62,9 @@ export const getgetEmployeeStatus = args => {
  * @param {pageNum, pageSize} args 
  * @returns 
  */
- export const getgetDeviceStatus = args => {
-    return axios.get(`${STAKEHOLDER_MODULE}/device`,args).then(
+ export const getDeviceStatus = args => {
+    const {pageNum, pageSize} = args
+    return axios.get(`${STAKEHOLDER_MODULE}/device?pageNum=${pageNum}&pageSize=${pageSize}`).then(
         res => {
             return res.data
         }
