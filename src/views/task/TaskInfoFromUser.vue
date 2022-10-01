@@ -362,7 +362,7 @@ export default {
             $.ajax({
               type:'get',
               async:true,
-              url:`http://124.222.135.47:8000/api/report/getSimilarityGraph?taskId=${this.taskId}`,
+              url:`http://124.222.135.47:9000/api/report/getSimilarityGraph?taskId=${this.taskId}`,
               // url:`/testData.json`,
               success:function(res) {
                 if(res)
@@ -484,7 +484,7 @@ export default {
             $.ajax({
               type:'get',
               async:true,
-              url:`http://124.222.135.47:8000/api/report/getCooperationTree?taskId=${this.taskId}`,
+              url:`http://124.222.135.47:9000/api/report/getCooperationTree?taskId=${this.taskId}`,
               success:function(res) {
                 if(res)
                 {
@@ -548,7 +548,7 @@ export default {
             $.ajax({
               type:'get',
               async:true,
-              url:`http://124.222.135.47:8000/api/report/getClusterScatter?taskId=${this.taskId}`,
+              url:`http://124.222.135.47:9000/api/report/getClusterScatter?taskId=${this.taskId}`,
               // url:`/testData.json`,
               success:function(res) {
                 if(res)
