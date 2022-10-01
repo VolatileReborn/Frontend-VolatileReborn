@@ -1,5 +1,6 @@
 import { STAKEHOLDER_MODULE } from "./_prefix";
 import axios from "axios"
+import JSONBIG from "json-bigint";
 
 axios.interceptors.request.use(
     config => {

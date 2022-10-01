@@ -109,7 +109,7 @@ const routes = [
     {
         path:"/status",
         name:"Status",
-        component: Status
+        component: Status,
     },
 ];
 const router = createRouter({
