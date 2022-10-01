@@ -9,7 +9,7 @@ We're using Docker Swarm, so the project has `nodePort` function, which means yo
 * http://123.56.20.222:81/#/
 # Run Locally
 ```
-npm install && npm run build && npm run serve
+npm install && npm run serve
 ```
 
 Or you can use Docker:
