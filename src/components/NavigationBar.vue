@@ -6,12 +6,12 @@
     </div>
     <div class="route_page_container">
       <div class="check_in_item">
-        <el-button type="text" style="font-family: 幼圆;font-weight: bolder;font-size: large" @click="direct_router('/')" >
+        <el-button type="text" style="font-family: 幼圆;color: #de5810; font-weight: bolder;font-size: large" @click="direct_router('/')" >
           首页
         </el-button>
       </div>
       <div class="check_in_item">
-          <el-button type="text" style="font-family: 幼圆;font-weight: bolder;font-size: large" @click="direct_router('/taskSquare')" >
+          <el-button type="text" style="font-family: 幼圆;color: #de5810; font-weight: bolder;font-size: large" @click="direct_router('/taskSquare')" >
             任务广场
           </el-button>
         </div>
@@ -133,6 +133,7 @@ img{
   position: relative;
   vertical-align: middle;
   margin-right: 15px;
+  color: #de5810;
 
 }
 </style>
