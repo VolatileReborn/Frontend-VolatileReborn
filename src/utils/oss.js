@@ -31,10 +31,11 @@ export default {
     createOssClient() {
         return new Promise((resolve) => {
             const client = new OSS({
-                region: 'oss-cn-beijing', // 路径地址
-                accessKeyId: 'LTAI5tBTfT8Jtb4V7yyzi98n',
-                accessKeySecret: 'RG3zfjaLWtzjNI7kBnsYJEICuX3wAG',
-                bucket: 'se3-volatile',
+                // region: 'oss-cn-beijing', // 路径地址
+                region: 'oss-cn-hangzhou', // 路径地址
+                accessKeyId: 'LTAI5t5xGgmZUuZ1gH7kT9kN',
+                accessKeySecret: 'EFQzq6jvBPqUmRnKKZO4VUsNRRbiS1',
+                bucket: 'volatile-reborn',
                 secure: true // 上传连接返回支持https
             })
 
@@ -55,8 +56,8 @@ export default {
             self.createOssClient().then(client => {
                 // 异步上传，返回数据
                 resolve({
-                    fileName:file.name,
-                    fileUrl:"https://se3-volatile.oss-cn-beijing.aliyuncs.com/"+fileName
+                    // fileUrl:"https://se3-volatile.oss-cn-beijing.aliyuncs.com/"+fileName
+                    fileUrl: "https://se3-volatile.oss-cn-hangzhou.aliyuncs.com/"+fileName
                 });
                 // 上传处理
                 // 分片上传文件
