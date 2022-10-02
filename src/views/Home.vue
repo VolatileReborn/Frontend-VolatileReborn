@@ -149,10 +149,9 @@ template{
 .home_container{
   width:100%;
   height:60vh;
-  background: url("../assets/home.png") #1081DE no-repeat right bottom;
+  background: url("../assets/home.png") #de5810 no-repeat right bottom;
   background-size: 60vw;
 }
-.info_container{}
 .big_info{
   color:white;
   font-weight: bolder;
