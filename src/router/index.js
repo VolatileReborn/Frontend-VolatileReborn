@@ -5,7 +5,7 @@ import Register from "@/views/Register";
 import TaskSquare from "@/views/task/TaskSquare";
 import TaskInfoFromSquare from "@/views/task/TaskInfoFromSquare";
 import RegisterSucceed from "@/views/user/RegisterSucceed";
-import TaskRelease from "@/views/task/TaskRelease";
+// import TaskRelease from "@/views/task/TaskRelease";
 import TaskInfoFromUser from "@/views/task/TaskInfoFromUser";
 import ReportRelease from "@/views/report/ReportRelease";
 import UserCenterofEmployee from "@/views/user/UserCenterofEmployee"
@@ -17,6 +17,7 @@ import ReportInfoCooperation from "@/views/report/ReportInfoCooperation"
 import MyReportInfo from '@/views/report/MyReportInfo'
 import FillProfile from '@/views/user/FillProfile.vue'
 import Status from '@/views/status/Status.vue'
+import TaskRes from '@/views/task/TaskRes.vue'
 
 const routerHistory = createWebHashHistory();
 const routes = [
@@ -74,7 +75,7 @@ const routes = [
     {
         path : "/taskRelease",
         name: "TaskRelease",
-        component: TaskRelease
+        component: TaskRes
     },
     {
         path: "/reportRelease",

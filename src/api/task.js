@@ -48,7 +48,18 @@ export const publishTask = payload => {
     //     "task":task
     // })
 }
-
+/**
+ * 发布任务 POST /task/publishTask
+ * @param payload
+ * @returns {Promise<{msg: string, code: number, data}>}
+ */
+ export const publishComposeTask = payload => {
+    const { task } = payload;
+    return axios.post(`${TASK_MODULE}/compositeTask/publish`,{task})
+        .then(res => {
+            return res.data
+        })
+}
 /**
  * 接受任务 POST /task/acceptTask
  * @param payload
