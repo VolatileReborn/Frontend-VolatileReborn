@@ -126,7 +126,6 @@ export default {
   },
   watch: {
     taskCount: "changeIsSub",
-    "task_form.taskName": "changeTaskForm",
   },
   methods: {
     changeIsSub() {
@@ -134,11 +133,6 @@ export default {
         this.isSub = false;
       } else {
         this.isSub = true;
-      }
-    },
-    changeTaskForm() {
-      for (var i = 0; i < this.taskCount; ++i) {
-        this.$refs.ref[i].task_form.taskName = this.task_form.taskName;
       }
     },
     addSubTask() {

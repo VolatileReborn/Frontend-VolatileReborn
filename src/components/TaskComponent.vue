@@ -15,7 +15,7 @@
           :rules="rules"
           class="basicInfo"
         >
-          <el-form-item v-if="!isSub" label="任务名称" prop="taskName">
+          <el-form-item label="任务名称" prop="taskName">
             <el-input v-model="task_form.taskName"></el-input>
           </el-form-item>
           <el-form-item label="任务简介" prop="taskIntroduction">
@@ -329,7 +329,7 @@ export default {
       rules: {
         taskName: [
           {
-            required: !this.isSub,
+            required: true,
             message: "请输入任务名称",
             trigger: "blur",
           },
@@ -433,6 +433,7 @@ export default {
             taskStartTime: this.task_form.taskStartTime,
             taskEndTime: this.task_form.taskEndTime,
             taskType: this.task_form.taskType,
+            taskName: this.task_form.taskName,
             workerNumTotal: this.task_form.workerNumTotal,
             taskDifficulty: this.task_form.taskDifficulty,
             taskUrgency: this.task_form.taskUrgency,
@@ -446,9 +447,6 @@ export default {
       console.log("ok");
             isValid=true;
             return true;
-          }
-          else{
-            task.taskName = this.task_form.taskName
           }
           publishTask({ task: task }).then((res) => {
             if (res.response.code % 100 === 0) {
