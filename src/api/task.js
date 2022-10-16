@@ -49,7 +49,7 @@ export const publishTask = payload => {
     // })
 }
 /**
- * 发布任务 POST /task/publishTask
+ * 发布任务 POST /task/publishComposeTask
  * @param payload
  * @returns {Promise<{msg: string, code: number, data}>}
  */
