@@ -202,11 +202,13 @@ export default {
         return;
       }
 
-      for (i = 0; i < this.timeRel.length; ++i) {
-        realTimingRel.push({
-          preTaskIndex: this.timeRel[i].preTaskIndex - 1,
-          postTaskIndex: this.timeRel[i].postTaskIndex - 1,
-        });
+      if (this.useTimeRel == 0) {
+        for (i = 0; i < this.timeRel.length; ++i) {
+          realTimingRel.push({
+            preTaskIndex: this.timeRel[i].preTaskIndex - 1,
+            postTaskIndex: this.timeRel[i].postTaskIndex - 1,
+          });
+        }
       }
 
       const task = {
@@ -215,6 +217,7 @@ export default {
         subTasks: subTaskList,
         timingRel: realTimingRel,
       };
+      console.log(task);
       publishComposeTask({ task: task }).then((res) => {
         if (res.response.code % 100 === 0) {
           // console.log(res.response.message)
