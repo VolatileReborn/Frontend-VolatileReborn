@@ -111,9 +111,6 @@ export default {
       },
     check_route(taskId){
         this.$router.push("/taskInfoFromUser/"+taskId)
-        //     .then(()=>{
-        //   location.reload()
-        // })
     }
     
   },
