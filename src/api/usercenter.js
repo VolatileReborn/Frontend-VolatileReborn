@@ -97,6 +97,20 @@ export const employeeBrowserUndertakingTasks = () => {
 }
 
 /**
+ * 发包方获取复合任务列表
+ * @param {pageNum, pageSize} args 
+ * @returns 
+ */
+ export const employerBrowserCompositeTasks = args=>{
+    const {pageNum, pageSize} = args
+    return axios.get(`${EMPLOYER_MODULE}/browserCompositeTasks?pageNum=${pageNum}&pageSize=${pageSize}`)
+        .then(res => {
+            return res.data
+        })
+}
+
+
+/**
  * 完成任务 PUT /api/employer/browserChecked
  * @param payload
  * @returns {Promise<AxiosResponse<any>>}
