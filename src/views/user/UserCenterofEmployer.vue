@@ -59,7 +59,7 @@
                 <template #default="scope">
                   <task-item
                     class="task_item_container"
-                    v-for="item in scope.subTasks"
+                    v-for="item in scope.row.subTasks"
                     v-bind:task="item"
                     v-bind:key="item.taskId"
                     style="margin-top: 5px; height: 13.5vh; margin-left: 20px"
