@@ -34,8 +34,11 @@
     </ul>
   </div>
   <div v-if="isSub">
-    <el-radio v-model="useTimeRel" label="0">是 </el-radio>
-    <el-radio v-model="useTimeRel" label="1">否 </el-radio>
+    <div>
+      <span>是否启用时序：</span>
+      <el-radio v-model="useTimeRel" label="0">是 </el-radio>
+      <el-radio v-model="useTimeRel" label="1">否 </el-radio>
+    </div>
     <div v-if="useTimeRel == 0" class="button_div">
       <el-button type="primary" @click="addTimeRel()">添加时序</el-button>
       <el-button @click="deleteLastTimeRel()">删除最后一个时序</el-button>
