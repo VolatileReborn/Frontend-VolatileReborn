@@ -446,6 +446,7 @@ export default {
             taskEndTime: this.task_form.taskEndTime,
             taskType: this.task_form.taskType,
             taskName: this.task_form.taskName,
+            preTask:this.task_form.preTask-1,
             workerNumTotal: this.task_form.workerNumTotal,
             taskDifficulty: this.task_form.taskDifficulty,
             taskUrgency: this.task_form.taskUrgency,
