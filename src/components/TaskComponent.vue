@@ -123,6 +123,15 @@
               </el-form-item>
             </el-col>
           </el-form-item>
+          <el-form-item v-if="useTimingRel" label="前置任务" required prop="preTask">
+            <el-input-number
+                  v-model="task_form.preTask"
+                  :min="0"
+                  :max="taskCount"
+                  :step="1"
+                  style="width: 200px"
+                />
+          </el-form-item>
           <el-form-item label="附件" prop="executableFileList">
             <div style="display: flex; flex-direction: column">
               <el-upload
@@ -309,6 +318,8 @@ export default {
   props: {
     isSub: Boolean,
     taskIndex: Number,
+    useTimingRel: Boolean,
+    taskCount: Number,
   },
   data() {
     return {
@@ -325,6 +336,7 @@ export default {
         devices: [],
         executableFileList: [],
         requirementDescriptionFileList: [],
+        preTask:0,
       },
       rules: {
         taskName: [
