@@ -243,7 +243,6 @@ export default {
         taskName: this.task_form.taskName,
         taskIntroduction: this.task_form.taskIntroduction,
         subTasks: subTaskList,
-        timingRel: realTimingRel,
       };
       console.log(task);
       publishComposeTask({ task: task }).then((res) => {

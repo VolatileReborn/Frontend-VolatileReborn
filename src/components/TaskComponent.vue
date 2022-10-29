@@ -3,7 +3,7 @@
     <el-card class="box_card">
       <template #header>
         <div class="card_header">
-          <span style="font-weight: bolder">{{cardName}}</span>
+          <span style="font-weight: bolder">{{ cardName }}</span>
         </div>
       </template>
       <div class="input_container">
@@ -123,14 +123,19 @@
               </el-form-item>
             </el-col>
           </el-form-item>
-          <el-form-item v-if="useTimingRel" label="前置任务" required prop="preTask">
+          <el-form-item
+            v-if="useTimingRel"
+            label="前置任务"
+            required
+            prop="preTask"
+          >
             <el-input-number
-                  v-model="task_form.preTask"
-                  :min="0"
-                  :max="taskCount"
-                  :step="1"
-                  style="width: 200px"
-                />
+              v-model="task_form.preTask"
+              :min="0"
+              :max="taskCount"
+              :step="1"
+              style="width: 200px"
+            />
           </el-form-item>
           <el-form-item label="附件" prop="executableFileList">
             <div style="display: flex; flex-direction: column">
@@ -323,7 +328,7 @@ export default {
   },
   data() {
     return {
-      cardName:'任务信息',
+      cardName: "任务信息",
       task_form: {
         taskName: "",
         taskIntroduction: "",
@@ -336,7 +341,7 @@ export default {
         devices: [],
         executableFileList: [],
         requirementDescriptionFileList: [],
-        preTask:0,
+        preTask: 0,
       },
       rules: {
         taskName: [
@@ -419,23 +424,22 @@ export default {
     };
   },
   components: {},
-  watch:{
-    isSub:'changeIsSub'
+  watch: {
+    isSub: "changeIsSub",
   },
   methods: {
-    changeIsSub(){
-      if(this.isSub){
-        this.cardName='子任务'+String(this.taskIndex)+'信息'
-      }
-      else{
-        this.cardName='任务信息'
+    changeIsSub() {
+      if (this.isSub) {
+        this.cardName = "子任务" + String(this.taskIndex) + "信息";
+      } else {
+        this.cardName = "任务信息";
       }
     },
     handleSubmit(formName) {
-      var isValid = false
+      var isValid = false;
       var task;
       this.$refs[formName].validate((valid) => {
-      console.log(formName);
+        console.log(formName);
         if (valid) {
           task = {
             requirementDescriptionFileList:
@@ -446,7 +450,6 @@ export default {
             taskEndTime: this.task_form.taskEndTime,
             taskType: this.task_form.taskType,
             taskName: this.task_form.taskName,
-            preTask:this.task_form.preTask-1,
             workerNumTotal: this.task_form.workerNumTotal,
             taskDifficulty: this.task_form.taskDifficulty,
             taskUrgency: this.task_form.taskUrgency,
@@ -457,8 +460,9 @@ export default {
             harmonyos: this.task_form.devices.includes("harmonyos"),
           };
           if (this.isSub) {
-      console.log("ok");
-            isValid=true;
+            console.log("ok");
+            task.preTask = this.task_form.preTask - 1;
+            isValid = true;
             return true;
           }
           publishTask({ task: task }).then((res) => {
@@ -480,16 +484,15 @@ export default {
           });
           return true;
         } else {
-          if(!this.isSub){
+          if (!this.isSub) {
             alert("必填项不能为空");
           }
           return false;
         }
       });
-      if(isValid){
+      if (isValid) {
         return task;
-      }
-      else{
+      } else {
         return null;
       }
     },
@@ -548,9 +551,9 @@ export default {
       callback();
     },
   },
-  mounted(){
-    this.changeIsSub()
-  }
+  mounted() {
+    this.changeIsSub();
+  },
 };
 </script>
   
