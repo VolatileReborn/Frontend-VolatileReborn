@@ -6,7 +6,7 @@ module.exports = defineConfig({
     proxy: {
       '^/api': {
           target: "http://124.222.135.47:9000", // 代理地址，这里设置的地址会代替axios中设置的baseURL
-          // target:"http://localhost:8080",
+          // target:"http://localhost:9000",
           ws:true, // websocket
           changeOrigin: true, // 开启跨域
           pathRewrite: {
