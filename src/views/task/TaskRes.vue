@@ -29,14 +29,19 @@
           ref="ref"
           :isSub="isSub"
           :taskIndex="index"
+          :useTimingRel="useTimeRel == '0'"
+          :taskCount="taskCount"
         ></task-component>
       </li>
     </ul>
   </div>
   <div v-if="isSub">
-    <el-radio v-model="useTimeRel" label="0">是 </el-radio>
-    <el-radio v-model="useTimeRel" label="1">否 </el-radio>
-    <div v-if="useTimeRel == 0" class="button_div">
+    <div>
+      <span>是否启用时序：</span>
+      <el-radio v-model="useTimeRel" label="0">是 </el-radio>
+      <el-radio v-model="useTimeRel" label="1">否 </el-radio>
+    </div>
+    <!-- <div v-if="useTimeRel == 0" class="button_div">
       <el-button type="primary" @click="addTimeRel()">添加时序</el-button>
       <el-button @click="deleteLastTimeRel()">删除最后一个时序</el-button>
     </div>
@@ -59,7 +64,7 @@
           ></el-input-number>
         </el-form-item>
       </el-form>
-    </div>
+    </div> -->
   </div>
   <div class="button_div">
     <el-button type="primary" v-on:click="addSubTask()">添加子任务</el-button>
@@ -72,6 +77,25 @@
 </template>
 
 <script>
+const haveRing = function (timeRel) {
+  for (var i = 0; i < timeRel.length; ++i) {
+    var start = timeRel[i].postTaskIndex;
+    var mid = timeRel[i].preTaskIndex;
+    while (mid != -1 && mid != start) {
+      for (var j = 0; j < timeRel.length; ++j) {
+        if (timeRel[j].postTaskIndex == mid) {
+          mid = timeRel[j].preTaskIndex;
+          break;
+        }
+      }
+    }
+    if (mid == start) {
+      return true;
+    }
+  }
+  return false;
+};
+
 import TaskComponent from "@/components/TaskComponent.vue";
 import { ElMessage } from "element-plus";
 import { publishComposeTask } from "@/api/task";
@@ -203,19 +227,22 @@ export default {
       }
 
       if (this.useTimeRel == 0) {
-        for (i = 0; i < this.timeRel.length; ++i) {
-          realTimingRel.push({
-            preTaskIndex: this.timeRel[i].preTaskIndex - 1,
-            postTaskIndex: this.timeRel[i].postTaskIndex - 1,
-          });
+        for (i = 0; i < this.taskCount; ++i) {
+          const preTask = this.$refs.ref[i].task_form.preTask;
+          realTimingRel.push({ preTaskIndex: preTask - 1, postTaskIndex: i });
         }
+        isValid = !haveRing(realTimingRel);
+      }
+
+      if (!isValid) {
+        alert("任务存在循坏的依赖，请检查");
+        return;
       }
 
       const task = {
         taskName: this.task_form.taskName,
         taskIntroduction: this.task_form.taskIntroduction,
         subTasks: subTaskList,
-        timingRel: realTimingRel,
       };
       console.log(task);
       publishComposeTask({ task: task }).then((res) => {
