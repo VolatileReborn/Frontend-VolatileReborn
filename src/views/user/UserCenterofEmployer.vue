@@ -140,45 +140,6 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-<<<<<<< HEAD
-    handleSelect(key, keyPath){
-        switch(key){
-          case '3':
-            this.breadcrumbItems  = ['正在进行']
-            employerBrowserUndertakingTasks()
-                .then(res => {
-                  if(res.response.code%100 === 0)
-                  {
-                    console.log(res)
-                    this.taskList = res.undertakingTaskList
-                  }
-                  else {
-                    ElMessage.error(res.response.message)
-                  }
-                })
-            break;
-          case '4':
-            this.breadcrumbItems  = ['历史任务']
-              employerBrowserFinishedTasks()
-              .then(res => {
-                if(res.response.code%100 === 0)
-                {
-                  this.taskList = res.finishedTaskList
-                }
-                else {
-                  ElMessage.error(res.response.message)
-                }
-              })
-            break;
-          
-        }
-        console.log(key, keyPath);
-      },
-    check_route(taskId){
-        this.$router.push("/taskInfoFromUser/"+taskId)
-    }
-    
-=======
     handleSelect(key, keyPath) {
       switch (key) {
         case "1-1":
@@ -217,7 +178,6 @@ export default {
       //   location.reload()
       // })
     },
->>>>>>> 5abc6835f529e91b91b84e4a8976d34ad3add471
   },
   components: {
     LoadingItem,
