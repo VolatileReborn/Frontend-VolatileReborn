@@ -67,15 +67,22 @@
                   ></task-item>
                 </template>
               </el-table-column>
-              <el-table-column label="任务名称" prop="taskName"></el-table-column>
-              <el-table-column label="任务发布时间" prop="publishTime"></el-table-column>
+              <el-table-column
+                label="任务名称"
+                prop="taskName"
+              ></el-table-column>
+              <el-table-column
+                label="任务发布时间"
+                prop="publishTime"
+              ></el-table-column>
               <el-table-column label="任务状态">
                 <template #default="scope">
-                  <el-icon v-if="scope.row.state=='COMPLETED'"><Check /></el-icon>
+                  <el-icon v-if="scope.row.state == 'COMPLETED'"
+                    ><Check
+                  /></el-icon>
                   <el-icon v-else><Close /></el-icon>
                 </template>
               </el-table-column>
-              
             </el-table>
             <page :goPage="goPage" :pageAll="pageAll"></page>
           </div>
@@ -122,17 +129,30 @@ export default {
       this.getComposeTasks(page, this.pageSize);
     },
     getComposeTasks(page, pageSize) {
-          this.isCompose = true;
-      console.log({page,pageSize});
-      employerBrowserCompositeTasks({ pageNum: page, pageSize: pageSize }).then((res) => {
-        if (res.response.code % 100 === 0) {
-          console.log(res);
-          this.taskList = res.compositeTaskStateList;
-          this.isCompose = true;
-        } else {
-          ElMessage.error(res.response.message);
+      this.isCompose = true;
+      console.log({ page, pageSize });
+      employerBrowserCompositeTasks({ pageNum: page, pageSize: pageSize }).then(
+        (res) => {
+          if (res.response.code % 100 === 0) {
+            console.log(res);
+            this.taskList = res.compositeTaskStateList;
+            this.isCompose = true;
+            this.pageAll = Math.ceil(res.currSumSize / this.pageSize);
+            for (var i = 0; i < this.taskList.length; ++i) {
+              var flag = true;
+              for (var j = 0; j < this.taskList[i].subTasks.length; ++j) {
+                if (this.taskList[i].subTasks[j].taskState != "COMPLETED") {
+                  flag = false;
+                  break;
+                }
+              }
+              this.taskList[i].state = flag ? "COMPLETED" : "IN_PROGRESS";
+            }
+          } else {
+            ElMessage.error(res.response.message);
+          }
         }
-      });
+      );
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
