@@ -198,6 +198,7 @@ export default {
   name: "TaskInfoFromUser",
   data() {
     return {
+      isPlayed: false,
       taskId: this.$route.params.taskId,
       task: {
         taskId: this.taskId,
@@ -662,6 +663,7 @@ export default {
           })
     },
     guide() {
+      if (this.isPlayed) return
       this.$nextTick(function() {
         this.driver = new Driver({
           className: "scoped-class",
@@ -673,7 +675,10 @@ export default {
           doneBtnText: "完成",
           closeBtnText: "关闭",
           nextBtnText: "下一步",
-          prevBtnText: "上一步"
+          prevBtnText: "上一步",
+          onReset: function() {
+            this.isPlayed = true
+          },
         })
         this.driver.defineSteps(steps)
         this.driver.start()
