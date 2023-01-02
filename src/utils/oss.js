@@ -58,7 +58,7 @@ export default {
                 resolve({
                     fileName:file.name,
                     // fileUrl:"https://se3-volatile.oss-cn-beijing.aliyuncs.com/"+fileName
-                    fileUrl: "https://se3-volatile.oss-cn-hangzhou.aliyuncs.com/"+fileName
+                    fileUrl: "https://volatile-reborn.oss-cn-hangzhou.aliyuncs.com/"+fileName
 
                 });
                 // 上传处理
