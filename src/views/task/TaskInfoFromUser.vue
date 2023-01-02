@@ -57,7 +57,12 @@
                         type-layout="auto">
                 <el-table-column type="index" width="100" align="center" />
                 <el-table-column prop="reportName" label="报告名称"  align="center"/>
-                <el-table-column prop="similarity" label="相似度(%)"  align="center"/>
+                <el-table-column label="相似度(%)"  align="center">
+                  <template #default="scope">
+                      <span v-if="scope.row.isArgumented">扩增报告无相似度数据</span>
+                      <span v-else>{{scope.row.similarity}}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column label="操作" align="center">
                   <template #default="scope">
                     <el-button size="small" type="primary" @click="goMyReportInfo(scope.row.reportId)">查看报告</el-button>
