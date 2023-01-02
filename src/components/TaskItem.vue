@@ -1,9 +1,10 @@
+<!-- Todo: 删除任务 -->
 <template>
   <el-card :body-style="{padding: '0px'}" class="task_card">
     <el-row>
       <img v-if="task.taskType===0" src="../assets/functional_test.png">
       <img v-if="task.taskType === 1" src="../assets/performance_test.png">
-      <div style="padding: 14px" class="task_container">
+      <div class="task_container">
         <div class="task_container_1">
           <div class="task_name">{{task.taskName}}</div>
           <div class="task_type">
@@ -14,6 +15,10 @@
         <div class="task_container_2">
           <el-row class="task_happen_time">
             <el-col :span="30">{{ parseTime(task.taskStartTime,"{y}-{m}-{d}") }} - {{ parseTime(task.taskEndTime,"{y}-{m}-{d}")}}</el-col>
+            <el-col :span="30" style="padding-left: 20px">
+             <!-- 删除按钮 -->
+          <el-button class="display: inline-block;" type="danger" size="mini" @click="deleteTask(task.taskId, $event)">删除</el-button>
+            </el-col>
           </el-row>
           <div>
             <el-row class="task_info" justify="end" >
@@ -34,7 +39,12 @@ export default {
   name: "TaskItem",
   props: ["task"],
   methods:{
-    parseTime
+    parseTime,
+    deleteTask(taskId, event){
+      // 阻止事件冒泡
+      event.stopPropagation();
+      console.log(taskId)
+    }
   }
 }
 </script>
@@ -58,7 +68,9 @@ img{
   display: flex;
   flex-direction: row;
   width: 920px;
-
+  padding-left: 14px;
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 .task_container_1{
   display: flex;
@@ -86,6 +98,7 @@ img{
   margin-top: -15px;
 
 }
+
 .task_happen_time{
   position: absolute;
   right: 22px;

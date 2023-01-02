@@ -118,7 +118,7 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="报告列表" name="list" >
+        <el-tab-pane id = "step1" label="报告列表" name="list" >
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">下拉列表查看更多</div>
           <el-table :data="task.reportList"
                     height="400"
@@ -131,7 +131,12 @@
                     type-layout="auto">
             <el-table-column type="index" width="100" align="center" />
             <el-table-column prop="reportName" label="报告名称"  align="center"/>
-            <el-table-column prop="similarity" label="相似度(%)"  align="center"/>
+            <el-table-column label="相似度(%)"  align="center">
+              <template #default="scope">
+                <span v-if="scope.row.isArgumented">扩增报告无相似度数据</span>
+                <span v-else>{{scope.row.similarity}}</span>
+              </template>
+            </el-table-column>
             <el-table-column label="测试工人ID" align="center" >
               <template #default="scope">
                 <div style="display: flex;align-items: center;justify-content: center">
@@ -147,15 +152,15 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="报告相似度关系图" name="graph" >
+        <el-tab-pane id = "step2" label="报告相似度关系图" name="graph" >
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
           <div class="relation_container" id="my_graph"></div>
         </el-tab-pane>
-        <el-tab-pane label="报告协作树状图" name="tree" >
+        <el-tab-pane id = "step3" label="报告协作树状图" name="tree" >
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
           <div class="relation_container" style="margin-left:10px" id="my_tree"></div>
         </el-tab-pane>
-        <el-tab-pane label="报告聚合散点图" name="scatter" >
+        <el-tab-pane id = "step4" label="报告聚合散点图" name="scatter" >
           <div style="font-weight: lighter;font-size: small;margin-top: 10px">可视化图像不加载可刷新页面查看</div>
           <div class="relation_container" style="display: flex;justify-content: center" id="my_scatter"></div>
         </el-tab-pane>
@@ -185,21 +190,20 @@ import ecStat from 'echarts-stat'
 import $ from 'jquery'
 import router from "@/router";
 import LoadingItem from "@/components/Loading"
-// import {ElLoading} from "element-plus"
+import Driver from 'driver.js'
+import 'driver.js/dist/driver.min.css'
+import steps from './steps'
+
 
 const count = ref(0);
 const load = () => {
   count.value += 2
 }
-// const loading = ElLoading.service({
-//   lock:true,
-//   text:'数据加载中...',
-//   background:'rgba(0,0,0,0.7)'
-// })
 export default {
   name: "TaskInfoFromUser",
   data() {
     return {
+      isPlayed: false,
       taskId: this.$route.params.taskId,
       task: {
         taskId: this.taskId,
@@ -662,9 +666,32 @@ export default {
               ElMessage.error(res.response.message)
             }
           })
+    },
+    guide() {
+      if (this.isPlayed) return
+      this.$nextTick(function() {
+        this.driver = new Driver({
+          className: "scoped-class",
+          animate: true,
+          opacity: 0.75, 
+          padding: 10,
+          allowClose: true,
+          overlayClickNext: false,
+          doneBtnText: "完成",
+          closeBtnText: "关闭",
+          nextBtnText: "下一步",
+          prevBtnText: "上一步",
+          onReset: function() {
+            this.isPlayed = true
+          },
+        })
+        this.driver.defineSteps(steps)
+        this.driver.start()
+      })
     }
   },
   mounted() {
+    this.guide()
     if (this.role === '0') {
       employerBrowserTaskDetail({taskId: this.taskId})
           .then(res => {
@@ -756,13 +783,15 @@ export default {
         .then(res => {
           if (res.response.code % 100 === 0) {
             this.task.reportList = res.reportList
+            for(var i=0;i<this.task.reportList.length;++i){
+              if(this.task.reportList[i].workerId==null){
+                this.task.reportList[i].isArgumented=true;
+              }
+            }
             this.isAble = this.task.taskState === 0
             this.tableLoading = false
           }
         })
-    // setTimeout(()=>{
-    //   this.getData()
-    // },1000)
     setTimeout(()=>{this.isLoading=false},2000)
   },
 

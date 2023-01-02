@@ -8,47 +8,6 @@
         </div>
     </template>
     <el-scrollbar height="400px" style="display: flex;justify-content: center">
-<!--      <div class="need_information">-->
-<!--          <div style="display: flex;flex-direction: row;text-align:center">-->
-<!--            <el-icon color="#409efc" :size="30">-->
-<!--              <edit />-->
-<!--            </el-icon>-->
-<!--            <div style="font-size: large;margin-top: 20px;font-weight: bolder;margin-left: 5px;text-align:center">缺陷情况详情: </div>-->
-<!--          </div>-->
-<!--          <div style="margin-top: 10px;text-align:center"> <span >{{taskReport.defectExplain}}</span></div>-->
-<!--        </div>-->
-<!--      <div class="need_information">-->
-<!--          <div style="display: flex;flex-direction: row;margin-top:20px;text-align:center">-->
-<!--            <el-icon color="#409efc" :size="30">-->
-<!--              <edit />-->
-<!--            </el-icon>-->
-<!--            <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px;text-align:center">缺陷复现步骤: </div>-->
-<!--          </div>-->
-<!--          <div style="margin-top: 10px;text-align:center"> <span >{{taskReport.defectReproduction}}</span></div>-->
-<!--        </div>-->
-<!--      <div class="need_information">-->
-<!--          <div style="display: flex;flex-direction: row;margin-top:20px;text-align:center">-->
-<!--            <el-icon color="#409efc" :size="30">-->
-<!--              <edit />-->
-<!--            </el-icon>-->
-<!--            <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px;text-align:center">测试设备信息:</div>-->
-<!--          </div>-->
-<!--          <div style="margin-top: 10px;text-align:center"> <span >{{taskReport.testEquipmentInfo}}</span></div>-->
-<!--        </div>-->
-<!--      <div class="file_information" >-->
-<!--          <div style="display: flex;flex-direction: row;margin-top:20px;text-align:center">-->
-<!--            <el-icon color="#409efc" :size="30">-->
-<!--              <folder-checked />-->
-<!--            </el-icon>-->
-<!--            <div style="font-size: large;margin-top: 2px;font-weight: bolder;margin-left: 5px;text-align:center">缺陷应用截图:</div>-->
-<!--          </div>-->
-<!--            <div  style="display:flex;flex-direction: row;margin-top: 5px;justify-content:center">-->
-<!--              <div v-for="item in taskReport.defectPictureList"-->
-<!--                   v-bind:key="item.fileName" >-->
-<!--                <el-image :src="item.fileURL"  alt="" style="height: 15vh;margin-left: 5px;text-align:center" :preview-src-list="srcList" :initial-index="0" lazy fit="scale-down"/>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--        </div>-->
       <div style="width: 100%;">
         <el-descriptions :column="1" size="large" border style="width: 100%;margin-top:10px;" >
           <el-descriptions-item label="缺陷情况详情" width="10vw" label-align="center">
@@ -67,6 +26,9 @@
                 <el-image :src="item.fileURL"  alt="" style="height: 15vh;margin-left: 5px;text-align:center" :preview-src-list="srcList" :initial-index="0" lazy fit="scale-down"/>
               </div>
             </div>
+          </el-descriptions-item>
+          <el-descriptions-item label="报告评估值" label-align="center">
+            {{taskReport.evaluationValue}}
           </el-descriptions-item>
         </el-descriptions>
         <el-divider v-if="taskReport.totalScore !== -1"></el-divider>

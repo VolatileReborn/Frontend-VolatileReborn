@@ -1,15 +1,12 @@
 <template>
   <div class="home_container" >
-<!--    <el-carousel height="90vh" style="text-align: center" >-->
-<!--      <el-carousel-item v-for="item in pics" :key="item" >-->
-<!--        <el-image :src="item.path" alt="" style="height: 90vh;"/>-->
-<!--      </el-carousel-item>-->
-<!--    </el-carousel>-->
     <div class="info_container">
       <div class="big_info">汇聚测试人才，提升软件质量</div>
       <div class="small_info">智能化的众包测试平台，更优的推荐，更准的聚合</div>
       <el-button class="btn" v-if="this.role === null" @click="this.$router.push('/login')" round>立即加入</el-button>
     </div>
+  </div>
+  <div>
   </div>
   <div class="intro_container">
     <div class="employ_container">
@@ -125,7 +122,7 @@ export default {
         {path: require("../assets/recommend.png")},
         {path: require("../assets/website.png")}
       ],
-      role:window.localStorage.getItem("role")
+      role:window.localStorage.getItem("role"),
     }
   },
   components:{

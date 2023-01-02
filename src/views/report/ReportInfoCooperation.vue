@@ -14,7 +14,7 @@ import ReportInfoItem from '@/components/ReportInfoItem'
 import {employeeGetReportInfo} from "@/api/report";
 import {employeeGetCooperationInfo} from '@/api/report'
 import {employerGetReportInfo} from "@/api/report";
-import {employerGetCooperationInfo} from "@/api/report";
+import {employerGetCooperationInfo,getQualityEvaluation} from "@/api/report";
 import {ElMessage} from 'element-plus'
 export default {
   name: "ReportInfoCooperation",
@@ -104,6 +104,21 @@ export default {
         }
       })
     }
+    getQualityEvaluation({reportId:this.reportId,isCoop:1}).then(res=>{
+      if(res.response.code%100 === 0)
+      {
+        if(res.evaluated){
+          this.parentReport.evaluationValue = res.evaluationValue
+        }
+        else{
+          this.parentReport.evaluationValue="报告未评估"
+        }
+      }
+      else {
+        this.parentReport.evaluationValue="报告未评估"
+        ElMessage.error(res.response.message)
+      }
+    })
   }
 }
 </script>

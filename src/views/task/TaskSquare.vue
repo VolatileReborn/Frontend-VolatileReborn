@@ -3,14 +3,7 @@
     <loading-item v-if="isLoading"/>
   </transition>
   <el-divider></el-divider>
-<!--  <el-pagination-->
-<!--  v-model:currentPage="currentPage"-->
-<!--  :page-size="100"-->
-<!--  layout="prev,pager,next"-->
-<!--  :total="totalPage"-->
-<!--  @current-change="handleCurrentChange">-->
-<!--    <task-item></task-item>-->
-<!--  </el-pagination>-->
+  <RedPackage class="redPacket" />
   <div class="task_container">
       <div v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
         <div>
@@ -48,6 +41,7 @@ import {browserTasks} from "@/api/square";
 import {visitorBrowserTasks} from "@/api/square";
 import {ref} from "vue"
 import LoadingItem from "@/components/Loading"
+import RedPackage from "./RedPackage"
 
 const count = ref(0);
 const load = () => {
@@ -100,7 +94,8 @@ export default {
   components: {
     LoadingItem,
     TaskItem,
-    Upload
+    Upload,
+    RedPackage
   },
   methods: {
     load,
@@ -144,5 +139,26 @@ export default {
   right: 20px;
   bottom: 80px;
   background-color: #42b983;
+}
+
+.redPacket {
+    overflow: hidden;
+    position: absolute;
+    right: 100px;
+    top: 30%;
+    z-index: 2;
+    animation: shake 2s linear infinite;
+  }
+  @keyframes shake {
+  70%, 80% {
+    transform: rotate(7deg);
+  }
+  75% {
+    transform: rotate(-7deg);
+  }
+  65%,
+  85% {
+    transform: rotate(0);
+  }
 }
 </style>

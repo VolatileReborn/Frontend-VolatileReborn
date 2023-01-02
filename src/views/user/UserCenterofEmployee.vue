@@ -44,6 +44,10 @@
           <el-icon><avatar /></el-icon>
           <span>个人信息</span>
         </el-menu-item>
+        <el-menu-item index="5">
+          <el-icon><Wallet /></el-icon>
+          <span>我的钱包</span>
+        </el-menu-item>
       </el-menu>
         </el-aside>
         <el-main class="main_container">
@@ -170,7 +174,23 @@
                 </el-pagination>
               </div>
             </div>
-              </div>
+          </div>
+          <div v-if="key === 5">
+           <div>
+            <el-card class="info_card">
+               <template #header>
+                 <div style="flex-direction: row;justify-content: center">
+                   <el-icon :size="25" color="cadetblue"><Wallet /></el-icon>
+                    <span style="font-size: larger;font-weight: bolder;">钱包</span>
+                   <el-button plain type="primary" style="margin-left: 600px" @click="changeInfo">充值</el-button>
+                 </div>
+               </template>
+               <el-descriptions column="2" style="font-size: large" size="large">
+                 <el-descriptions-item label="余额：">0</el-descriptions-item>
+               </el-descriptions>
+             </el-card>
+           </div>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -178,7 +198,7 @@
 </template>
 
 <script>
-import {Menu} from "@element-plus/icons-vue"
+import {Menu, Wallet} from "@element-plus/icons-vue"
 import {Location} from "@element-plus/icons-vue"
 import {Management} from "@element-plus/icons-vue"
 import {Avatar} from "@element-plus/icons-vue"
@@ -239,15 +259,6 @@ const deviceOptions = [
     value: 'linux',
     label: 'Linux'
   }
-  // ,
-  // {
-  //   value:'windows',
-  //   label:'Windows'
-  // },
-  // {
-  //   value:'harmonyos',
-  //   label:'HarmonyOS'
-  // }
 ]
 export default {
   name: 'user-center',
@@ -289,7 +300,7 @@ export default {
           case '1':
             // this.$router.push('/Page1');
             this.breadcrumbItems  = ['正在进行']
-              this.key = 1
+            this.key = 1
             employeeBrowserUndertakingTasks()
                 .then(res => {
                   if(res.response.code%100 === 0)
@@ -386,7 +397,14 @@ export default {
                     ElMessage.error(res.response.message)
                   }
                 })
+              
               }
+            break
+          case '5':
+            this.breadcrumbItems = ['我的钱包']
+            this.key = 5
+
+            break
         }
         console.log(key, keyPath);
       },
@@ -462,8 +480,9 @@ export default {
     Avatar,
     User,
     TaskItem,
-    ReportItem
-  },
+    ReportItem,
+    Wallet
+},
   mounted() {
     if(this.role === undefined || this.role !== "1")
     {
