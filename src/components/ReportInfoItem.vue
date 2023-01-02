@@ -68,6 +68,9 @@
               </div>
             </div>
           </el-descriptions-item>
+          <el-descriptions-item label="报告评估值" label-align="center">
+            {{taskReport.evaluationValue}}
+          </el-descriptions-item>
         </el-descriptions>
         <el-divider v-if="taskReport.totalScore !== -1"></el-divider>
         <div class="report_container" v-if="taskReport.totalScore !== -1" >

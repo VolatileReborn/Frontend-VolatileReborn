@@ -49,7 +49,7 @@
 <script>
 import {employeeGetReportInfo} from "@/api/report";
 import {reactive} from "vue"
-import {publishCooperation} from "@/api/report";
+import {publishCooperation,getQualityEvaluation} from "@/api/report";
 import ReportInfoItem from "@/components/ReportInfoItem"
 import oss from '@/utils/oss'
 import {ElMessage} from 'element-plus'
@@ -162,6 +162,21 @@ export default {
         this.parentReport.testEquipmentInfo = res.testEquipmentInfo
       }
       else {
+        ElMessage.error(res.response.message)
+      }
+    })
+    getQualityEvaluation({reportId:this.reportId,isCoop:0}).then(res=>{
+      if(res.response.code%100 === 0)
+      {
+        if(res.evaluated){
+          this.taskReport.evaluationValue = res.evaluationValue
+        }
+        else{
+          this.taskReport.evaluationValue="报告未评估"
+        }
+      }
+      else {
+        this.taskReport.evaluationValue="报告未评估"
         ElMessage.error(res.response.message)
       }
     })

@@ -60,6 +60,7 @@
 <script>
 import {employeeGetReportInfo} from "@/api/report";
 import {employerGetReportInfo} from "@/api/report";
+import {getQualityEvaluation} from "@/api/report"
 import {reactive} from "vue"
 import {scoreReport} from "@/api/report";
 import {showReportScore} from "@/api/report"
@@ -199,7 +200,21 @@ export default {
             }
           })
     }
-
+    getQualityEvaluation({reportId:this.reportId,isCoop:0}).then(res=>{
+      if(res.response.code%100 === 0)
+      {
+        if(res.evaluated){
+          this.parentReport.evaluationValue = res.evaluationValue
+        }
+        else{
+          this.parentReport.evaluationValue="报告未评估"
+        }
+      }
+      else {
+        this.parentReport.evaluationValue="报告未评估"
+        ElMessage.error(res.response.message)
+      }
+    })
   },
   methods:{
    handleSubmit(formName) {

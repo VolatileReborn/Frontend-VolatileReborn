@@ -255,3 +255,16 @@ export const getAllMyReport = payload => {
             return res.data
         })
 }
+
+/**
+ * 查看报告评估信息
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const getQualityEvaluation = payload => {
+    const {reportId,isCoop} = payload
+    return axios.get(`${REPORT_MODULE}/qualityEvaluation?reportId=${reportId}&isCoop=${isCoop}`)
+        .then(res=> {
+            return res.data
+        })
+}

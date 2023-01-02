@@ -131,7 +131,12 @@
                     type-layout="auto">
             <el-table-column type="index" width="100" align="center" />
             <el-table-column prop="reportName" label="报告名称"  align="center"/>
-            <el-table-column prop="similarity" label="相似度(%)"  align="center"/>
+            <el-table-column label="相似度(%)"  align="center">
+              <template #default="scope">
+                <span v-if="scope.row.isArgumented">扩增报告无相似度数据</span>
+                <span v-else>{{scope.row.similarity}}</span>
+              </template>
+            </el-table-column>
             <el-table-column label="测试工人ID" align="center" >
               <template #default="scope">
                 <div style="display: flex;align-items: center;justify-content: center">
@@ -756,6 +761,11 @@ export default {
         .then(res => {
           if (res.response.code % 100 === 0) {
             this.task.reportList = res.reportList
+            for(var i=0;i<this.task.reportList.length;++i){
+              if(this.task.reportList[i].workerId==null){
+                this.task.reportList[i].isArgumented=true;
+              }
+            }
             this.isAble = this.task.taskState === 0
             this.tableLoading = false
           }
