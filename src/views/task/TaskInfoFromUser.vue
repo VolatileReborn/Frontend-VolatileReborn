@@ -59,7 +59,7 @@
                 <el-table-column prop="reportName" label="报告名称"  align="center"/>
                 <el-table-column label="相似度(%)"  align="center">
                   <template #default="scope">
-                      <span v-if="scope.row.isArgumented">扩增报告无相似度数据</span>
+                      <span v-if="scope.row.isAugmented">扩增报告无相似度数据</span>
                       <span v-else>{{scope.row.similarity}}</span>
                   </template>
                 </el-table-column>
@@ -138,7 +138,7 @@
             <el-table-column prop="reportName" label="报告名称"  align="center"/>
             <el-table-column label="相似度(%)"  align="center">
               <template #default="scope">
-                <span v-if="scope.row.isArgumented">扩增报告无相似度数据</span>
+                <span v-if="scope.row.isAugmented">扩增报告无相似度数据</span>
                 <span v-else>{{scope.row.similarity}}</span>
               </template>
             </el-table-column>
@@ -668,7 +668,7 @@ export default {
               this.reports = res.reportList
               for(var i=0;i<this.task.reportList.length;++i){
                 if(this.task.reportList[i].workerId==null){
-                  this.task.reportList[i].isArgumented=true;
+                  this.task.reportList[i].isAugmented=true;
                 }
               }
             }
@@ -795,7 +795,7 @@ export default {
             this.task.reportList = res.reportList
             for(var i=0;i<this.task.reportList.length;++i){
               if(this.task.reportList[i].workerId==null){
-                this.task.reportList[i].isArgumented=true;
+                this.task.reportList[i].isAugmented=true;
               }
             }
             this.isAble = this.task.taskState === 0
