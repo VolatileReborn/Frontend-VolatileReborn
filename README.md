@@ -14,9 +14,18 @@ npm install && npm run serve
 
 Or you can use Docker:
 ```
-docker build -t lyklove/frontend_volatile_reborn:lates -f ./Dockerfile.node-alpine .
+docker build -t lyklove/frontend_volatile_reborn:latest -f ./Dockerfile.node-alpine .
 docker run -d -p 80:80 --rm --name Frontend_VolatileReborn lyklove/frontend_volatile_reborn:latest
 ```
+
+
+可能会遇到报错： unable to verify the first certificate.
+解决：
+```
+npm config set strict-ssl false
+```
+
+
 
 then visit http://localhost:80/#/
 

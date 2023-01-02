@@ -5,6 +5,7 @@ LABEL maintainer="LYK-love"
 WORKDIR /app
 COPY package*.json ./
 RUN node -v && npm -v \
+    && npm config set strict-ssl false \
     && npm config set registry http://r.cnpmjs.org/ \
     && npm install
 
