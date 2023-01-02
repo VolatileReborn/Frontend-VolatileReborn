@@ -18,7 +18,7 @@ node("slave1") {
     def __DOCKERHUB_ACCOUNT = 'lyklove'
     def __IMAGE_TAG = 'latest-linux'
 
-    def PUBLIC_PORT = '81'
+    def PUBLIC_PORT = '81' //容器对外部暴露81而不是80端口
     def CONTAINER_PORT = '80' // 80 for VUE
 
     def ORIGINAL_IMAGE_NAME = __PROJECT_TYPE + '_' + __PROJECT_NAME //frontend_volatile_reborn
