@@ -666,6 +666,11 @@ export default {
             if(res.response.code %100 === 0)
             {
               this.reports = res.reportList
+              for(var i=0;i<this.task.reportList.length;++i){
+                if(this.task.reportList[i].workerId==null){
+                  this.task.reportList[i].isArgumented=true;
+                }
+              }
             }
             else {
               ElMessage.error(res.response.message)
